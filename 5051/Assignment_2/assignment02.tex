@@ -1,0 +1,2004 @@
+\documentclass[11pt]{article}
+    \newcommand{\myname}{Ryan Hughes}
+    \newcommand{\githuburl}{https://github.com/rhughes74/Assignments} % link to assignment02.ipynb
+    \newif\ifshowcode
+    \showcodetrue   % set to \showcodefalse to drop the code appendix
+
+    \usepackage{fancyhdr}
+    \setlength{\headheight}{14pt}   % avoids a "headheight too small" warning
+    \pagestyle{fancy}
+    \fancyhf{}                      % clear the default header/footer
+    \lhead{\myname}                 % left
+    \chead{Assignment 2}            % center
+    \rhead{CNET 5051, Fall 2026}    % right
+    \cfoot{\thepage}                % page number, centered at the bottom
+    \renewcommand{\headrulewidth}{0.4pt}   % thin line under the header
+    \usepackage[breakable]{tcolorbox}
+    \usepackage{parskip} % Stop auto-indenting (to mimic markdown behaviour)
+    
+    \usepackage[breakable]{tcolorbox}   % breakable lets a box split across pages
+
+    \newtcolorbox{problemstmt}{
+    breakable,
+    colback=gray!12,       % fill color
+    colframe=gray!50,      % border color
+    boxrule=0.5pt,
+    arc=2pt,
+    left=6pt, right=6pt, top=4pt, bottom=4pt
+    }
+
+    % Basic figure setup, for now with no caption control since it's done
+    % automatically by Pandoc (which extracts ![](path) syntax from Markdown).
+    \usepackage{graphicx}
+    % Keep aspect ratio if custom image width or height is specified
+    \setkeys{Gin}{keepaspectratio}
+    % Maintain compatibility with old templates. Remove in nbconvert 6.0
+    \let\Oldincludegraphics\includegraphics
+    % Ensure that by default, figures have no caption (until we provide a
+    % proper Figure object with a Caption API and a way to capture that
+    % in the conversion process - todo).
+    \usepackage{caption}
+    \DeclareCaptionFormat{nocaption}{}
+    \captionsetup{format=nocaption,aboveskip=0pt,belowskip=0pt}
+
+    \usepackage{float}
+    \floatplacement{figure}{H} % forces figures to be placed at the correct location
+    \usepackage{xcolor} % Allow colors to be defined
+    \usepackage{enumerate} % Needed for markdown enumerations to work
+    \usepackage{geometry} % Used to adjust the document margins
+    \usepackage{amsmath} % Equations
+    \usepackage{amssymb} % Equations
+    \usepackage{textcomp} % defines textquotesingle
+    % Hack from http://tex.stackexchange.com/a/47451/13684:
+    \AtBeginDocument{%
+        \def\PYZsq{\textquotesingle}% Upright quotes in Pygmentized code
+    }
+    \usepackage{upquote} % Upright quotes for verbatim code
+    \usepackage{eurosym} % defines \euro
+
+    \usepackage{iftex}
+    \ifPDFTeX
+        \usepackage[T1]{fontenc}
+        \IfFileExists{alphabeta.sty}{
+              \usepackage{alphabeta}
+          }{
+              \usepackage[mathletters]{ucs}
+              \usepackage[utf8x]{inputenc}
+          }
+    \else
+        \usepackage{fontspec}
+        \usepackage{unicode-math}
+    \fi
+
+    \usepackage{fancyvrb} % verbatim replacement that allows latex
+    \usepackage{grffile} % extends the file name processing of package graphics
+                         % to support a larger range
+    \makeatletter % fix for old versions of grffile with XeLaTeX
+    \@ifpackagelater{grffile}{2019/11/01}
+    {
+      % Do nothing on new versions
+    }
+    {
+      \def\Gread@@xetex#1{%
+        \IfFileExists{"\Gin@base".bb}%
+        {\Gread@eps{\Gin@base.bb}}%
+        {\Gread@@xetex@aux#1}%
+      }
+    }
+    \makeatother
+    \usepackage[Export]{adjustbox} % Used to constrain images to a maximum size
+    \adjustboxset{max size={0.9\linewidth}{0.9\paperheight}}
+
+    % The hyperref package gives us a pdf with properly built
+    % internal navigation ('pdf bookmarks' for the table of contents,
+    % internal cross-reference links, web links for URLs, etc.)
+    \usepackage{hyperref}
+    % The default LaTeX title has an obnoxious amount of whitespace. By default,
+    % titling removes some of it. It also provides customization options.
+    \usepackage{titling}
+    \usepackage{longtable} % longtable support required by pandoc >1.10
+    \usepackage{booktabs}  % table support for pandoc > 1.12.2
+    \usepackage{array}     % table support for pandoc >= 2.11.3
+    \usepackage{calc}      % table minipage width calculation for pandoc >= 2.11.1
+    \usepackage[inline]{enumitem} % IRkernel/repr support (it uses the enumerate* environment)
+    \usepackage[normalem]{ulem} % ulem is needed to support strikethroughs (\sout)
+                                % normalem makes italics be italics, not underlines
+    \usepackage{soul}      % strikethrough (\st) support for pandoc >= 3.0.0
+    \usepackage{mathrsfs}
+    
+
+    
+    % Colors for the hyperref package
+    \definecolor{urlcolor}{rgb}{0,.145,.698}
+    \definecolor{linkcolor}{rgb}{.71,0.21,0.01}
+    \definecolor{citecolor}{rgb}{.12,.54,.11}
+
+    % ANSI colors
+    \definecolor{ansi-black}{HTML}{3E424D}
+    \definecolor{ansi-black-intense}{HTML}{282C36}
+    \definecolor{ansi-red}{HTML}{E75C58}
+    \definecolor{ansi-red-intense}{HTML}{B22B31}
+    \definecolor{ansi-green}{HTML}{00A250}
+    \definecolor{ansi-green-intense}{HTML}{007427}
+    \definecolor{ansi-yellow}{HTML}{DDB62B}
+    \definecolor{ansi-yellow-intense}{HTML}{B27D12}
+    \definecolor{ansi-blue}{HTML}{208FFB}
+    \definecolor{ansi-blue-intense}{HTML}{0065CA}
+    \definecolor{ansi-magenta}{HTML}{D160C4}
+    \definecolor{ansi-magenta-intense}{HTML}{A03196}
+    \definecolor{ansi-cyan}{HTML}{60C6C8}
+    \definecolor{ansi-cyan-intense}{HTML}{258F8F}
+    \definecolor{ansi-white}{HTML}{C5C1B4}
+    \definecolor{ansi-white-intense}{HTML}{A1A6B2}
+    \definecolor{ansi-default-inverse-fg}{HTML}{FFFFFF}
+    \definecolor{ansi-default-inverse-bg}{HTML}{000000}
+
+    % common color for the border for error outputs.
+    \definecolor{outerrorbackground}{HTML}{FFDFDF}
+
+    % commands and environments needed by pandoc snippets
+    % extracted from the output of `pandoc -s`
+    \providecommand{\tightlist}{%
+      \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+    \DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+    % Add ',fontsize=\small' for more characters per line
+    \newenvironment{Shaded}{}{}
+    \newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.56,0.13,0.00}{{#1}}}
+    \newcommand{\DecValTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\FloatTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\CharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\StringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\CommentTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textit{{#1}}}}
+    \newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{{#1}}}
+    \newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.02,0.16,0.49}{{#1}}}
+    \newcommand{\RegionMarkerTok}[1]{{#1}}
+    \newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\NormalTok}[1]{{#1}}
+
+    % Additional commands for more recent versions of Pandoc
+    \newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.53,0.00,0.00}{{#1}}}
+    \newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.73,0.40,0.53}{{#1}}}
+    \newcommand{\ImportTok}[1]{{#1}}
+    \newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.73,0.13,0.13}{\textit{{#1}}}}
+    \newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{{#1}}}
+    \newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.40,0.40,0.40}{{#1}}}
+    \newcommand{\BuiltInTok}[1]{{#1}}
+    \newcommand{\ExtensionTok}[1]{{#1}}
+    \newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.74,0.48,0.00}{{#1}}}
+    \newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{{#1}}}
+    \newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \makeatletter
+    \newsavebox\pandoc@box
+    \newcommand*\pandocbounded[1]{%
+      \sbox\pandoc@box{#1}%
+      % scaling factors for width and height
+      \Gscale@div\@tempa\textheight{\dimexpr\ht\pandoc@box+\dp\pandoc@box\relax}%
+      \Gscale@div\@tempb\linewidth{\wd\pandoc@box}%
+      % select the smaller of both
+      \ifdim\@tempb\p@<\@tempa\p@
+        \let\@tempa\@tempb
+      \fi
+      % scaling accordingly (\@tempa < 1)
+      \ifdim\@tempa\p@<\p@
+        \scalebox{\@tempa}{\usebox\pandoc@box}%
+      % scaling not needed, use as it is
+      \else
+        \usebox{\pandoc@box}%
+      \fi
+    }
+    \makeatother
+
+    % Define a nice break command that doesn't care if a line doesn't already
+    % exist.
+    \def\br{\hspace*{\fill} \\* }
+    % Math Jax compatibility definitions
+    \def\gt{>}
+    \def\lt{<}
+    \let\Oldtex\TeX
+    \let\Oldlatex\LaTeX
+    \renewcommand{\TeX}{\textrm{\Oldtex}}
+    \renewcommand{\LaTeX}{\textrm{\Oldlatex}}
+    % Document parameters
+    % Document title
+    \title{Hughes}
+    
+    
+    
+    
+    
+    
+    
+% Pygments definitions
+\makeatletter
+\def\PY@reset{\let\PY@it=\relax \let\PY@bf=\relax%
+    \let\PY@ul=\relax \let\PY@tc=\relax%
+    \let\PY@bc=\relax \let\PY@ff=\relax}
+\def\PY@tok#1{\csname PY@tok@#1\endcsname}
+\def\PY@toks#1+{\ifx\relax#1\empty\else%
+    \PY@tok{#1}\expandafter\PY@toks\fi}
+\def\PY@do#1{\PY@bc{\PY@tc{\PY@ul{%
+    \PY@it{\PY@bf{\PY@ff{#1}}}}}}}
+\def\PY#1#2{\PY@reset\PY@toks#1+\relax+\PY@do{#2}}
+
+\@namedef{PY@tok@w}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.73,0.73}{##1}}}
+\@namedef{PY@tok@c}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@cp}{\def\PY@tc##1{\textcolor[rgb]{0.61,0.40,0.00}{##1}}}
+\@namedef{PY@tok@k}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kp}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kt}{\def\PY@tc##1{\textcolor[rgb]{0.69,0.00,0.25}{##1}}}
+\@namedef{PY@tok@o}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@ow}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\@namedef{PY@tok@nb}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@nf}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@nc}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@nn}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@ne}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.80,0.25,0.22}{##1}}}
+\@namedef{PY@tok@nv}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@no}{\def\PY@tc##1{\textcolor[rgb]{0.53,0.00,0.00}{##1}}}
+\@namedef{PY@tok@nl}{\def\PY@tc##1{\textcolor[rgb]{0.46,0.46,0.00}{##1}}}
+\@namedef{PY@tok@ni}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.44,0.44,0.44}{##1}}}
+\@namedef{PY@tok@na}{\def\PY@tc##1{\textcolor[rgb]{0.41,0.47,0.13}{##1}}}
+\@namedef{PY@tok@nt}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@nd}{\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\@namedef{PY@tok@s}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sd}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@si}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.64,0.35,0.47}{##1}}}
+\@namedef{PY@tok@se}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.36,0.12}{##1}}}
+\@namedef{PY@tok@sr}{\def\PY@tc##1{\textcolor[rgb]{0.64,0.35,0.47}{##1}}}
+\@namedef{PY@tok@ss}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@sx}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@m}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@gh}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\@namedef{PY@tok@gu}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.50,0.00,0.50}{##1}}}
+\@namedef{PY@tok@gd}{\def\PY@tc##1{\textcolor[rgb]{0.63,0.00,0.00}{##1}}}
+\@namedef{PY@tok@gi}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.52,0.00}{##1}}}
+\@namedef{PY@tok@gr}{\def\PY@tc##1{\textcolor[rgb]{0.89,0.00,0.00}{##1}}}
+\@namedef{PY@tok@ge}{\let\PY@it=\textit}
+\@namedef{PY@tok@gs}{\let\PY@bf=\textbf}
+\@namedef{PY@tok@ges}{\let\PY@bf=\textbf\let\PY@it=\textit}
+\@namedef{PY@tok@gp}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\@namedef{PY@tok@go}{\def\PY@tc##1{\textcolor[rgb]{0.44,0.44,0.44}{##1}}}
+\@namedef{PY@tok@gt}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.27,0.87}{##1}}}
+\@namedef{PY@tok@err}{\def\PY@bc##1{{\setlength{\fboxsep}{\string -\fboxrule}\fcolorbox[rgb]{1.00,0.00,0.00}{1,1,1}{\strut ##1}}}}
+\@namedef{PY@tok@kc}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kd}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kn}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kr}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@bp}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@fm}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@vc}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@vg}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@vi}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@vm}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@sa}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sb}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sc}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@dl}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@s2}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sh}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@s1}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@mb}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mf}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mh}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mi}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@il}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mo}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@ch}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@cm}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@cpf}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@c1}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@cs}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+
+\def\PYZbs{\char`\\}
+\def\PYZus{\char`\_}
+\def\PYZob{\char`\{}
+\def\PYZcb{\char`\}}
+\def\PYZca{\char`\^}
+\def\PYZam{\char`\&}
+\def\PYZlt{\char`\<}
+\def\PYZgt{\char`\>}
+\def\PYZsh{\char`\#}
+\def\PYZpc{\char`\%}
+\def\PYZdl{\char`\$}
+\def\PYZhy{\char`\-}
+\def\PYZsq{\char`\'}
+\def\PYZdq{\char`\"}
+\def\PYZti{\char`\~}
+% for compatibility with earlier versions
+\def\PYZat{@}
+\def\PYZlb{[}
+\def\PYZrb{]}
+\makeatother
+
+
+    % For linebreaks inside Verbatim environment from package fancyvrb.
+    \makeatletter
+        \newbox\Wrappedcontinuationbox
+        \newbox\Wrappedvisiblespacebox
+        \newcommand*\Wrappedvisiblespace {\textcolor{red}{\textvisiblespace}}
+        \newcommand*\Wrappedcontinuationsymbol {\textcolor{red}{\llap{\tiny$\m@th\hookrightarrow$}}}
+        \newcommand*\Wrappedcontinuationindent {3ex }
+        \newcommand*\Wrappedafterbreak {\kern\Wrappedcontinuationindent\copy\Wrappedcontinuationbox}
+        % Take advantage of the already applied Pygments mark-up to insert
+        % potential linebreaks for TeX processing.
+        %        {, <, #, %, $, ' and ": go to next line.
+        %        _, }, ^, &, >, - and ~: stay at end of broken line.
+        % Use of \textquotesingle for straight quote.
+        \newcommand*\Wrappedbreaksatspecials {%
+            \def\PYGZus{\discretionary{\char`\_}{\Wrappedafterbreak}{\char`\_}}%
+            \def\PYGZob{\discretionary{}{\Wrappedafterbreak\char`\{}{\char`\{}}%
+            \def\PYGZcb{\discretionary{\char`\}}{\Wrappedafterbreak}{\char`\}}}%
+            \def\PYGZca{\discretionary{\char`\^}{\Wrappedafterbreak}{\char`\^}}%
+            \def\PYGZam{\discretionary{\char`\&}{\Wrappedafterbreak}{\char`\&}}%
+            \def\PYGZlt{\discretionary{}{\Wrappedafterbreak\char`\<}{\char`\<}}%
+            \def\PYGZgt{\discretionary{\char`\>}{\Wrappedafterbreak}{\char`\>}}%
+            \def\PYGZsh{\discretionary{}{\Wrappedafterbreak\char`\#}{\char`\#}}%
+            \def\PYGZpc{\discretionary{}{\Wrappedafterbreak\char`\%}{\char`\%}}%
+            \def\PYGZdl{\discretionary{}{\Wrappedafterbreak\char`\$}{\char`\$}}%
+            \def\PYGZhy{\discretionary{\char`\-}{\Wrappedafterbreak}{\char`\-}}%
+            \def\PYGZsq{\discretionary{}{\Wrappedafterbreak\textquotesingle}{\textquotesingle}}%
+            \def\PYGZdq{\discretionary{}{\Wrappedafterbreak\char`\"}{\char`\"}}%
+            \def\PYGZti{\discretionary{\char`\~}{\Wrappedafterbreak}{\char`\~}}%
+        }
+        % Some characters . , ; ? ! / are not pygmentized.
+        % This macro makes them "active" and they will insert potential linebreaks
+        \newcommand*\Wrappedbreaksatpunct {%
+            \lccode`\~`\.\lowercase{\def~}{\discretionary{\hbox{\char`\.}}{\Wrappedafterbreak}{\hbox{\char`\.}}}%
+            \lccode`\~`\,\lowercase{\def~}{\discretionary{\hbox{\char`\,}}{\Wrappedafterbreak}{\hbox{\char`\,}}}%
+            \lccode`\~`\;\lowercase{\def~}{\discretionary{\hbox{\char`\;}}{\Wrappedafterbreak}{\hbox{\char`\;}}}%
+            \lccode`\~`\:\lowercase{\def~}{\discretionary{\hbox{\char`\:}}{\Wrappedafterbreak}{\hbox{\char`\:}}}%
+            \lccode`\~`\?\lowercase{\def~}{\discretionary{\hbox{\char`\?}}{\Wrappedafterbreak}{\hbox{\char`\?}}}%
+            \lccode`\~`\!\lowercase{\def~}{\discretionary{\hbox{\char`\!}}{\Wrappedafterbreak}{\hbox{\char`\!}}}%
+            \lccode`\~`\/\lowercase{\def~}{\discretionary{\hbox{\char`\/}}{\Wrappedafterbreak}{\hbox{\char`\/}}}%
+            \catcode`\.\active
+            \catcode`\,\active
+            \catcode`\;\active
+            \catcode`\:\active
+            \catcode`\?\active
+            \catcode`\!\active
+            \catcode`\/\active
+            \lccode`\~`\~
+        }
+    \makeatother
+
+    \let\OriginalVerbatim=\Verbatim
+    \makeatletter
+    \renewcommand{\Verbatim}[1][1]{%
+        %\parskip\z@skip
+        \sbox\Wrappedcontinuationbox {\Wrappedcontinuationsymbol}%
+        \sbox\Wrappedvisiblespacebox {\FV@SetupFont\Wrappedvisiblespace}%
+        \def\FancyVerbFormatLine ##1{\hsize\linewidth
+            \vtop{\raggedright\hyphenpenalty\z@\exhyphenpenalty\z@
+                \doublehyphendemerits\z@\finalhyphendemerits\z@
+                \strut ##1\strut}%
+        }%
+        % If the linebreak is at a space, the latter will be displayed as visible
+        % space at end of first line, and a continuation symbol starts next line.
+        % Stretch/shrink are however usually zero for typewriter font.
+        \def\FV@Space {%
+            \nobreak\hskip\z@ plus\fontdimen3\font minus\fontdimen4\font
+            \discretionary{\copy\Wrappedvisiblespacebox}{\Wrappedafterbreak}
+            {\kern\fontdimen2\font}%
+        }%
+
+        % Allow breaks at special characters using \PYG... macros.
+        \Wrappedbreaksatspecials
+        % Breaks at punctuation characters . , ; ? ! and / need catcode=\active
+        \OriginalVerbatim[#1,codes*=\Wrappedbreaksatpunct]%
+    }
+    \makeatother
+
+    % Exact colors from NB
+    \definecolor{incolor}{HTML}{303F9F}
+    \definecolor{outcolor}{HTML}{D84315}
+    \definecolor{cellborder}{HTML}{CFCFCF}
+    \definecolor{cellbackground}{HTML}{F7F7F7}
+
+    % prompt
+    \makeatletter
+    \newcommand{\boxspacing}{\kern\kvtcb@left@rule\kern\kvtcb@boxsep}
+    \makeatother
+    \newcommand{\prompt}[4]{
+        {\ttfamily\llap{{\color{#2}[#3]:\hspace{3pt}#4}}\vspace{-\baselineskip}}
+    }
+    
+
+    
+    % Prevent overflowing lines due to hard-to-break entities
+    \sloppy
+    % Setup hyperref package
+    \hypersetup{
+      breaklinks=true,  % so long urls are correctly broken across lines
+      colorlinks=true,
+      urlcolor=urlcolor,
+      linkcolor=linkcolor,
+      citecolor=citecolor,
+      }
+    % Slightly bigger margins than the latex defaults
+    
+    \geometry{verbose,tmargin=1in,bmargin=1in,lmargin=1in,rmargin=1in}
+    
+    
+
+\begin{document}
+    
+    \maketitle
+    
+    
+
+
+
+\textbf{Overall Instructions:} Due by Friday, Oct.~30th, 11:00pm EST.
+Please submit a .pdf of your answers via Canvas, including a url to your
+.ipynb notebook in a public GitHub repository. Use the provided LATEX
+template for your submission. Please name your Canvas submission as
+Lastname.pdf, (e.g.~Trujillo.pdf). If you need help with LATEX or
+GitHub, please visit during office hours or post questions to the
+Canvas. Include your code in a (well-documented, commented, clear)
+assignment02.ipynb file. Scores for the code-based questions below will
+be based on your written responses and code.
+\begin{problemstmt}
+\textbf{Problem 1 (20 points)} In this question we will work with
+degree-controlled random graph null models.
+
+\begin{enumerate}
+\def\labelenumi{(\alph{enumi})}
+\item
+  The Configuration Model (5 points). First, implement the configuration
+  model in Python. Your function should take a list of integers as a
+  degree sequence, and return a graph where each vertex has the assigned
+  degree. You graph may contain duplicate edges and self-loops.
+\item
+  The Chung Lu Model (5 points). Next, implement the Chung Lu random
+  graph model. Remember that this model creates an edge between nodes i
+  and j with independent probabilities defined by vertex degree and the
+  total number of edges in the graph: pij = kikj 2m , where 2m := ∑︁ i
+  ki. Your implementation should take a list of integers as a degree
+  sequence, and return a simple graph with approximately the desired
+  degree sequence.
+\item
+  Model Differences (5 points). For the degree sequence
+  degrees={[}8,5,5,4,3,2,2,2,1,1,1,1,1,1,1{]}, generate a thousand ran-
+  dom graphs using the Configuration Model and the Chung Lu model, then:
+\item
+  Plot the average adjacency matrix for each model. This should be a
+  heatmap of: ⟨A⟩ = 1 N N∑︂ i=1 Ai where N is the number of generated
+  random graphs, and Ai is the adjacency matrix of the ith graph. (Hint:
+  matplotlib's imshow is useful for displaying matrix data.)
+\end{enumerate}
+
+\begin{enumerate}
+\def\labelenumi{(\roman{enumi})}
+\setcounter{enumi}{1}
+\item
+  Choose two graph metrics: one that should be approximately the same
+  across graphs gen- erated by both models, and one that should diverge
+  significantly between the two models. For each metric, make a plot
+  (histogram, kernel-density estimate, or cumulative distribution
+  function) showing the distribution of the metric across all generated
+  graphs from each model. Note: For this stage you may remove self-loops
+  and duplicate edges from your configuration model graphs if it helps
+  make a direct comparison to Chung Lu graphs.
+\item
+  Discussion (5 points). Discuss the above results briefly. Why do the
+  models produce similar results under some metrics and different
+  results under others?
+\end{enumerate}
+\end{problemstmt}
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{1}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{networkx}\PY{+w}{ }\PY{k}{as}\PY{+w}{ }\PY{n+nn}{nx}
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{matplotlib}\PY{n+nn}{.}\PY{n+nn}{pyplot}\PY{+w}{ }\PY{k}{as}\PY{+w}{ }\PY{n+nn}{plt}
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{numpy}\PY{+w}{ }\PY{k}{as}\PY{+w}{ }\PY{n+nn}{np}
+\PY{k+kn}{from}\PY{+w}{ }\PY{n+nn}{collections}\PY{+w}{ }\PY{k+kn}{import} \PY{n}{Counter}
+\PY{k+kn}{from}\PY{+w}{ }\PY{n+nn}{itertools}\PY{+w}{ }\PY{k+kn}{import} \PY{n}{combinations}
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{logging}
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{networkx}\PY{+w}{ }\PY{k}{as}\PY{+w}{ }\PY{n+nn}{nx}
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{matplotlib}\PY{n+nn}{.}\PY{n+nn}{pyplot}\PY{+w}{ }\PY{k}{as}\PY{+w}{ }\PY{n+nn}{plt}
+\PY{k+kn}{from}\PY{+w}{ }\PY{n+nn}{scipy}\PY{n+nn}{.}\PY{n+nn}{stats}\PY{+w}{ }\PY{k+kn}{import} \PY{n}{binom}
+\PY{k+kn}{from}\PY{+w}{ }\PY{n+nn}{scipy}\PY{n+nn}{.}\PY{n+nn}{special}\PY{+w}{ }\PY{k+kn}{import} \PY{n}{comb}
+
+\PY{k}{def}\PY{+w}{ }\PY{n+nf}{configuration\PYZus{}model\PYZus{}from\PYZus{}degree\PYZus{}sequence}\PY{p}{(}\PY{n}{degree\PYZus{}sequence}\PY{p}{,} \PY{n}{return\PYZus{}simple}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}\PY{p}{:}
+\PY{+w}{    }\PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}}
+\PY{l+s+sd}{    Generate a random graph using the configuration model from a given degree sequence}
+\PY{l+s+sd}{    without using the NetworkX built\PYZhy{}in function.}
+
+\PY{l+s+sd}{    The configuration model generates a random graph that preserves the degree }
+\PY{l+s+sd}{    sequence of nodes by assigning \PYZdq{}stubs\PYZdq{} or \PYZdq{}half\PYZhy{}edges\PYZdq{} to each node and }
+\PY{l+s+sd}{    randomly pairing these stubs to form edges. This process can result in }
+\PY{l+s+sd}{    graphs with self\PYZhy{}loops and parallel edges, which can be removed if needed.}
+
+\PY{l+s+sd}{    Parameters}
+\PY{l+s+sd}{    \PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}}
+\PY{l+s+sd}{    degree\PYZus{}sequence : list of int}
+\PY{l+s+sd}{        A list representing the degree of each node in the graph. The sum of }
+\PY{l+s+sd}{        the degrees in this sequence must be even for the configuration model }
+\PY{l+s+sd}{        to create a valid graph.}
+
+\PY{l+s+sd}{    Returns}
+\PY{l+s+sd}{    \PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}}
+\PY{l+s+sd}{    G : networkx.MultiGraph}
+\PY{l+s+sd}{        A multigraph generated from the given degree sequence. The graph may }
+\PY{l+s+sd}{        contain self\PYZhy{}loops and parallel edges, which are allowed in the }
+\PY{l+s+sd}{        configuration model.}
+
+\PY{l+s+sd}{    Notes}
+\PY{l+s+sd}{    \PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}}
+\PY{l+s+sd}{    \PYZhy{} This method works by assigning \PYZdq{}stubs\PYZdq{} or \PYZdq{}half\PYZhy{}edges\PYZdq{} to nodes based on }
+\PY{l+s+sd}{      their degree and then randomly pairing them to form edges. The resulting }
+\PY{l+s+sd}{      graph can have self\PYZhy{}loops and parallel edges.}
+\PY{l+s+sd}{    \PYZhy{} Self\PYZhy{}loops and parallel edges can be removed post\PYZhy{}generation if a simple }
+\PY{l+s+sd}{      graph is required using NetworkX\PYZsq{}s `nx.Graph(G)`.}
+\PY{l+s+sd}{    \PYZhy{} The degree sequence must have an even sum for a valid graph construction. }
+\PY{l+s+sd}{      If the sum of the degrees is odd, no graph can be constructed.}
+
+\PY{l+s+sd}{    Time Complexity}
+\PY{l+s+sd}{    \PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}}
+\PY{l+s+sd}{    The time complexity is O(E), where E is the number of edges in the graph.}
+
+\PY{l+s+sd}{    Example}
+\PY{l+s+sd}{    \PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}}
+\PY{l+s+sd}{    \PYZgt{}\PYZgt{}\PYZgt{} degree\PYZus{}sequence = [3, 3, 2, 2, 1, 1]}
+\PY{l+s+sd}{    \PYZgt{}\PYZgt{}\PYZgt{} G = configuration\PYZus{}model\PYZus{}from\PYZus{}degree\PYZus{}sequence(degree\PYZus{}sequence)}
+\PY{l+s+sd}{    \PYZgt{}\PYZgt{}\PYZgt{} nx.is\PYZus{}graphical(degree\PYZus{}sequence)}
+\PY{l+s+sd}{    True}
+\PY{l+s+sd}{    \PYZdq{}\PYZdq{}\PYZdq{}}
+
+    \PY{c+c1}{\PYZsh{} Check if the degree sequence is valid (sum of degrees must be even)}
+    \PY{k}{if} \PY{n+nb}{sum}\PY{p}{(}\PY{n}{degree\PYZus{}sequence}\PY{p}{)} \PY{o}{\PYZpc{}} \PY{l+m+mi}{2} \PY{o}{!=} \PY{l+m+mi}{0}\PY{p}{:}
+        \PY{k}{raise} \PY{n+ne}{ValueError}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{The sum of the degree sequence must be even.}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+
+    \PY{c+c1}{\PYZsh{} Create stubs list: node i appears degree\PYZus{}sequence[i] times}
+    \PY{n}{stubs} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+    \PY{k}{for} \PY{n}{node}\PY{p}{,} \PY{n}{degree} \PY{o+ow}{in} \PY{n+nb}{enumerate}\PY{p}{(}\PY{n}{degree\PYZus{}sequence}\PY{p}{)}\PY{p}{:}
+        \PY{n}{stubs}\PY{o}{.}\PY{n}{extend}\PY{p}{(}\PY{p}{[}\PY{n}{node}\PY{p}{]} \PY{o}{*} \PY{n}{degree}\PY{p}{)}
+
+    \PY{c+c1}{\PYZsh{} Shuffle stubs to randomize the pairing process}
+    \PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{shuffle}\PY{p}{(}\PY{n}{stubs}\PY{p}{)}
+
+    \PY{c+c1}{\PYZsh{} Initialize an empty multigraph}
+    \PY{n}{G} \PY{o}{=} \PY{n}{nx}\PY{o}{.}\PY{n}{MultiGraph}\PY{p}{(}\PY{p}{)}
+
+    \PY{c+c1}{\PYZsh{} Add nodes to the graph}
+    \PY{n}{G}\PY{o}{.}\PY{n}{add\PYZus{}nodes\PYZus{}from}\PY{p}{(}\PY{n+nb}{range}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{degree\PYZus{}sequence}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+
+    \PY{c+c1}{\PYZsh{} Pair stubs to create edges}
+    \PY{k}{while} \PY{n}{stubs}\PY{p}{:}
+        \PY{n}{u} \PY{o}{=} \PY{n}{stubs}\PY{o}{.}\PY{n}{pop}\PY{p}{(}\PY{p}{)}
+        \PY{n}{v} \PY{o}{=} \PY{n}{stubs}\PY{o}{.}\PY{n}{pop}\PY{p}{(}\PY{p}{)}
+
+        \PY{c+c1}{\PYZsh{} Add the edge to the graph}
+        \PY{n}{G}\PY{o}{.}\PY{n}{add\PYZus{}edge}\PY{p}{(}\PY{n}{u}\PY{p}{,} \PY{n}{v}\PY{p}{)}
+
+    \PY{k}{if} \PY{n}{return\PYZus{}simple}\PY{p}{:}
+        \PY{c+c1}{\PYZsh{} Convert the multigraph to a simple graph (remove parallel edges)}
+        \PY{n}{G\PYZus{}simple} \PY{o}{=} \PY{n}{nx}\PY{o}{.}\PY{n}{Graph}\PY{p}{(}\PY{n}{G}\PY{p}{)}  \PY{c+c1}{\PYZsh{} This removes parallel edges by default}
+
+        \PY{k}{return} \PY{n}{G\PYZus{}simple}
+
+    \PY{k}{else}\PY{p}{:}
+        \PY{k}{return} \PY{n}{G}
+
+
+\PY{k}{def}\PY{+w}{ }\PY{n+nf}{chung\PYZus{}lu\PYZus{}model\PYZus{}from\PYZus{}degree\PYZus{}sequence}\PY{p}{(}\PY{n}{degree\PYZus{}sequence}\PY{p}{,} \PY{n}{return\PYZus{}simple}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}\PY{p}{:}
+\PY{+w}{    }\PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}}
+\PY{l+s+sd}{    Generate a random graph using the Chung Lu model from a given degree sequence}
+\PY{l+s+sd}{    without using the NetworkX built\PYZhy{}in function.}
+
+\PY{l+s+sd}{    The Chung Lu model generates a random graph that preserves the degree }
+\PY{l+s+sd}{    sequence of nodes by...}
+
+\PY{l+s+sd}{    Parameters}
+\PY{l+s+sd}{    \PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}}
+\PY{l+s+sd}{    degree\PYZus{}sequence : list of int}
+\PY{l+s+sd}{        A list representing the degree of each node in the graph. The sum of }
+\PY{l+s+sd}{        the degrees in this sequence must be even for the Chung Lu model }
+\PY{l+s+sd}{        to create a valid graph.}
+
+\PY{l+s+sd}{    Returns}
+\PY{l+s+sd}{    \PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}}
+\PY{l+s+sd}{    G : networkx.Graph}
+\PY{l+s+sd}{        A multigraph generated from the given degree sequence. The graph may }
+\PY{l+s+sd}{        contain self\PYZhy{}loops and parallel edges, which are allowed in the }
+\PY{l+s+sd}{        configuration model.}
+
+\PY{l+s+sd}{    Notes}
+\PY{l+s+sd}{    \PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}}
+\PY{l+s+sd}{    \PYZhy{} This method works by assigning \PYZdq{}stubs\PYZdq{} or \PYZdq{}half\PYZhy{}edges\PYZdq{} to nodes based on }
+\PY{l+s+sd}{      their degree and then randomly pairing them to form edges. The resulting }
+\PY{l+s+sd}{      graph can have self\PYZhy{}loops and parallel edges.}
+\PY{l+s+sd}{    \PYZhy{} Self\PYZhy{}loops and parallel edges can be removed post\PYZhy{}generation if a simple }
+\PY{l+s+sd}{      graph is required using NetworkX\PYZsq{}s `nx.Graph(G)`.}
+\PY{l+s+sd}{    \PYZhy{} The degree sequence must have an even sum for a valid graph construction. }
+\PY{l+s+sd}{      If the sum of the degrees is odd, no graph can be constructed.}
+
+\PY{l+s+sd}{    Time Complexity}
+\PY{l+s+sd}{    \PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}}
+\PY{l+s+sd}{    The time complexity is O(M+N), where M is the number of edges in the graph and N the number of nodes}
+
+\PY{l+s+sd}{    Example}
+\PY{l+s+sd}{    \PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}}
+\PY{l+s+sd}{    \PYZgt{}\PYZgt{}\PYZgt{} degree\PYZus{}sequence = [3, 3, 2, 2, 1, 1]}
+\PY{l+s+sd}{    \PYZgt{}\PYZgt{}\PYZgt{} G = configuration\PYZus{}model\PYZus{}from\PYZus{}degree\PYZus{}sequence(degree\PYZus{}sequence)}
+\PY{l+s+sd}{    \PYZgt{}\PYZgt{}\PYZgt{} nx.is\PYZus{}graphical(degree\PYZus{}sequence)}
+\PY{l+s+sd}{    True}
+\PY{l+s+sd}{    \PYZdq{}\PYZdq{}\PYZdq{}}
+    \PY{c+c1}{\PYZsh{}Instatiate G:}
+    \PY{n}{G} \PY{o}{=} \PY{n}{nx}\PY{o}{.}\PY{n}{Graph}\PY{p}{(}\PY{p}{)}
+    \PY{n}{N}\PY{o}{=}\PY{n+nb}{len}\PY{p}{(}\PY{n}{degree\PYZus{}sequence}\PY{p}{)} \PY{c+c1}{\PYZsh{}Total number of nodes by taking the length of the degree sequence}
+    \PY{n}{G}\PY{o}{.}\PY{n}{add\PYZus{}nodes\PYZus{}from}\PY{p}{(}\PY{n+nb}{range}\PY{p}{(}\PY{n}{N}\PY{p}{)}\PY{p}{)}
+
+    \PY{c+c1}{\PYZsh{} Check if the degree sequence is valid (sum of degrees must be even)}
+    \PY{k}{if} \PY{n+nb}{sum}\PY{p}{(}\PY{n}{degree\PYZus{}sequence}\PY{p}{)} \PY{o}{\PYZpc{}} \PY{l+m+mi}{2} \PY{o}{!=} \PY{l+m+mi}{0}\PY{p}{:}
+        \PY{k}{raise} \PY{n+ne}{ValueError}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{The sum of the degree sequence must be even.}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+
+    \PY{c+c1}{\PYZsh{}First calculate the total number of edges in the graph by taking the sum of the degree sequence}
+    \PY{n}{total\PYZus{}edges} \PY{o}{=} \PY{n+nb}{sum}\PY{p}{(}\PY{n}{degree\PYZus{}sequence}\PY{p}{)}
+    
+    \PY{c+c1}{\PYZsh{}Ensure degree sequence is sorted:}
+    \PY{n}{degree\PYZus{}sequence}\PY{o}{=}\PY{n}{np}\PY{o}{.}\PY{n}{sort}\PY{p}{(}\PY{n}{degree\PYZus{}sequence}\PY{p}{,}\PY{n}{descending}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+
+    \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,}\PY{n}{N}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{)}\PY{p}{:}\PY{c+c1}{\PYZsh{}for all nodes}
+        \PY{n}{j}\PY{o}{=}\PY{n}{i}\PY{o}{+}\PY{l+m+mi}{1}\PY{c+c1}{\PYZsh{}Look at the next possible node to connect to...}
+        \PY{c+c1}{\PYZsh{}and, get the probability of connecting to this node:}
+        \PY{n}{pij} \PY{o}{=} \PY{n+nb}{min}\PY{p}{(}\PY{p}{(}\PY{n}{degree\PYZus{}sequence}\PY{p}{[}\PY{n}{i}\PY{p}{]} \PY{o}{*} \PY{n}{degree\PYZus{}sequence}\PY{p}{[}\PY{n}{j}\PY{p}{]}\PY{p}{)} \PY{o}{/} \PY{p}{(}\PY{n}{total\PYZus{}edges}\PY{p}{)}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{)}
+        
+        \PY{c+c1}{\PYZsh{}while there are additional valid other nodes available to connect to...}
+        \PY{k}{while} \PY{n}{j} \PY{o}{\PYZlt{}} \PY{n}{N} \PY{o+ow}{and} \PY{n}{pij} \PY{o}{\PYZgt{}} \PY{l+m+mi}{0}\PY{p}{:} 
+            \PY{k}{if} \PY{p}{(}\PY{n}{pij} \PY{o}{\PYZlt{}} \PY{l+m+mi}{1}\PY{p}{)}\PY{p}{:}\PY{c+c1}{\PYZsh{}(i.e., while the probability is not 100\PYZpc{} or 0\PYZpc{})}
+                \PY{n}{r} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{rand}\PY{p}{(}\PY{p}{)}\PY{c+c1}{\PYZsh{}draw a random chance}
+                \PY{c+c1}{\PYZsh{}and calculate the following to grab one of these additional other nodes:}
+                \PY{n}{j} \PY{o}{+}\PY{o}{=} \PY{n+nb}{int}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{floor}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{log}\PY{p}{(}\PY{n}{r}\PY{p}{)}\PY{o}{/}\PY{n}{np}\PY{o}{.}\PY{n}{log}\PY{p}{(}\PY{l+m+mi}{1}\PY{o}{\PYZhy{}}\PY{n}{pij}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+
+            \PY{k}{if} \PY{n}{j} \PY{o}{\PYZlt{}} \PY{n}{N}\PY{p}{:}\PY{c+c1}{\PYZsh{}while there are additional other nodes to process...}
+                \PY{c+c1}{\PYZsh{}get the additional other node\PYZsq{}s probability of connecting to:}
+                \PY{n}{q} \PY{o}{=} \PY{n+nb}{min}\PY{p}{(}\PY{p}{(}\PY{n}{degree\PYZus{}sequence}\PY{p}{[}\PY{n}{i}\PY{p}{]} \PY{o}{*} \PY{n}{degree\PYZus{}sequence}\PY{p}{[}\PY{n}{j}\PY{p}{]}\PY{p}{)} \PY{o}{/} \PY{p}{(}\PY{n}{total\PYZus{}edges}\PY{p}{)}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{)}
+                \PY{n}{r} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{rand}\PY{p}{(}\PY{p}{)}\PY{c+c1}{\PYZsh{}draw a random chance}
+                \PY{k}{if} \PY{n}{r} \PY{o}{\PYZlt{}} \PY{n}{q}\PY{o}{/}\PY{n}{pij}\PY{p}{:}\PY{c+c1}{\PYZsh{}if the random chance is less than the probability of connecting to this new other node relative to the simple next in the sequence:}
+                    \PY{n}{G}\PY{o}{.}\PY{n}{add\PYZus{}edge}\PY{p}{(}\PY{n}{i}\PY{p}{,}\PY{n}{j}\PY{p}{)}\PY{c+c1}{\PYZsh{}add an edge to the new other node}
+                \PY{n}{pij}\PY{o}{=}\PY{n}{q}\PY{c+c1}{\PYZsh{}update the probability of connection with the last processed node}
+                \PY{n}{j}\PY{o}{+}\PY{o}{=}\PY{l+m+mi}{1}\PY{c+c1}{\PYZsh{}move forward relative to the new other node}
+    \PY{k}{return} \PY{n}{G}
+
+\PY{c+c1}{\PYZsh{}(b) Testing}
+\PY{n}{degrees}\PY{o}{=}\PY{p}{[}\PY{l+m+mi}{8}\PY{p}{,}\PY{l+m+mi}{5}\PY{p}{,}\PY{l+m+mi}{5}\PY{p}{,}\PY{l+m+mi}{4}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{]}
+\PY{n}{chung\PYZus{}lu\PYZus{}graph} \PY{o}{=} \PY{n}{chung\PYZus{}lu\PYZus{}model\PYZus{}from\PYZus{}degree\PYZus{}sequence}\PY{p}{(}\PY{n}{degrees}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{chung\PYZus{}lu\PYZus{}graph}\PY{o}{.}\PY{n}{degree}\PY{p}{)}
+\PY{c+c1}{\PYZsh{}(c) Testing}
+\PY{n}{chung\PYZus{}lus} \PY{o}{=} \PY{l+m+mi}{0}
+\PY{n}{configs} \PY{o}{=} \PY{l+m+mi}{0}
+\PY{n}{num\PYZus{}edges\PYZus{}list\PYZus{}config}\PY{o}{=}\PY{p}{[}\PY{p}{]}
+\PY{n}{num\PYZus{}edges\PYZus{}list\PYZus{}chunglu}\PY{o}{=}\PY{p}{[}\PY{p}{]}
+\PY{n}{cc\PYZus{}list\PYZus{}config}\PY{o}{=}\PY{p}{[}\PY{p}{]}
+\PY{n}{cc\PYZus{}list\PYZus{}chunglu}\PY{o}{=}\PY{p}{[}\PY{p}{]}
+\PY{n}{pos} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+\PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{1001}\PY{p}{)}\PY{p}{:}
+    \PY{n}{cc\PYZus{}list\PYZus{}config}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{nx}\PY{o}{.}\PY{n}{average\PYZus{}clustering}\PY{p}{(}\PY{p}{(}\PY{n}{configuration\PYZus{}model\PYZus{}from\PYZus{}degree\PYZus{}sequence}\PY{p}{(}\PY{n}{degrees}\PY{p}{)}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+    \PY{n}{cc\PYZus{}list\PYZus{}chunglu}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{nx}\PY{o}{.}\PY{n}{average\PYZus{}clustering}\PY{p}{(}\PY{p}{(}\PY{n}{chung\PYZus{}lu\PYZus{}model\PYZus{}from\PYZus{}degree\PYZus{}sequence}\PY{p}{(}\PY{n}{degrees}\PY{p}{)}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+    \PY{n}{num\PYZus{}edges\PYZus{}list\PYZus{}config}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{p}{(}\PY{n}{configuration\PYZus{}model\PYZus{}from\PYZus{}degree\PYZus{}sequence}\PY{p}{(}\PY{n}{degrees}\PY{p}{)}\PY{p}{)}\PY{o}{.}\PY{n}{number\PYZus{}of\PYZus{}edges}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+    \PY{n}{num\PYZus{}edges\PYZus{}list\PYZus{}chunglu}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{p}{(}\PY{n}{chung\PYZus{}lu\PYZus{}model\PYZus{}from\PYZus{}degree\PYZus{}sequence}\PY{p}{(}\PY{n}{degrees}\PY{p}{)}\PY{p}{)}\PY{o}{.}\PY{n}{number\PYZus{}of\PYZus{}edges}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+    \PY{n}{configs} \PY{o}{+}\PY{o}{=} \PY{p}{(}\PY{n}{nx}\PY{o}{.}\PY{n}{adjacency\PYZus{}matrix}\PY{p}{(}\PY{n}{configuration\PYZus{}model\PYZus{}from\PYZus{}degree\PYZus{}sequence}\PY{p}{(}\PY{n}{degrees}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+    \PY{n}{chung\PYZus{}lus} \PY{o}{+}\PY{o}{=} \PY{p}{(}\PY{n}{nx}\PY{o}{.}\PY{n}{adjacency\PYZus{}matrix}\PY{p}{(}\PY{n}{chung\PYZus{}lu\PYZus{}model\PYZus{}from\PYZus{}degree\PYZus{}sequence}\PY{p}{(}\PY{n}{degrees}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+    \PY{n}{model}\PY{o}{=}\PY{n}{configuration\PYZus{}model\PYZus{}from\PYZus{}degree\PYZus{}sequence}\PY{p}{(}\PY{n}{degrees}\PY{p}{)}
+    \PY{n}{pos} \PY{o}{=} \PY{n}{nx}\PY{o}{.}\PY{n}{spring\PYZus{}layout}\PY{p}{(}\PY{n}{model}\PY{p}{)}
+
+\PY{n}{configs} \PY{o}{=} \PY{n}{configs}\PY{o}{/}\PY{l+m+mi}{1000}
+\PY{n}{chung\PYZus{}lus} \PY{o}{=} \PY{n}{chung\PYZus{}lus}\PY{o}{/}\PY{l+m+mi}{1000}
+
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Depicting the configuration nodel graphically to show any self\PYZhy{}loops that can occur: }\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{fig2} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{p}{)}
+\PY{n}{nx}\PY{o}{.}\PY{n}{draw\PYZus{}networkx}\PY{p}{(}\PY{n}{model}\PY{p}{,} \PY{n}{pos}\PY{p}{,} \PY{n}{node\PYZus{}size}\PY{o}{=}\PY{l+m+mi}{150}\PY{p}{,} \PY{n}{edgecolors}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{.2}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{with\PYZus{}labels}\PY{o}{=}\PY{k+kc}{True}\PY{p}{,} \PY{n}{font\PYZus{}size}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{x\PYZhy{}small}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{edge\PYZus{}color}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{.6}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+
+
+\PY{n}{fig}\PY{p}{,} \PY{n}{ax} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{,}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{8}\PY{p}{,}\PY{l+m+mf}{3.5}\PY{p}{)}\PY{p}{,}\PY{n}{dpi}\PY{o}{=}\PY{l+m+mi}{200}\PY{p}{)}
+
+\PY{n}{im1} \PY{o}{=} \PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{configs}\PY{o}{.}\PY{n}{todense}\PY{p}{(}\PY{p}{)}\PY{p}{,}\PY{n}{cmap}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{viridis}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{vmin} \PY{o}{=} \PY{l+m+mi}{0}\PY{p}{,} \PY{n}{vmax} \PY{o}{=} \PY{l+m+mi}{1}\PY{p}{)}
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Configuration Model Adjacency Matrix Heat Map of 1000 Iterations}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{.}\PY{n}{grid}\PY{p}{(}\PY{k+kc}{True}\PY{p}{)}
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{.}\PY{n}{autoscale}\PY{p}{(}\PY{k+kc}{False}\PY{p}{)}
+
+\PY{n}{im2} \PY{o}{=} \PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{chung\PYZus{}lus}\PY{o}{.}\PY{n}{todense}\PY{p}{(}\PY{p}{)}\PY{p}{,}\PY{n}{cmap}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{viridis}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{vmin} \PY{o}{=} \PY{l+m+mi}{0}\PY{p}{,} \PY{n}{vmax} \PY{o}{=} \PY{l+m+mi}{1}\PY{p}{)}
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Chung Lu Model Adjacency Matrix Heat Map of 1000 Iterations}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{grid}\PY{p}{(}\PY{k+kc}{True}\PY{p}{)}
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{autoscale}\PY{p}{(}\PY{k+kc}{False}\PY{p}{)}
+
+
+\PY{n}{fig}\PY{o}{.}\PY{n}{tight\PYZus{}layout}\PY{p}{(}\PY{p}{)}
+\PY{n}{fig}\PY{o}{.}\PY{n}{colorbar}\PY{p}{(}\PY{n}{im1}\PY{p}{)}
+\PY{n}{fig}\PY{o}{.}\PY{n}{colorbar}\PY{p}{(}\PY{n}{im2}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} (c) (ii)}
+\PY{c+c1}{\PYZsh{}For the metrics, are there any specific ones we want here?}
+\PY{c+c1}{\PYZsh{} Could I do just degree distribution? and total of edges?}
+
+\PY{n}{N}\PY{o}{=}\PY{n+nb}{len}\PY{p}{(}\PY{n}{degrees}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{}\PYZhy{}\PYZhy{}\PYZhy{}Plotting the Total Number of Edges \PYZsq{}L\PYZsq{}}
+\PY{c+c1}{\PYZsh{}Starting the plotting process}
+\PY{n}{fig}\PY{p}{,} \PY{n}{ax} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{p}{)}\PY{c+c1}{\PYZsh{}Note: fig is the plot container, while ax (i.e., the \PYZsq{}axes\PYZsq{}) is the plot itself}
+\PY{n}{ax}\PY{o}{.}\PY{n}{hist}\PY{p}{(}\PY{n}{num\PYZus{}edges\PYZus{}list\PYZus{}config}\PY{p}{,}\PY{n}{label}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Configuration Model Sample}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{density}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}\PY{c+c1}{\PYZsh{}Plotting the configuration model graph empirical data}
+\PY{n}{ax}\PY{o}{.}\PY{n}{hist}\PY{p}{(}\PY{n}{num\PYZus{}edges\PYZus{}list\PYZus{}chunglu}\PY{p}{,}\PY{n}{label}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Chung Lu Model Sample}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{density}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}\PY{c+c1}{\PYZsh{}Plotting the Chung Lu model graph empirical data}
+\PY{c+c1}{\PYZsh{}ax.plot(L,P\PYZus{}l, color = \PYZsq{}r\PYZsq{},label=\PYZdq{}Theoretical Distribution\PYZdq{}) \PYZsh{}Plotting the Theoretical}
+\PY{c+c1}{\PYZsh{}Specifying figure details below:}
+\PY{n}{handles}\PY{p}{,} \PY{n}{labels} \PY{o}{=} \PY{n}{ax}\PY{o}{.}\PY{n}{get\PYZus{}legend\PYZus{}handles\PYZus{}labels}\PY{p}{(}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{legend}\PY{p}{(}\PY{n}{handles}\PY{o}{=}\PY{n}{handles}\PY{p}{,} \PY{n}{labels}\PY{o}{=}\PY{n}{labels}\PY{p}{,}\PY{n}{loc}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{upper right}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{fontsize}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{small}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Configuration Model vs. Chung Lu Model The Total Number of Edges: }\PY{l+s+s2}{\PYZsq{}}\PY{l+s+s2}{L}\PY{l+s+s2}{\PYZsq{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}xlabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{L}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}ylabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Probability P\PYZus{}L}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{true\PYZus{}min}\PY{o}{=}\PY{n+nb}{min}\PY{p}{(}\PY{n+nb}{min}\PY{p}{(}\PY{n}{num\PYZus{}edges\PYZus{}list\PYZus{}config}\PY{p}{)}\PY{p}{,} \PY{n+nb}{min}\PY{p}{(}\PY{n}{num\PYZus{}edges\PYZus{}list\PYZus{}chunglu}\PY{p}{)}\PY{p}{)}
+\PY{n}{true\PYZus{}max}\PY{o}{=}\PY{n+nb}{max}\PY{p}{(}\PY{n+nb}{max}\PY{p}{(}\PY{n}{num\PYZus{}edges\PYZus{}list\PYZus{}config}\PY{p}{)}\PY{p}{,} \PY{n+nb}{max}\PY{p}{(}\PY{n}{num\PYZus{}edges\PYZus{}list\PYZus{}chunglu}\PY{p}{)}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}xlim}\PY{p}{(}\PY{n}{true\PYZus{}min}\PY{p}{,}\PY{n}{true\PYZus{}max}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{}\PYZhy{}\PYZhy{}\PYZhy{}Plotting the Average Clustering Coefficient \PYZsq{}CC\PYZsq{}}
+\PY{c+c1}{\PYZsh{}Starting the plotting process}
+\PY{n}{fig}\PY{p}{,} \PY{n}{ax} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{p}{)}\PY{c+c1}{\PYZsh{}Note: fig is the plot container, while ax (i.e., the \PYZsq{}axes\PYZsq{}) is the plot itself}
+\PY{n}{ax}\PY{o}{.}\PY{n}{hist}\PY{p}{(}\PY{n}{cc\PYZus{}list\PYZus{}config}\PY{p}{,}\PY{n}{label}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Configuration Model Sample}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{density}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}\PY{c+c1}{\PYZsh{}Plotting the configuration model graph empirical data}
+\PY{n}{ax}\PY{o}{.}\PY{n}{hist}\PY{p}{(}\PY{n}{cc\PYZus{}list\PYZus{}chunglu}\PY{p}{,}\PY{n}{label}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Chung Lu Model Sample}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{density}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}\PY{c+c1}{\PYZsh{}Plotting the Chung Lu model graph empirical data}
+\PY{c+c1}{\PYZsh{}ax.plot(L,P\PYZus{}l, color = \PYZsq{}r\PYZsq{},label=\PYZdq{}Theoretical Distribution\PYZdq{}) \PYZsh{}Plotting the Theoretical}
+\PY{c+c1}{\PYZsh{}Specifying figure details below:}
+\PY{n}{handles}\PY{p}{,} \PY{n}{labels} \PY{o}{=} \PY{n}{ax}\PY{o}{.}\PY{n}{get\PYZus{}legend\PYZus{}handles\PYZus{}labels}\PY{p}{(}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{legend}\PY{p}{(}\PY{n}{handles}\PY{o}{=}\PY{n}{handles}\PY{p}{,} \PY{n}{labels}\PY{o}{=}\PY{n}{labels}\PY{p}{,}\PY{n}{loc}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{upper right}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{fontsize}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{small}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Configuration Model vs. Chung Lu Model Average Clustering Coefficient }\PY{l+s+s2}{\PYZsq{}}\PY{l+s+s2}{CC}\PY{l+s+s2}{\PYZsq{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}xlabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Average Clustering Coefficient}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}ylabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Probability P\PYZus{}CC}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{true\PYZus{}min}\PY{o}{=}\PY{n+nb}{min}\PY{p}{(}\PY{n+nb}{min}\PY{p}{(}\PY{n}{cc\PYZus{}list\PYZus{}config}\PY{p}{)}\PY{p}{,} \PY{n+nb}{min}\PY{p}{(}\PY{n}{cc\PYZus{}list\PYZus{}chunglu}\PY{p}{)}\PY{p}{)}
+\PY{n}{true\PYZus{}max}\PY{o}{=}\PY{n+nb}{max}\PY{p}{(}\PY{n+nb}{max}\PY{p}{(}\PY{n}{cc\PYZus{}list\PYZus{}config}\PY{p}{)}\PY{p}{,} \PY{n+nb}{max}\PY{p}{(}\PY{n}{cc\PYZus{}list\PYZus{}chunglu}\PY{p}{)}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}xlim}\PY{p}{(}\PY{n}{true\PYZus{}min}\PY{p}{,}\PY{n}{true\PYZus{}max}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+[(0, 5), (1, 3), (2, 3), (3, 4), (4, 1), (5, 2), (6, 2), (7, 4), (8, 2), (9, 0),
+(10, 0), (11, 0), (12, 0), (13, 0), (14, 0)]
+Depicting the configuration nodel graphically to show any self-loops that can
+occur:
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{assignment02_files/assignment02_1_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{assignment02_files/assignment02_1_2.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{assignment02_files/assignment02_1_3.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{assignment02_files/assignment02_1_4.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    Discussing the Results: My heat map comparing the two models shows the
+general adjacency matrix value for each pair of nodes. Notably we see
+the Chung Lu model guaranteed no self-loops, while the Configuration
+Model had some. The general trend of the higher degree nodes (i.e., in
+this case node 0,1,2,etc., as I enforced and provided a sorted list from
+highest degree to lowest as input) remained the region with the highest
+overall adjacency matrix average values amongst the 1000 iterations.
+This indicates they had a high probability to be connected amongst one
+another, and in turn were thus often connected to one another. This is
+expected as the high degree nodes are the most likely for any random
+node to be connected to. In the case of Chung Lu however some of these
+pairs appeared to be connected close to if not 100\% of the time, in
+contrast to the Configuration where these high-degree to high-degree
+pairs (e.g., node 0 to node 1), were the highest but did not occur 100\%
+of the time across iterations.
+
+As for my two metrics I chose for part c, I did the total number of
+edges `L', and the average clustering coefficient. Here we can see the
+total number of edges, is approximately the same across graphs generated
+by both models, with both models coalescing around the same average
+total number of edges, of roughly \textasciitilde17 or so, albeit at
+different probability levels. The average clustering coefficient on the
+other hand is much closer to 0 in the case of the configuration model
+while the Chung Lu model is relatively higher than 0. This is most
+likely due to the presence of self-loops and multi-edges that can occur
+in the configuration model. This artifact of the self-loops and
+multi-edges results in less clustering amongst nodes, relative to the
+Chung Lu model's differring approach.
+
+
+\begin{problemstmt}
+\textbf{Problem 2 (20 points)}
+
+In this question we will gain experience with community detection.
+
+\begin{enumerate}
+\def\labelenumi{(\alph{enumi})}
+\tightlist
+\item
+  Finding communities (5 points).
+\end{enumerate}
+
+Download a network dataset from https://networkrepository.com/ with
+between roughly 1,000 \textless{} N \textless{} 5,000 nodes (select a
+different dataset from the one you used in assignment 1). Select a
+modularity maximization algorithm to detect communities in this graph.
+
+\begin{enumerate}
+\def\labelenumi{(\roman{enumi})}
+\item
+  Visualize your network, coloring the nodes by community membership.
+\item
+  Report the modularity of the partition your algorithm found.
+\item
+  Report the number of communities detected.
+\item
+  Store your partition as a dictionary in the form of \{node id:
+  community id\}.
+\end{enumerate}
+
+\begin{enumerate}
+\def\labelenumi{(\alph{enumi})}
+\setcounter{enumi}{1}
+\tightlist
+\item
+  Null models (5 points).
+\end{enumerate}
+
+Create a degree-preserving randomization of your network, and run the
+community detection algorithm you chose in part a on your randomized
+graph. Store each partition as a dictionary in the form of \{node id:
+community id\}.
+
+\begin{enumerate}
+\def\labelenumi{(\alph{enumi})}
+\setcounter{enumi}{2}
+\tightlist
+\item
+  Plotting a null model comparison (5 points).
+\end{enumerate}
+
+You should now have two dictionaries, corresponding to the partitions
+from parts a and b. Create a figure with two subplots: In each, plot the
+community size distribution of each partition. Your figure should be
+publication-quality, with well-labeled, consistent axes, log-scaled
+wherever relevant, etc.
+
+\begin{enumerate}
+\def\labelenumi{(\alph{enumi})}
+\setcounter{enumi}{3}
+\tightlist
+\item
+  Analysis (5 points).
+\end{enumerate}
+
+For the different partitions computed above, discuss how you would
+approach comparing this functions quantitatively. For example, imagine a
+function f(p1,p2) that takes partitions p1 and p2 as input and returns a
+number corresponding to how similar or dissimilar the partitions are.
+What properties should this function f have? For this question, base
+your answer on a technique used in the literature, after a brief search
+about methods for quantifying differences between graph partitions. You
+do not need to implement the function, a high-level discussion is
+sufficient.
+\end{problemstmt}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{18}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{from}\PY{+w}{ }\PY{n+nn}{scipy}\PY{n+nn}{.}\PY{n+nn}{io}\PY{+w}{ }\PY{k+kn}{import} \PY{n}{mmread}
+
+\PY{n}{a} \PY{o}{=} \PY{n}{mmread}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ca\PYZhy{}CSphd.mtx}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{phd\PYZus{}collabs} \PY{o}{=}\PY{n}{nx}\PY{o}{.}\PY{n}{DiGraph}\PY{p}{(}\PY{n}{a}\PY{p}{)}\PY{o}{.}\PY{n}{to\PYZus{}undirected}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+/tmp/ipykernel\_156064/3807146788.py:3: DeprecationWarning: The default value for
+`spmatrix` is changing to `False` in v1.20.
+             That means the default return type will be a sparse array.
+             Unless you use * instead of @, ** for matrix power, or you depend
+             on 2D shapes from e.g. `A.sum(axis=0)` it may not matter to you.
+             See the spmatrix to sparray migration guide for details.
+https://docs.scipy.org/doc/scipy/reference/sparse.migration\_to\_sparray.html
+
+  a = mmread('ca-CSphd.mtx')
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{11}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{def}\PY{+w}{ }\PY{n+nf}{calculate\PYZus{}modularity}\PY{p}{(}\PY{n}{G}\PY{p}{,} \PY{n}{partition}\PY{p}{)}\PY{p}{:}
+\PY{+w}{    }\PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}}
+\PY{l+s+sd}{    Calculates the modularity score for a given partition of the graph, whether the graph is weighted or unweighted.}
+\PY{l+s+sd}{    }
+\PY{l+s+sd}{    Modularity is a measure of the strength of division of a network into communities. It compares the actual }
+\PY{l+s+sd}{    density of edges within communities to the expected density if edges were distributed randomly. For weighted }
+\PY{l+s+sd}{    graphs, the weight of the edges is taken into account.}
+
+\PY{l+s+sd}{    The modularity Q is calculated as:}
+\PY{l+s+sd}{    }
+\PY{l+s+sd}{    Q = (1 / 2m) * sum((A\PYZus{}ij \PYZhy{} (k\PYZus{}i * k\PYZus{}j) / (2m)) * delta(c\PYZus{}i, c\PYZus{}j))}
+
+\PY{l+s+sd}{    where:}
+\PY{l+s+sd}{    \PYZhy{} A\PYZus{}ij is the weight of the edge between nodes i and j (1 if unweighted).}
+\PY{l+s+sd}{    \PYZhy{} k\PYZus{}i is the degree of node i (or the weighted degree for weighted graphs).}
+\PY{l+s+sd}{    \PYZhy{} m is the total number of edges in the graph, or the total weight of the edges if the graph is weighted.}
+\PY{l+s+sd}{    \PYZhy{} delta(c\PYZus{}i, c\PYZus{}j) is 1 if nodes i and j belong to the same community, and 0 otherwise.}
+
+\PY{l+s+sd}{    Parameters:}
+\PY{l+s+sd}{    \PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}}
+\PY{l+s+sd}{    G : networkx.Graph}
+\PY{l+s+sd}{        The input graph, which can be undirected and either weighted or unweighted. The graph\PYZsq{}s nodes represent the }
+\PY{l+s+sd}{        entities, and its edges represent connections between them.}
+\PY{l+s+sd}{    }
+\PY{l+s+sd}{    partition : list of sets}
+\PY{l+s+sd}{        A list of sets where each set represents a community. Each set contains the nodes belonging to that community. }
+\PY{l+s+sd}{        For example, [\PYZob{}0, 1, 2\PYZcb{}, \PYZob{}3, 4\PYZcb{}] represents two communities, one with nodes 0, 1, and 2, and another with nodes }
+\PY{l+s+sd}{        3 and 4.}
+\PY{l+s+sd}{    }
+\PY{l+s+sd}{    Returns:}
+\PY{l+s+sd}{    \PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}}
+\PY{l+s+sd}{    modularity\PYZus{}score : float}
+\PY{l+s+sd}{        The modularity score for the given partition of the graph. A higher score indicates stronger community structure, }
+\PY{l+s+sd}{        and a lower (or negative) score suggests weak or no community structure.}
+
+\PY{l+s+sd}{    Notes:}
+\PY{l+s+sd}{    \PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}}
+\PY{l+s+sd}{    \PYZhy{} If the graph has weights, they will be used in the modularity calculation. If no weights are present, the function }
+\PY{l+s+sd}{      assumes each edge has a weight of 1 (i.e., unweighted).}
+\PY{l+s+sd}{    }
+\PY{l+s+sd}{    \PYZhy{} The function assumes that all nodes in the graph are assigned to exactly one community. If any node is missing }
+\PY{l+s+sd}{      from the community list, it is treated as not belonging to any community, and the results may not be accurate.}
+\PY{l+s+sd}{    }
+\PY{l+s+sd}{    \PYZhy{} If the graph has no edges, the modularity is undefined, and this function will return 0 because the total number }
+\PY{l+s+sd}{      of edges (2m) would be zero.}
+\PY{l+s+sd}{    }
+\PY{l+s+sd}{    Example:}
+\PY{l+s+sd}{    \PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}}
+\PY{l+s+sd}{    \PYZgt{}\PYZgt{}\PYZgt{} import networkx as nx}
+\PY{l+s+sd}{    \PYZgt{}\PYZgt{}\PYZgt{} G = nx.karate\PYZus{}club\PYZus{}graph()}
+\PY{l+s+sd}{    \PYZgt{}\PYZgt{}\PYZgt{} communities = [\PYZob{}0, 1, 2, 3, 4\PYZcb{}, \PYZob{}5, 6, 7, 8, 9, 10\PYZcb{}]}
+\PY{l+s+sd}{    \PYZgt{}\PYZgt{}\PYZgt{} modularity\PYZus{}score = calculate\PYZus{}modularity(G, communities)}
+\PY{l+s+sd}{    \PYZgt{}\PYZgt{}\PYZgt{} print(\PYZdq{}Modularity:\PYZdq{}, modularity\PYZus{}score)}
+\PY{l+s+sd}{    }
+\PY{l+s+sd}{    References:}
+\PY{l+s+sd}{    \PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}}
+\PY{l+s+sd}{    Newman, M. E. J., \PYZam{} Girvan, M. (2004). Finding and evaluating community structure }
+\PY{l+s+sd}{    in networks. Physical Review E, 69(2), 026113.}
+\PY{l+s+sd}{    \PYZdq{}\PYZdq{}\PYZdq{}}
+  
+    \PY{k}{def}\PY{+w}{ }\PY{n+nf}{remap\PYZus{}partition}\PY{p}{(}\PY{n}{partition}\PY{p}{)}\PY{p}{:}
+\PY{+w}{        }\PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}}
+\PY{l+s+sd}{        Converts and remaps a partition to a list\PYZhy{}of\PYZhy{}lists structure suitable for modularity calculations.}
+
+\PY{l+s+sd}{        This function remaps the input partition (whether it\PYZsq{}s in dictionary form or a flat list of community labels) }
+\PY{l+s+sd}{        to a list\PYZhy{}of\PYZhy{}lists format, where each list represents a community and contains the nodes in that community. }
+\PY{l+s+sd}{        The function also ensures that community labels are contiguous integers starting from 0, which is typically }
+\PY{l+s+sd}{        required for modularity\PYZhy{}based algorithms.}
+\PY{l+s+sd}{        \PYZdq{}\PYZdq{}\PYZdq{}}
+
+        \PY{c+c1}{\PYZsh{} if partition is a dictionary where the keys are nodes and values communities}
+        \PY{k}{if} \PY{n+nb}{type}\PY{p}{(}\PY{n}{partition}\PY{p}{)}\PY{o}{==}\PY{n+nb}{dict}\PY{p}{:}
+            \PY{n}{unique\PYZus{}comms} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{unique}\PY{p}{(}\PY{n+nb}{list}\PY{p}{(}\PY{n}{partition}\PY{o}{.}\PY{n}{values}\PY{p}{(}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+            \PY{n}{comm\PYZus{}mapping} \PY{o}{=} \PY{p}{\PYZob{}}\PY{n}{i}\PY{p}{:}\PY{n}{ix} \PY{k}{for} \PY{n}{ix}\PY{p}{,}\PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{enumerate}\PY{p}{(}\PY{n}{unique\PYZus{}comms}\PY{p}{)}\PY{p}{\PYZcb{}}
+            \PY{k}{for} \PY{n}{i}\PY{p}{,}\PY{n}{j} \PY{o+ow}{in} \PY{n}{partition}\PY{o}{.}\PY{n}{items}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+                \PY{n}{partition}\PY{p}{[}\PY{n}{i}\PY{p}{]} \PY{o}{=} \PY{n}{comm\PYZus{}mapping}\PY{p}{[}\PY{n}{j}\PY{p}{]}
+
+            \PY{n}{unique\PYZus{}comms} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{unique}\PY{p}{(}\PY{n+nb}{list}\PY{p}{(}\PY{n}{partition}\PY{o}{.}\PY{n}{values}\PY{p}{(}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+            \PY{n}{communities} \PY{o}{=} \PY{p}{[}\PY{p}{[}\PY{p}{]} \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n}{unique\PYZus{}comms}\PY{p}{]}
+            \PY{k}{for} \PY{n}{i}\PY{p}{,}\PY{n}{j} \PY{o+ow}{in} \PY{n}{partition}\PY{o}{.}\PY{n}{items}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+                \PY{n}{communities}\PY{p}{[}\PY{n}{j}\PY{p}{]}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{i}\PY{p}{)}
+                
+            \PY{k}{return} \PY{n}{communities}
+
+        \PY{c+c1}{\PYZsh{} if partition is a list of community assignments}
+        \PY{k}{elif} \PY{n+nb}{type}\PY{p}{(}\PY{n}{partition}\PY{p}{)}\PY{o}{==}\PY{n+nb}{list} \PY{o+ow}{and}\PYZbs{}
+                \PY{o+ow}{not} \PY{n+nb}{any}\PY{p}{(}\PY{n+nb}{isinstance}\PY{p}{(}\PY{n}{el}\PY{p}{,} \PY{n+nb}{list}\PY{p}{)} \PY{k}{for} \PY{n}{el} \PY{o+ow}{in} \PY{n}{partition}\PY{p}{)}\PY{p}{:}
+            \PY{n}{unique\PYZus{}comms} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{unique}\PY{p}{(}\PY{n}{partition}\PY{p}{)}
+            \PY{n}{comm\PYZus{}mapping} \PY{o}{=} \PY{p}{\PYZob{}}\PY{n}{i}\PY{p}{:}\PY{n}{ix} \PY{k}{for} \PY{n}{ix}\PY{p}{,}\PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{enumerate}\PY{p}{(}\PY{n}{unique\PYZus{}comms}\PY{p}{)}\PY{p}{\PYZcb{}}
+            \PY{k}{for} \PY{n}{i}\PY{p}{,}\PY{n}{j} \PY{o+ow}{in} \PY{n+nb}{enumerate}\PY{p}{(}\PY{n}{partition}\PY{p}{)}\PY{p}{:}
+                \PY{n}{partition}\PY{p}{[}\PY{n}{i}\PY{p}{]} \PY{o}{=} \PY{n}{comm\PYZus{}mapping}\PY{p}{[}\PY{n}{j}\PY{p}{]}
+
+            \PY{n}{unique\PYZus{}comms} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{unique}\PY{p}{(}\PY{n}{partition}\PY{p}{)}
+            \PY{n}{communities} \PY{o}{=} \PY{p}{[}\PY{p}{[}\PY{p}{]} \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n}{np}\PY{o}{.}\PY{n}{unique}\PY{p}{(}\PY{n}{partition}\PY{p}{)}\PY{p}{]}
+            \PY{k}{for} \PY{n}{i}\PY{p}{,}\PY{n}{j} \PY{o+ow}{in} \PY{n+nb}{enumerate}\PY{p}{(}\PY{n}{partition}\PY{p}{)}\PY{p}{:}
+                \PY{n}{communities}\PY{p}{[}\PY{n}{j}\PY{p}{]}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{i}\PY{p}{)}
+
+            \PY{k}{return} \PY{n}{communities}
+
+        \PY{c+c1}{\PYZsh{} otherwise assume input is a properly\PYZhy{}formatted list of lists}
+        \PY{k}{else}\PY{p}{:}
+            \PY{n}{communities} \PY{o}{=} \PY{n}{partition}\PY{o}{.}\PY{n}{copy}\PY{p}{(}\PY{p}{)}
+            \PY{k}{return} \PY{n}{communities}
+
+
+    \PY{c+c1}{\PYZsh{} We now should have a list\PYZhy{}of\PYZhy{}lists structure for communities}
+    \PY{n}{communities} \PY{o}{=} \PY{n}{remap\PYZus{}partition}\PY{p}{(}\PY{n}{partition}\PY{p}{)}
+    
+    \PY{c+c1}{\PYZsh{} Total weight of edges in the graph (or number of edges if unweighted)}
+    \PY{k}{if} \PY{n}{nx}\PY{o}{.}\PY{n}{is\PYZus{}weighted}\PY{p}{(}\PY{n}{G}\PY{p}{)}\PY{p}{:}
+        \PY{n}{m} \PY{o}{=} \PY{n}{G}\PY{o}{.}\PY{n}{size}\PY{p}{(}\PY{n}{weight}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{weight}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+        \PY{n}{degree} \PY{o}{=} \PY{n+nb}{dict}\PY{p}{(}\PY{n}{G}\PY{o}{.}\PY{n}{degree}\PY{p}{(}\PY{n}{weight}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{weight}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{)}  \PY{c+c1}{\PYZsh{} Weighted degree for each node}
+    \PY{k}{else}\PY{p}{:}
+        \PY{n}{m} \PY{o}{=} \PY{n}{G}\PY{o}{.}\PY{n}{number\PYZus{}of\PYZus{}edges}\PY{p}{(}\PY{p}{)}  \PY{c+c1}{\PYZsh{} Number of edges in the graph}
+        \PY{n}{degree} \PY{o}{=} \PY{n+nb}{dict}\PY{p}{(}\PY{n}{G}\PY{o}{.}\PY{n}{degree}\PY{p}{(}\PY{p}{)}\PY{p}{)}  \PY{c+c1}{\PYZsh{} Degree for each node (unweighted)}
+
+    \PY{c+c1}{\PYZsh{} Modularity score}
+    \PY{n}{modularity\PYZus{}score} \PY{o}{=} \PY{l+m+mf}{0.0}
+    
+    \PY{c+c1}{\PYZsh{} Loop over all pairs of nodes i, j within the same community}
+    \PY{k}{for} \PY{n}{community} \PY{o+ow}{in} \PY{n}{communities}\PY{p}{:}
+        \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n}{community}\PY{p}{:}
+            \PY{k}{for} \PY{n}{j} \PY{o+ow}{in} \PY{n}{community}\PY{p}{:}
+                \PY{c+c1}{\PYZsh{} Get the weight of the edge between i and j, or assume weight 1 if unweighted}
+                \PY{k}{if} \PY{n}{G}\PY{o}{.}\PY{n}{has\PYZus{}edge}\PY{p}{(}\PY{n}{i}\PY{p}{,} \PY{n}{j}\PY{p}{)}\PY{p}{:}
+                    \PY{n}{A\PYZus{}ij} \PY{o}{=} \PY{n}{G}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{p}{[}\PY{n}{j}\PY{p}{]}\PY{o}{.}\PY{n}{get}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{weight}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{)}  \PY{c+c1}{\PYZsh{} Use weight if available, otherwise assume 1}
+                \PY{k}{else}\PY{p}{:}
+                    \PY{n}{A\PYZus{}ij} \PY{o}{=} \PY{l+m+mi}{0}  \PY{c+c1}{\PYZsh{} No edge between i and j}
+
+                \PY{c+c1}{\PYZsh{} Expected number of edges (or weighted edges) between i and j in a random graph}
+                \PY{n}{expected\PYZus{}edges} \PY{o}{=} \PY{p}{(}\PY{n}{degree}\PY{p}{[}\PY{n}{i}\PY{p}{]} \PY{o}{*} \PY{n}{degree}\PY{p}{[}\PY{n}{j}\PY{p}{]}\PY{p}{)} \PY{o}{/} \PY{p}{(}\PY{l+m+mi}{2} \PY{o}{*} \PY{n}{m}\PY{p}{)}
+
+                \PY{c+c1}{\PYZsh{} Contribution to modularity}
+                \PY{n}{modularity\PYZus{}score} \PY{o}{+}\PY{o}{=} \PY{p}{(}\PY{n}{A\PYZus{}ij} \PY{o}{\PYZhy{}} \PY{n}{expected\PYZus{}edges}\PY{p}{)}
+
+    \PY{c+c1}{\PYZsh{} Normalize by the total number of edges (or total edge weight) 2m}
+    \PY{n}{modularity\PYZus{}score} \PY{o}{/}\PY{o}{=} \PY{p}{(}\PY{l+m+mi}{2} \PY{o}{*} \PY{n}{m}\PY{p}{)}
+
+
+    \PY{k}{return} \PY{n}{modularity\PYZus{}score}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{networkx}\PY{+w}{ }\PY{k}{as}\PY{+w}{ }\PY{n+nn}{nx}
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{numpy}\PY{+w}{ }\PY{k}{as}\PY{+w}{ }\PY{n+nn}{np}
+\PY{k+kn}{from}\PY{+w}{ }\PY{n+nn}{collections}\PY{+w}{ }\PY{k+kn}{import} \PY{n}{defaultdict}
+\PY{k+kn}{from}\PY{+w}{ }\PY{n+nn}{random}\PY{+w}{ }\PY{k+kn}{import} \PY{n}{shuffle}
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{matplotlib}\PY{n+nn}{.}\PY{n+nn}{pyplot}\PY{+w}{ }\PY{k}{as}\PY{+w}{ }\PY{n+nn}{plt}
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{community}
+
+\PY{n}{pos} \PY{o}{=} \PY{n}{nx}\PY{o}{.}\PY{n}{fruchterman\PYZus{}reingold\PYZus{}layout}\PY{p}{(}\PY{n}{phd\PYZus{}collabs}\PY{p}{)}
+\PY{n}{partition} \PY{o}{=} \PY{n}{community}\PY{o}{.}\PY{n}{best\PYZus{}partition}\PY{p}{(}\PY{n}{phd\PYZus{}collabs}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Output the best modularity score}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Best Modularity: }\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{community}\PY{o}{.}\PY{n}{modularity}\PY{p}{(}\PY{n}{partition}\PY{p}{,} \PY{n}{phd\PYZus{}collabs}\PY{p}{)}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Output the Number of Communities Detected \PYZob{}node\PYZus{}id: community\PYZus{}id\PYZcb{}}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Number of Communities Detected: }\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n+nb}{len}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{unique}\PY{p}{(}\PY{n+nb}{list}\PY{p}{(}\PY{n}{partition}\PY{o}{.}\PY{n}{values}\PY{p}{(}\PY{p}{)}\PY{p}{)}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Storing and showing partition as dictionary}
+\PY{n}{phd\PYZus{}collabs\PYZus{}parts} \PY{o}{=} \PY{n+nb}{dict}\PY{p}{(}\PY{n}{partition}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Partition Dictionary: }\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{phd\PYZus{}collabs\PYZus{}parts}\PY{p}{)}
+\PY{n}{colors\PYZus{}sns} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{cm}\PY{o}{.}\PY{n}{tab20b}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{linspace}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{,}\PY{n+nb}{len}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{unique}\PY{p}{(}\PY{n+nb}{list}\PY{p}{(}\PY{n}{partition}\PY{o}{.}\PY{n}{values}\PY{p}{(}\PY{p}{)}\PY{p}{)}\PY{p}{)}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+\PY{n}{colors\PYZus{}nodes} \PY{o}{=} \PY{p}{[}\PY{n}{colors\PYZus{}sns}\PY{p}{[}\PY{n}{partition}\PY{p}{[}\PY{n}{node}\PY{p}{]}\PY{p}{]} \PY{k}{for} \PY{n}{node} \PY{o+ow}{in} \PY{n}{phd\PYZus{}collabs}\PY{o}{.}\PY{n}{nodes}\PY{p}{(}\PY{p}{)}\PY{p}{]}
+
+\PY{n}{fig}\PY{p}{,} \PY{n}{ax} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{,}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{7}\PY{p}{,}\PY{l+m+mi}{5}\PY{p}{)}\PY{p}{,}\PY{n}{dpi}\PY{o}{=}\PY{l+m+mi}{100}\PY{p}{)}
+
+\PY{n}{nx}\PY{o}{.}\PY{n}{draw}\PY{p}{(}\PY{n}{phd\PYZus{}collabs}\PY{p}{,} \PY{n}{pos}\PY{o}{=}\PY{n}{pos}\PY{p}{,} \PY{n}{node\PYZus{}size}\PY{o}{=}\PY{l+m+mi}{150}\PY{p}{,} \PY{n}{edgecolors}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{.2}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{node\PYZus{}color}\PY{o}{=}\PY{n}{colors\PYZus{}nodes}\PY{p}{,} \PY{n}{ax}\PY{o}{=}\PY{n}{ax}\PY{p}{)}
+
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Best Modularity:  0.9608196261068275 0.9608196261064889
+Number of Communities Detected:  189
+Partition Dictionary:  \{0: 19, 1: 19, 2: 1, 3: 1, 4: 2, 5: 2, 6: 3, 7: 3, 8: 4,
+\}
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{assignment02_files/assignment02_6_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{41}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}(b)}
+\PY{n}{degree\PYZus{}dict} \PY{o}{=} \PY{n+nb}{dict}\PY{p}{(}\PY{n}{phd\PYZus{}collabs}\PY{o}{.}\PY{n}{degree}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+\PY{n}{degree\PYZus{}sequence} \PY{o}{=} \PY{n+nb}{list}\PY{p}{(}\PY{n}{degree\PYZus{}dict}\PY{o}{.}\PY{n}{values}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+\PY{n}{null\PYZus{}phd\PYZus{}collabs}\PY{o}{=}\PY{n}{chung\PYZus{}lu\PYZus{}model\PYZus{}from\PYZus{}degree\PYZus{}sequence}\PY{p}{(}\PY{n}{degree\PYZus{}sequence}\PY{p}{)}
+\PY{n}{pos} \PY{o}{=} \PY{n}{nx}\PY{o}{.}\PY{n}{fruchterman\PYZus{}reingold\PYZus{}layout}\PY{p}{(}\PY{n}{null\PYZus{}phd\PYZus{}collabs}\PY{p}{)}
+\PY{n}{partition} \PY{o}{=} \PY{n}{community}\PY{o}{.}\PY{n}{best\PYZus{}partition}\PY{p}{(}\PY{n}{null\PYZus{}phd\PYZus{}collabs}\PY{p}{)}
+\PY{c+c1}{\PYZsh{} Output the best modularity score}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Best Modularity: }\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{community}\PY{o}{.}\PY{n}{modularity}\PY{p}{(}\PY{n}{partition}\PY{p}{,} \PY{n}{null\PYZus{}phd\PYZus{}collabs}\PY{p}{)}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Output the Number of Communities Detected \PYZob{}node\PYZus{}id: community\PYZus{}id\PYZcb{}}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Number of Communities Detected: }\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n+nb}{len}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{unique}\PY{p}{(}\PY{n+nb}{list}\PY{p}{(}\PY{n}{partition}\PY{o}{.}\PY{n}{values}\PY{p}{(}\PY{p}{)}\PY{p}{)}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Storing and showing partition as dictionary}
+\PY{n}{null\PYZus{}phd\PYZus{}collabs\PYZus{}parts} \PY{o}{=} \PY{n+nb}{dict}\PY{p}{(}\PY{n}{partition}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Partition Dictionary: }\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{null\PYZus{}phd\PYZus{}collabs\PYZus{}parts}\PY{p}{)}
+\PY{n}{colors\PYZus{}sns} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{cm}\PY{o}{.}\PY{n}{tab20b}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{linspace}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{,}\PY{n+nb}{len}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{unique}\PY{p}{(}\PY{n+nb}{list}\PY{p}{(}\PY{n}{partition}\PY{o}{.}\PY{n}{values}\PY{p}{(}\PY{p}{)}\PY{p}{)}\PY{p}{)}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+\PY{n}{colors\PYZus{}nodes} \PY{o}{=} \PY{p}{[}\PY{n}{colors\PYZus{}sns}\PY{p}{[}\PY{n}{partition}\PY{p}{[}\PY{n}{node}\PY{p}{]}\PY{p}{]} \PY{k}{for} \PY{n}{node} \PY{o+ow}{in} \PY{n}{null\PYZus{}phd\PYZus{}collabs}\PY{o}{.}\PY{n}{nodes}\PY{p}{(}\PY{p}{)}\PY{p}{]}
+
+\PY{n}{fig}\PY{p}{,} \PY{n}{ax} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{,}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{7}\PY{p}{,}\PY{l+m+mi}{5}\PY{p}{)}\PY{p}{,}\PY{n}{dpi}\PY{o}{=}\PY{l+m+mi}{100}\PY{p}{)}
+
+\PY{n}{nx}\PY{o}{.}\PY{n}{draw}\PY{p}{(}\PY{n}{null\PYZus{}phd\PYZus{}collabs}\PY{p}{,} \PY{n}{pos}\PY{o}{=}\PY{n}{pos}\PY{p}{,} \PY{n}{node\PYZus{}size}\PY{o}{=}\PY{l+m+mi}{150}\PY{p}{,} \PY{n}{edgecolors}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{.2}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{node\PYZus{}color}\PY{o}{=}\PY{n}{colors\PYZus{}nodes}\PY{p}{,} \PY{n}{ax}\PY{o}{=}\PY{n}{ax}\PY{p}{)}
+
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Best Modularity:  0.7232526057391191
+Number of Communities Detected:  618
+Partition Dictionary:  \{0: 0, 1: 38, 2: 17, 3: 3, 4: 30, 5: 26, 6: 17, 7: 7, 8:
+\}
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{assignment02_files/assignment02_7_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{51}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{from}\PY{+w}{ }\PY{n+nn}{collections}\PY{+w}{ }\PY{k+kn}{import} \PY{n}{Counter}
+
+\PY{n}{phd\PYZus{}collabs\PYZus{}community\PYZus{}sizes} \PY{o}{=} \PY{n}{Counter}\PY{p}{(}\PY{n}{phd\PYZus{}collabs\PYZus{}parts}\PY{o}{.}\PY{n}{values}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+\PY{n}{null\PYZus{}phd\PYZus{}collabs\PYZus{}community\PYZus{}sizes} \PY{o}{=} \PY{n}{Counter}\PY{p}{(}\PY{n}{null\PYZus{}phd\PYZus{}collabs\PYZus{}parts}\PY{o}{.}\PY{n}{values}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+
+\PY{n}{fig}\PY{p}{,} \PY{n}{ax} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{,}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{8}\PY{p}{,}\PY{l+m+mf}{3.5}\PY{p}{)}\PY{p}{,}\PY{n}{dpi}\PY{o}{=}\PY{l+m+mi}{300}\PY{p}{,}\PY{n}{sharey}\PY{o}{=}\PY{k+kc}{True}\PY{p}{,}\PY{n}{sharex}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Plotting the community size distribution of the original dataset}
+\PY{n}{org\PYZus{}bins} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{geomspace}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,}\PY{n}{np}\PY{o}{.}\PY{n}{max}\PY{p}{(}\PY{n+nb}{list}\PY{p}{(}\PY{n}{phd\PYZus{}collabs\PYZus{}community\PYZus{}sizes}\PY{p}{)}\PY{p}{)}\PY{p}{)}\PY{c+c1}{\PYZsh{}Defining the smallest community as an isolated node of 1}
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{.}\PY{n}{hist}\PY{p}{(}\PY{n+nb}{list}\PY{p}{(}\PY{n}{phd\PYZus{}collabs\PYZus{}community\PYZus{}sizes}\PY{p}{)}\PY{p}{,}\PY{n}{bins}\PY{o}{=}\PY{n}{org\PYZus{}bins}\PY{p}{,} \PY{n}{density}\PY{o}{=}\PY{k+kc}{True}\PY{p}{,}\PY{n}{color} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{b}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{histtype}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{step}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{.}\PY{n}{loglog}\PY{p}{(}\PY{p}{)}
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Original PhD Collaborations Data}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}xlabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Community Size}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}ylabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Probability}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{.}\PY{n}{grid}\PY{p}{(}\PY{k+kc}{True}\PY{p}{)}
+\PY{c+c1}{\PYZsh{} Plotting the community size distribution of the Chung Lu Null Model of the dataset}
+\PY{n}{null\PYZus{}bins} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{geomspace}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,}\PY{n}{np}\PY{o}{.}\PY{n}{max}\PY{p}{(}\PY{n+nb}{list}\PY{p}{(}\PY{n}{null\PYZus{}phd\PYZus{}collabs\PYZus{}community\PYZus{}sizes}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{hist}\PY{p}{(}\PY{n+nb}{list}\PY{p}{(}\PY{n}{null\PYZus{}phd\PYZus{}collabs\PYZus{}community\PYZus{}sizes}\PY{p}{)}\PY{p}{,}\PY{n}{bins}\PY{o}{=}\PY{n}{null\PYZus{}bins}\PY{p}{,}\PY{n}{density}\PY{o}{=}\PY{k+kc}{True}\PY{p}{,}\PY{n}{color} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{b}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{histtype}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{step}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{loglog}\PY{p}{(}\PY{p}{)}
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Chung Lu Null Model of Original Data}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}xlabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Community Size}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}ylabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Probability}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{tick\PYZus{}params}\PY{p}{(}\PY{n}{labelleft}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{grid}\PY{p}{(}\PY{k+kc}{True}\PY{p}{)}
+
+\PY{n}{plt}\PY{o}{.}\PY{n}{tight\PYZus{}layout}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{assignment02_files/assignment02_8_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    Analysis:
+
+In the literature there are a vast number of different approaches to
+comparing two partitions: (Fortunato, Santo. ``Community Detection in
+Graphs.'' Physics Reports 486, no. 3 (2010): 75--174.
+https://doi.org/10.1016/j.physrep.2009.11.002.) provides a really nice
+overview of many!
+
+I would likely approach the problem through the classification error
+H(X,Y) measure (M. Meilă, D. Heckerman, An experimental comparison of
+model-based clustering methods, Mach. Learn. 42 (1) (2001) 9--29.),
+which returns back the maximum overlap between the two partitions, in
+terms of community assignments of each node. This method seemed the most
+intuitive to me. Since, my intial analysis simply assigns a single
+community partition per node, this would allow me to compare directly to
+see how many nodes were assigned to the same community across the two
+partitions. This is good because my dataset reflects PhD Collaborations,
+and so being able to distinguish between a person who may be part of 1
+community as opposed to definitely apart of 1 community is incredibly
+valuable in better understanding my dataset.
+
+The only caveat I think would be that in real-life people tend to have
+multiple different communities, each of which they could be involved
+with at varying levels, and so by only evaluating the match across a
+single community assignment I miss some of that information, however to
+analyze assignments to multiple communities requires leveraging a
+different community assignment algorithm to the Louvain algorithm I
+utilized in my analyses above.
+
+Overall, I think an ideal function, f, to approach this problem would
+likely extend the idea of classification error but to a list of all
+communities a given node was assigned to across the 2 different
+partitions, each with an associated probability score. This would
+provide a more robust measure of community assignments per node that
+would allow one to see the following properties: whether a node is
+generally a part of some subset of communities, or not, to what degree
+if so, and how confident each partition was in assigning said
+communities. I think these are the primary properties the function f
+should have in order to determine well-enough whether a given pair of
+partitions are similar or not.
+
+\begin{problemstmt}
+    \textbf{Problem 3 (20 points)}
+
+In this question we will revisit degree sequences with a focus on
+preferential attachment. We have worked with G(n,p) random graphs
+extensively. We have also discussed how most graphs are not random, but
+follow some kind of preference for homophily or highly ``desirable''
+nodes. One common preference is to connect to high degree nodes,
+reinforcing a rich-get-richer dynamic. We will create a network growth
+model, where we add new vertices to a graph, and create edges to
+existing vertices with a probability based on vertex i's degree ki: p(i)
+= kαi + 1∑︁n j=0(kαj + 1) The α parameter allows us to configure the
+model between a sublinear preference for high-degree nodes (0
+\textless{} α \textless{} 1), a linear preference (α = 1), and a
+superlinear preference (α \textgreater{} 1). The +1 in the above
+equation ensures some chance of connecting to any vertex, even if it
+initially has a degree of zero.
+
+\begin{enumerate}
+\def\labelenumi{(\roman{enumi})}
+\tightlist
+\item
+  Implement the generator (4 points).
+\end{enumerate}
+
+Write a graph generating function preferentialGenerator(n, a) that
+returns a graph with n vertices and α = a.
+
+\begin{enumerate}
+\def\labelenumi{(\roman{enumi})}
+\setcounter{enumi}{1}
+\tightlist
+\item
+  Degree analysis (4 points).
+\end{enumerate}
+
+Generate graphs with 1,000 nodes and alpha values of 0.1, 1, and 2. Make
+a plot comparing the three degree distributions. You may use histograms,
+kernel-density estimates, or cumulative distribution functions. However,
+your plots should be easy to interpret: select number of bins or bin
+widths, log scale, or other attributes as needed to produce a
+high-quality figure. We will now pivot to the random walk model of
+network generation. In this model, every time we add a vertex i we add
+two edges. First, an edge to an existing random vertex j. Then, with
+probability p, we add an edge from i to a random neighbor of j.
+Otherwise we instead add an edge to another random vertex in the graph.
+
+\begin{enumerate}
+\def\labelenumi{(\roman{enumi})}
+\setcounter{enumi}{2}
+\tightlist
+\item
+  Implement the generator (4 points).
+\end{enumerate}
+
+Write a graph generating function randomWalkGenerator(n, p) that returns
+a graph with n vertices generated by random walks with probability p.
+
+\begin{enumerate}
+\def\labelenumi{(\roman{enumi})}
+\setcounter{enumi}{3}
+\tightlist
+\item
+  Clustering analysis (4 points).
+\end{enumerate}
+
+Generate graphs with 1,000 nodes and p values of 0, 0.1, 0.5, and 0.9.
+Make a plot comparing the four clustering distributions. As in part
+(ii), make these plots easily interpretable. And finally\ldots{}
+
+\begin{enumerate}
+\def\labelenumi{(\alph{enumi})}
+\setcounter{enumi}{21}
+\tightlist
+\item
+  Interpretation (4 points).
+\end{enumerate}
+
+Compare the graphs created by the two network growth models. What kind
+of structures do they produce? In what circumstances might we want to
+use preferentialGenerator as a null model, and when might the random
+walk model be a more appropriate null assumption?
+\end{problemstmt}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{def}\PY{+w}{ }\PY{n+nf}{network\PYZus{}growth\PYZus{}model}\PY{p}{(}\PY{n}{N}\PY{p}{,}\PY{n}{alpha}\PY{p}{)}\PY{p}{:}
+\PY{+w}{    }\PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}}
+\PY{l+s+sd}{    Generates a Network Growth Model using preferential attachment.}
+
+\PY{l+s+sd}{    Parameters}
+\PY{l+s+sd}{    \PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}}
+\PY{l+s+sd}{    N : int}
+\PY{l+s+sd}{        The number of vertices of the graph to generate.}
+\PY{l+s+sd}{    }
+\PY{l+s+sd}{    alpha : float}
+\PY{l+s+sd}{        The average number of edges to make for each node added to the graph}
+
+\PY{l+s+sd}{    Returns}
+\PY{l+s+sd}{    \PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}}
+\PY{l+s+sd}{    G : networkx.Graph}
+\PY{l+s+sd}{        A graph generated from the given number of nodes and connections per node added (alpha). }
+\PY{l+s+sd}{        }
+
+\PY{l+s+sd}{    Notes}
+\PY{l+s+sd}{    \PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}}
+\PY{l+s+sd}{    \PYZhy{} }
+\PY{l+s+sd}{    Time Complexity}
+\PY{l+s+sd}{    \PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}}
+\PY{l+s+sd}{    The time complexity is dominated by O(N**2), where N is the number of nodes we want to add to the graph,}
+\PY{l+s+sd}{    each with an \PYZsq{}alpha\PYZsq{} number of connections. Where alpha is bounded by N the number of new nodes we }
+\PY{l+s+sd}{    want to provide alpha connections for.}
+
+\PY{l+s+sd}{    Example}
+\PY{l+s+sd}{    \PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}}
+\PY{l+s+sd}{    \PYZgt{}\PYZgt{}\PYZgt{} N = 100}
+\PY{l+s+sd}{    \PYZgt{}\PYZgt{}\PYZgt{} alpha = 3}
+\PY{l+s+sd}{    \PYZgt{}\PYZgt{}\PYZgt{} G = network\PYZus{}growth\PYZus{}model(N,alpha)}
+\PY{l+s+sd}{    \PYZdq{}\PYZdq{}\PYZdq{}}
+    \PY{c+c1}{\PYZsh{}Instantiate G }
+    \PY{n}{G} \PY{o}{=} \PY{n}{nx}\PY{o}{.}\PY{n}{Graph}\PY{p}{(}\PY{p}{)}
+    \PY{c+c1}{\PYZsh{}Instantiate at least 1 node}
+    \PY{n}{G}\PY{o}{.}\PY{n}{add\PYZus{}nodes\PYZus{}from}\PY{p}{(}\PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{)}\PY{p}{)}
+
+    \PY{c+c1}{\PYZsh{}Concept:}
+    \PY{c+c1}{\PYZsh{}For every new node we want to add,}
+        \PY{c+c1}{\PYZsh{}First if there are no connections then just add connect to what we initialized with}
+    \PY{c+c1}{\PYZsh{}Find the probabilities of connecting to all the existing nodes currently}
+    \PY{c+c1}{\PYZsh{}Pick \PYZsq{}alpha\PYZsq{} nodes at random based on said probabilities}
+    \PY{c+c1}{\PYZsh{}Add a new node and connect it to each of the list of \PYZsq{}alpha\PYZsq{} nodes}
+    \PY{c+c1}{\PYZsh{}Repeat for all \PYZsq{}N\PYZsq{} new nodes}
+
+    \PY{k}{while} \PY{n}{N}\PY{o}{\PYZgt{}}\PY{l+m+mi}{0}\PY{p}{:}\PY{c+c1}{\PYZsh{}While we still have nodes to add...}
+        \PY{n}{nodes} \PY{o}{=} \PY{n+nb}{list}\PY{p}{(}\PY{n}{G}\PY{o}{.}\PY{n}{nodes}\PY{p}{(}\PY{p}{)}\PY{p}{)}\PY{c+c1}{\PYZsh{}Get the current list of nodes...}
+        \PY{n}{degs} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{p}{[}\PY{p}{(}\PY{n}{G}\PY{o}{.}\PY{n}{degree}\PY{p}{[}\PY{n}{n}\PY{p}{]}\PY{p}{)} \PY{k}{for} \PY{n}{n} \PY{o+ow}{in} \PY{n}{nodes}\PY{p}{]}\PY{p}{,} \PY{n}{dtype}\PY{o}{=}\PY{n+nb}{float}\PY{p}{)}\PY{c+c1}{\PYZsh{}And, get their probabilities.}
+        
+        \PY{c+c1}{\PYZsh{}Translating alpha into an N value so that on average \PYZsq{}alpha\PYZsq{} connections are made even if this is a float}
+        \PY{n}{m} \PY{o}{=} \PY{n+nb}{int}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{floor}\PY{p}{(}\PY{n}{alpha}\PY{p}{)}\PY{p}{)} \PY{o}{+} \PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{rand}\PY{p}{(}\PY{p}{)} \PY{o}{\PYZlt{}} \PY{n}{alpha} \PY{o}{\PYZhy{}} \PY{n}{np}\PY{o}{.}\PY{n}{floor}\PY{p}{(}\PY{n}{alpha}\PY{p}{)}\PY{p}{)}
+        
+        \PY{c+c1}{\PYZsh{}Edge Case: If this is the first run where we start with a Graph with no connections}
+        \PY{k}{if} \PY{n}{degs}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{p}{)} \PY{o}{==} \PY{l+m+mi}{0}\PY{p}{:}
+            \PY{n}{chosen} \PY{o}{=} \PY{n}{nodes} \PY{c+c1}{\PYZsh{}then just instantiate to the few nodes we initialized with                     }
+        \PY{k}{else}\PY{p}{:}
+            \PY{c+c1}{\PYZsh{}Otherwise, pick \PYZsq{}m\PYZsq{} connections to make **without replacement**,}
+            \PY{c+c1}{\PYZsh{}  by the probability calculated from their degree(s)}
+            \PY{n}{chosen} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{choice}\PY{p}{(}\PY{n}{nodes}\PY{p}{,} \PY{n}{size}\PY{o}{=}\PY{n}{m}\PY{p}{,} \PY{n}{replace}\PY{o}{=}\PY{k+kc}{False}\PY{p}{,} \PY{n}{p}\PY{o}{=}\PY{n}{degs} \PY{o}{/} \PY{n}{degs}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+        \PY{c+c1}{\PYZsh{}Add the new node as the next id number}
+        \PY{n}{new\PYZus{}id} \PY{o}{=} \PY{n+nb}{len}\PY{p}{(}\PY{n}{nodes}\PY{p}{)}
+        \PY{c+c1}{\PYZsh{}And connect it to \PYZsq{}alpha\PYZsq{} chosen nodes}
+        \PY{k}{for} \PY{n}{node\PYZus{}i} \PY{o+ow}{in} \PY{n}{chosen}\PY{p}{:}
+            \PY{n}{G}\PY{o}{.}\PY{n}{add\PYZus{}edge}\PY{p}{(}\PY{n+nb}{int}\PY{p}{(}\PY{n}{node\PYZus{}i}\PY{p}{)}\PY{p}{,} \PY{n}{new\PYZus{}id}\PY{p}{)}
+        \PY{c+c1}{\PYZsh{}Update N to reflect that we processed 1 new node!}
+        \PY{n}{N}\PY{o}{\PYZhy{}}\PY{o}{=}\PY{l+m+mi}{1}
+
+    \PY{k}{return} \PY{n}{G}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{14}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}Testing}
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{matplotlib}\PY{n+nn}{.}\PY{n+nn}{animation}\PY{+w}{ }\PY{k}{as}\PY{+w}{ }\PY{n+nn}{animation}
+\PY{n}{N} \PY{o}{=} \PY{l+m+mi}{10}
+\PY{n}{alpha} \PY{o}{=} \PY{l+m+mf}{.1}
+\PY{n}{G} \PY{o}{=} \PY{n}{network\PYZus{}growth\PYZus{}model}\PY{p}{(}\PY{n}{N}\PY{p}{,}\PY{n}{alpha}\PY{p}{)}
+
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{G}\PY{o}{.}\PY{n}{degree}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+\PY{n}{fig}\PY{p}{,} \PY{n}{ax} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{,}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{7}\PY{p}{,}\PY{l+m+mi}{5}\PY{p}{)}\PY{p}{,}\PY{n}{dpi}\PY{o}{=}\PY{l+m+mi}{100}\PY{p}{)}
+
+\PY{n}{visual} \PY{o}{=} \PY{n}{nx}\PY{o}{.}\PY{n}{draw}\PY{p}{(}\PY{n}{G}\PY{p}{,} \PY{n}{pos}\PY{o}{=}\PY{n}{nx}\PY{o}{.}\PY{n}{spring\PYZus{}layout}\PY{p}{(}\PY{n}{G}\PY{p}{)}\PY{p}{,} \PY{n}{node\PYZus{}size}\PY{o}{=}\PY{l+m+mi}{150}\PY{p}{,} \PY{n}{edgecolors}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{.2}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{ax}\PY{o}{=}\PY{n}{ax}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+[(0, 1), (1, 2), (2, 1)]
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{assignment02_files/assignment02_12_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{29}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{N} \PY{o}{=} \PY{l+m+mi}{1000}
+\PY{n}{alpha1} \PY{o}{=} \PY{l+m+mf}{.1}
+\PY{n}{alpha2} \PY{o}{=} \PY{l+m+mi}{1}
+\PY{n}{alpha3} \PY{o}{=} \PY{l+m+mi}{2}
+
+\PY{n}{G1} \PY{o}{=} \PY{p}{(}\PY{n}{network\PYZus{}growth\PYZus{}model}\PY{p}{(}\PY{n}{N}\PY{p}{,}\PY{n}{alpha1}\PY{p}{)}\PY{p}{)}
+\PY{n}{deg1} \PY{o}{=} \PY{n+nb}{list}\PY{p}{(}\PY{n}{G1}\PY{o}{.}\PY{n}{degree}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+\PY{n}{G2} \PY{o}{=} \PY{p}{(}\PY{n}{network\PYZus{}growth\PYZus{}model}\PY{p}{(}\PY{n}{N}\PY{p}{,}\PY{n}{alpha2}\PY{p}{)}\PY{p}{)}
+\PY{n}{deg2} \PY{o}{=} \PY{n+nb}{list}\PY{p}{(}\PY{n}{G2}\PY{o}{.}\PY{n}{degree}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+\PY{n}{G3} \PY{o}{=} \PY{p}{(}\PY{n}{network\PYZus{}growth\PYZus{}model}\PY{p}{(}\PY{n}{N}\PY{p}{,}\PY{n}{alpha3}\PY{p}{)}\PY{p}{)}
+\PY{n}{deg3} \PY{o}{=} \PY{n+nb}{list}\PY{p}{(}\PY{n}{G3}\PY{o}{.}\PY{n}{degree}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{37}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{fig}\PY{p}{,} \PY{n}{ax} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{,}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{8}\PY{p}{,}\PY{l+m+mf}{3.5}\PY{p}{)}\PY{p}{,}\PY{n}{dpi}\PY{o}{=}\PY{l+m+mi}{200}\PY{p}{,}\PY{n}{sharex}\PY{o}{=}\PY{k+kc}{True}\PY{p}{,}\PY{n}{sharey}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+
+\PY{n}{deg\PYZus{}bins1} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{geomspace}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{max}\PY{p}{(}\PY{p}{[}\PY{n}{np}\PY{o}{.}\PY{n}{min}\PY{p}{(}\PY{n}{deg1}\PY{p}{)}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{)}\PY{p}{,}\PY{n}{np}\PY{o}{.}\PY{n}{max}\PY{p}{(}\PY{n}{deg1}\PY{p}{)}\PY{p}{)}
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{.}\PY{n}{hist}\PY{p}{(}\PY{n}{deg1}\PY{p}{,}\PY{n}{bins}\PY{o}{=}\PY{n}{deg\PYZus{}bins1}\PY{p}{,} \PY{n}{density}\PY{o}{=}\PY{k+kc}{True}\PY{p}{,}\PY{n}{color} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{b}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{histtype}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{step}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{.}\PY{n}{loglog}\PY{p}{(}\PY{p}{)}
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Alpha = 0.1}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}xlabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Degree}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}ylabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Probability}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{.}\PY{n}{grid}\PY{p}{(}\PY{k+kc}{True}\PY{p}{)}
+
+\PY{n}{deg\PYZus{}bins2} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{geomspace}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{max}\PY{p}{(}\PY{p}{[}\PY{n}{np}\PY{o}{.}\PY{n}{min}\PY{p}{(}\PY{n}{deg2}\PY{p}{)}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{)}\PY{p}{,}\PY{n}{np}\PY{o}{.}\PY{n}{max}\PY{p}{(}\PY{n}{deg2}\PY{p}{)}\PY{p}{)}
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{hist}\PY{p}{(}\PY{n}{deg2}\PY{p}{,}\PY{n}{bins}\PY{o}{=}\PY{n}{deg\PYZus{}bins2}\PY{p}{,} \PY{n}{density}\PY{o}{=}\PY{k+kc}{True}\PY{p}{,}\PY{n}{color} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{b}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{histtype}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{step}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{loglog}\PY{p}{(}\PY{p}{)}
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Alpha = 1}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}xlabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Degree}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{c+c1}{\PYZsh{}ax[1].set\PYZus{}ylabel(\PYZdq{}Probability\PYZdq{})}
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{grid}\PY{p}{(}\PY{k+kc}{True}\PY{p}{)}
+
+\PY{n}{deg\PYZus{}bins3} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{geomspace}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{max}\PY{p}{(}\PY{p}{[}\PY{n}{np}\PY{o}{.}\PY{n}{min}\PY{p}{(}\PY{n}{deg3}\PY{p}{)}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{)}\PY{p}{,}\PY{n}{np}\PY{o}{.}\PY{n}{max}\PY{p}{(}\PY{n}{deg3}\PY{p}{)}\PY{p}{)}
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{]}\PY{o}{.}\PY{n}{hist}\PY{p}{(}\PY{n}{deg3}\PY{p}{,}\PY{n}{bins}\PY{o}{=}\PY{n}{deg\PYZus{}bins3}\PY{p}{,} \PY{n}{density}\PY{o}{=}\PY{k+kc}{True}\PY{p}{,}\PY{n}{color} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{b}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{histtype}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{step}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{]}\PY{o}{.}\PY{n}{loglog}\PY{p}{(}\PY{p}{)}
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Alpha = 2}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}xlabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Degree}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{c+c1}{\PYZsh{}ax[2].set\PYZus{}ylabel(\PYZdq{}Probability\PYZdq{})}
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{]}\PY{o}{.}\PY{n}{grid}\PY{p}{(}\PY{k+kc}{True}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{assignment02_files/assignment02_14_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{def}\PY{+w}{ }\PY{n+nf}{random\PYZus{}walk\PYZus{}generator}\PY{p}{(}\PY{n}{N}\PY{p}{,}\PY{n}{p}\PY{p}{)}\PY{p}{:}
+\PY{+w}{    }\PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}}
+\PY{l+s+sd}{    Generates a Random Walk Model }
+
+\PY{l+s+sd}{    Parameters}
+\PY{l+s+sd}{    \PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}}
+\PY{l+s+sd}{    N : int}
+\PY{l+s+sd}{        The number of vertices of the graph to generate.}
+\PY{l+s+sd}{    }
+\PY{l+s+sd}{    p : float}
+\PY{l+s+sd}{        The probability we make a second edge of each new vertex, a neighbor of the vertex first connected to.}
+
+\PY{l+s+sd}{    Returns}
+\PY{l+s+sd}{    \PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}}
+\PY{l+s+sd}{    G : networkx.Graph}
+\PY{l+s+sd}{        A graph generated from the given number of nodes and connections per node added (alpha). }
+\PY{l+s+sd}{        }
+
+\PY{l+s+sd}{    Notes}
+\PY{l+s+sd}{    \PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}}
+\PY{l+s+sd}{    \PYZhy{} }
+\PY{l+s+sd}{    Time Complexity}
+\PY{l+s+sd}{    \PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}}
+\PY{l+s+sd}{    The time complexity is dominated by O(N), where N is the number of nodes we want to add to the graph,}
+\PY{l+s+sd}{    each with 2 connections. }
+
+\PY{l+s+sd}{    Example}
+\PY{l+s+sd}{    \PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}}
+\PY{l+s+sd}{    \PYZgt{}\PYZgt{}\PYZgt{} N = 100}
+\PY{l+s+sd}{    \PYZgt{}\PYZgt{}\PYZgt{} p = .33}
+\PY{l+s+sd}{    \PYZgt{}\PYZgt{}\PYZgt{} G = random\PYZus{}walk\PYZus{}generator(N,p)}
+\PY{l+s+sd}{    }
+\PY{l+s+sd}{    \PYZdq{}\PYZdq{}\PYZdq{}}
+    \PY{c+c1}{\PYZsh{}Instantiate G }
+    \PY{n}{G} \PY{o}{=} \PY{n}{nx}\PY{o}{.}\PY{n}{Graph}\PY{p}{(}\PY{p}{)}
+    \PY{c+c1}{\PYZsh{}Instantiate at least 2 nodes (that are connected)}
+    \PY{n}{G}\PY{o}{.}\PY{n}{add\PYZus{}edge}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{)}
+
+    \PY{c+c1}{\PYZsh{}Concept:}
+    \PY{c+c1}{\PYZsh{} For every vertex we want to add (out of N),}
+    \PY{c+c1}{\PYZsh{}  we add 2 edges. (i.e., m=2)}
+    \PY{c+c1}{\PYZsh{} First edge is chosen at random (assuming no self loops?) n choose 1}
+    \PY{c+c1}{\PYZsh{} Second edge is, if probability p, get random neighbor of j (i.e., n choose k\PYZus{}j) }
+    \PY{c+c1}{\PYZsh{} else,}
+    \PY{c+c1}{\PYZsh{} just repeat first edge}
+    \PY{c+c1}{\PYZsh{}}
+
+    \PY{k}{while} \PY{n}{N}\PY{o}{\PYZgt{}}\PY{l+m+mi}{0}\PY{p}{:}\PY{c+c1}{\PYZsh{}While we still have nodes to add...}
+        \PY{n}{nodes} \PY{o}{=} \PY{n+nb}{list}\PY{p}{(}\PY{n}{G}\PY{o}{.}\PY{n}{nodes}\PY{p}{(}\PY{p}{)}\PY{p}{)}\PY{c+c1}{\PYZsh{}Get the current list of nodes...}
+        \PY{n}{new\PYZus{}node}\PY{o}{=} \PY{n+nb}{len}\PY{p}{(}\PY{n}{nodes}\PY{p}{)}
+        \PY{n}{vertex\PYZus{}j} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{choice}\PY{p}{(}\PY{n}{nodes}\PY{p}{,} \PY{n}{size}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}
+        \PY{n}{nodes}\PY{o}{.}\PY{n}{remove}\PY{p}{(}\PY{o}{*}\PY{n}{vertex\PYZus{}j}\PY{p}{)}\PY{c+c1}{\PYZsh{}Prevent duplicate edges}
+        \PY{k}{if} \PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{rand}\PY{p}{(}\PY{p}{)} \PY{o}{\PYZgt{}} \PY{n}{p}\PY{p}{:}
+            \PY{n}{G}\PY{o}{.}\PY{n}{add\PYZus{}edge}\PY{p}{(}\PY{n+nb}{int}\PY{p}{(}\PY{o}{*}\PY{n}{vertex\PYZus{}j}\PY{p}{)}\PY{p}{,}\PY{n}{new\PYZus{}node}\PY{p}{)}
+            \PY{n}{vertex\PYZus{}j} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{choice}\PY{p}{(}\PY{n}{nodes}\PY{p}{,} \PY{n}{size}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}
+            \PY{n}{G}\PY{o}{.}\PY{n}{add\PYZus{}edge}\PY{p}{(}\PY{n+nb}{int}\PY{p}{(}\PY{o}{*}\PY{n}{vertex\PYZus{}j}\PY{p}{)}\PY{p}{,}\PY{n}{new\PYZus{}node}\PY{p}{)}
+        \PY{k}{else}\PY{p}{:}
+            \PY{n}{vertex\PYZus{}j\PYZus{}neighbor} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{choice}\PY{p}{(}\PY{n+nb}{list}\PY{p}{(}\PY{n}{G}\PY{o}{.}\PY{n}{neighbors}\PY{p}{(}\PY{o}{*}\PY{n}{vertex\PYZus{}j}\PY{p}{)}\PY{p}{)}\PY{p}{,} \PY{n}{size}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}
+            \PY{n}{G}\PY{o}{.}\PY{n}{add\PYZus{}edge}\PY{p}{(}\PY{n+nb}{int}\PY{p}{(}\PY{o}{*}\PY{n}{vertex\PYZus{}j}\PY{p}{)}\PY{p}{,}\PY{n}{new\PYZus{}node}\PY{p}{)}
+            \PY{n}{G}\PY{o}{.}\PY{n}{add\PYZus{}edge}\PY{p}{(}\PY{o}{*}\PY{n}{vertex\PYZus{}j\PYZus{}neighbor}\PY{p}{,}\PY{n}{new\PYZus{}node}\PY{p}{)}
+        \PY{n}{N}\PY{o}{\PYZhy{}}\PY{o}{=}\PY{l+m+mi}{1}
+    \PY{k}{return} \PY{n}{G}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{175}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}Testing}
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{matplotlib}\PY{n+nn}{.}\PY{n+nn}{animation}\PY{+w}{ }\PY{k}{as}\PY{+w}{ }\PY{n+nn}{animation}
+\PY{n}{N} \PY{o}{=} \PY{l+m+mi}{1}
+\PY{n}{p} \PY{o}{=} \PY{l+m+mf}{0.3}
+\PY{n}{G} \PY{o}{=} \PY{n}{random\PYZus{}walk\PYZus{}generator}\PY{p}{(}\PY{n}{N}\PY{p}{,}\PY{n}{p}\PY{p}{)}
+ 
+\PY{c+c1}{\PYZsh{} Expectations:}
+\PY{c+c1}{\PYZsh{} whenever we roll a chance \PYZlt{} p, then we will be connected to an edge and its neighbor. i.e., v\PYZus{}ij1 will have an edge with v\PYZus{}ij2, and n\PYZus{}i will have edges with both of them}
+\PY{c+c1}{\PYZsh{} We will have N+2 nodes (we need a minimum of two nodes to start connecting 2 edges for every vertex)}
+\PY{c+c1}{\PYZsh{} We will have a minimum of 2 edges per node. N=1 should be a perfect triangle}
+
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{G}\PY{o}{.}\PY{n}{degree}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+\PY{n}{fig}\PY{p}{,} \PY{n}{ax} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{,}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{7}\PY{p}{,}\PY{l+m+mi}{5}\PY{p}{)}\PY{p}{,}\PY{n}{dpi}\PY{o}{=}\PY{l+m+mi}{100}\PY{p}{)}
+
+\PY{n}{visual} \PY{o}{=} \PY{n}{nx}\PY{o}{.}\PY{n}{draw}\PY{p}{(}\PY{n}{G}\PY{p}{,} \PY{n}{pos}\PY{o}{=}\PY{n}{nx}\PY{o}{.}\PY{n}{spring\PYZus{}layout}\PY{p}{(}\PY{n}{G}\PY{p}{)}\PY{p}{,} \PY{n}{node\PYZus{}size}\PY{o}{=}\PY{l+m+mi}{150}\PY{p}{,} \PY{n}{edgecolors}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{.2}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{ax}\PY{o}{=}\PY{n}{ax}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+[(0, 2), (1, 2), (2, 2)]
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{assignment02_files/assignment02_16_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{176}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{N} \PY{o}{=} \PY{l+m+mi}{1000}
+\PY{n}{p1} \PY{o}{=} \PY{l+m+mi}{0}
+\PY{n}{p2} \PY{o}{=} \PY{l+m+mf}{0.1}
+\PY{n}{p3} \PY{o}{=} \PY{l+m+mf}{0.5}
+\PY{n}{p4} \PY{o}{=} \PY{l+m+mf}{0.9}
+
+\PY{n}{G1} \PY{o}{=} \PY{p}{(}\PY{n}{random\PYZus{}walk\PYZus{}generator}\PY{p}{(}\PY{n}{N}\PY{p}{,}\PY{n}{p1}\PY{p}{)}\PY{p}{)}
+\PY{n}{cc1} \PY{o}{=} \PY{n+nb}{list}\PY{p}{(}\PY{n+nb}{dict}\PY{p}{(}\PY{n}{nx}\PY{o}{.}\PY{n}{clustering}\PY{p}{(}\PY{n}{G1}\PY{p}{)}\PY{p}{)}\PY{o}{.}\PY{n}{values}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+\PY{n}{G2} \PY{o}{=} \PY{p}{(}\PY{n}{random\PYZus{}walk\PYZus{}generator}\PY{p}{(}\PY{n}{N}\PY{p}{,}\PY{n}{p2}\PY{p}{)}\PY{p}{)}
+\PY{n}{cc2} \PY{o}{=} \PY{n+nb}{list}\PY{p}{(}\PY{n+nb}{dict}\PY{p}{(}\PY{n}{nx}\PY{o}{.}\PY{n}{clustering}\PY{p}{(}\PY{n}{G2}\PY{p}{)}\PY{p}{)}\PY{o}{.}\PY{n}{values}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+\PY{n}{G3} \PY{o}{=} \PY{p}{(}\PY{n}{random\PYZus{}walk\PYZus{}generator}\PY{p}{(}\PY{n}{N}\PY{p}{,}\PY{n}{p3}\PY{p}{)}\PY{p}{)}
+\PY{n}{cc3} \PY{o}{=} \PY{n+nb}{list}\PY{p}{(}\PY{n+nb}{dict}\PY{p}{(}\PY{n}{nx}\PY{o}{.}\PY{n}{clustering}\PY{p}{(}\PY{n}{G3}\PY{p}{)}\PY{p}{)}\PY{o}{.}\PY{n}{values}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+\PY{n}{G4} \PY{o}{=} \PY{p}{(}\PY{n}{random\PYZus{}walk\PYZus{}generator}\PY{p}{(}\PY{n}{N}\PY{p}{,}\PY{n}{p4}\PY{p}{)}\PY{p}{)}
+\PY{n}{cc4} \PY{o}{=} \PY{n+nb}{list}\PY{p}{(}\PY{n+nb}{dict}\PY{p}{(}\PY{n}{nx}\PY{o}{.}\PY{n}{clustering}\PY{p}{(}\PY{n}{G4}\PY{p}{)}\PY{p}{)}\PY{o}{.}\PY{n}{values}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{fig}\PY{p}{,} \PY{n}{ax} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{4}\PY{p}{,}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{8}\PY{p}{,}\PY{l+m+mf}{3.5}\PY{p}{)}\PY{p}{,}\PY{n}{dpi}\PY{o}{=}\PY{l+m+mi}{200}\PY{p}{,}\PY{n}{sharex}\PY{o}{=}\PY{k+kc}{True}\PY{p}{,}\PY{n}{sharey}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{}Since there are cases where the minimum CC is 0, }
+\PY{c+c1}{\PYZsh{} I\PYZsq{}m starting the plot with the second\PYZhy{}most minimum}
+
+\PY{c+c1}{\PYZsh{}Gathering 2nd most mins}
+\PY{n}{cc1}\PY{o}{=}\PY{n}{np}\PY{o}{.}\PY{n}{asarray}\PY{p}{(}\PY{n}{cc1}\PY{p}{)}
+\PY{n}{cc1\PYZus{}min2}\PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{amin}\PY{p}{(}\PY{n}{cc1}\PY{p}{[}\PY{n}{cc1} \PY{o}{!=} \PY{n}{np}\PY{o}{.}\PY{n}{amin}\PY{p}{(}\PY{n}{cc1}\PY{p}{)}\PY{p}{]}\PY{p}{)}
+\PY{n}{cc2}\PY{o}{=}\PY{n}{np}\PY{o}{.}\PY{n}{asarray}\PY{p}{(}\PY{n}{cc2}\PY{p}{)}
+\PY{n}{cc2\PYZus{}min2}\PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{amin}\PY{p}{(}\PY{n}{cc2}\PY{p}{[}\PY{n}{cc2} \PY{o}{!=} \PY{n}{np}\PY{o}{.}\PY{n}{amin}\PY{p}{(}\PY{n}{cc2}\PY{p}{)}\PY{p}{]}\PY{p}{)}
+\PY{n}{cc3}\PY{o}{=}\PY{n}{np}\PY{o}{.}\PY{n}{asarray}\PY{p}{(}\PY{n}{cc3}\PY{p}{)}
+\PY{n}{cc3\PYZus{}min2}\PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{amin}\PY{p}{(}\PY{n}{cc3}\PY{p}{[}\PY{n}{cc3} \PY{o}{!=} \PY{n}{np}\PY{o}{.}\PY{n}{amin}\PY{p}{(}\PY{n}{cc3}\PY{p}{)}\PY{p}{]}\PY{p}{)}
+\PY{n}{cc4}\PY{o}{=}\PY{n}{np}\PY{o}{.}\PY{n}{asarray}\PY{p}{(}\PY{n}{cc4}\PY{p}{)}
+\PY{n}{cc4\PYZus{}min2}\PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{amin}\PY{p}{(}\PY{n}{cc4}\PY{p}{[}\PY{n}{cc4} \PY{o}{!=} \PY{n}{np}\PY{o}{.}\PY{n}{amin}\PY{p}{(}\PY{n}{cc4}\PY{p}{)}\PY{p}{]}\PY{p}{)}
+
+\PY{n}{cc\PYZus{}bins1} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{geomspace}\PY{p}{(}\PY{n}{cc1\PYZus{}min2}\PY{p}{,}\PY{n}{np}\PY{o}{.}\PY{n}{max}\PY{p}{(}\PY{n}{cc1}\PY{p}{)}\PY{p}{)}
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{.}\PY{n}{hist}\PY{p}{(}\PY{n}{cc1}\PY{p}{,}\PY{n}{bins}\PY{o}{=}\PY{n}{cc\PYZus{}bins1}\PY{p}{,} \PY{n}{density}\PY{o}{=}\PY{k+kc}{True}\PY{p}{,}\PY{n}{color} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{b}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{histtype}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{step}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{.}\PY{n}{loglog}\PY{p}{(}\PY{p}{)}
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{p = 0}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}xlabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Clustering Coefficient}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}ylabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Probability}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{.}\PY{n}{grid}\PY{p}{(}\PY{k+kc}{True}\PY{p}{)}
+
+\PY{n}{cc\PYZus{}bins2} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{geomspace}\PY{p}{(}\PY{n}{cc2\PYZus{}min2}\PY{p}{,}\PY{n}{np}\PY{o}{.}\PY{n}{max}\PY{p}{(}\PY{n}{cc2}\PY{p}{)}\PY{p}{)}
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{hist}\PY{p}{(}\PY{n}{cc2}\PY{p}{,}\PY{n}{bins}\PY{o}{=}\PY{n}{cc\PYZus{}bins2}\PY{p}{,} \PY{n}{density}\PY{o}{=}\PY{k+kc}{True}\PY{p}{,}\PY{n}{color} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{b}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{histtype}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{step}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{loglog}\PY{p}{(}\PY{p}{)}
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{p = 0.1}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}xlabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Clustering Coefficient}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{c+c1}{\PYZsh{}ax[1].set\PYZus{}ylabel(\PYZdq{}Probability\PYZdq{})}
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{grid}\PY{p}{(}\PY{k+kc}{True}\PY{p}{)}
+
+\PY{n}{cc\PYZus{}bins3} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{geomspace}\PY{p}{(}\PY{n}{cc3\PYZus{}min2}\PY{p}{,}\PY{n}{np}\PY{o}{.}\PY{n}{max}\PY{p}{(}\PY{n}{cc3}\PY{p}{)}\PY{p}{)}
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{]}\PY{o}{.}\PY{n}{hist}\PY{p}{(}\PY{n}{cc3}\PY{p}{,}\PY{n}{bins}\PY{o}{=}\PY{n}{cc\PYZus{}bins3}\PY{p}{,} \PY{n}{density}\PY{o}{=}\PY{k+kc}{True}\PY{p}{,}\PY{n}{color} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{b}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{histtype}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{step}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{]}\PY{o}{.}\PY{n}{loglog}\PY{p}{(}\PY{p}{)}
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{p = 0.5}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}xlabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Clustering Coefficient}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{c+c1}{\PYZsh{}ax[2].set\PYZus{}ylabel(\PYZdq{}Probability\PYZdq{})}
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{]}\PY{o}{.}\PY{n}{grid}\PY{p}{(}\PY{k+kc}{True}\PY{p}{)}
+
+\PY{n}{cc\PYZus{}bins4} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{geomspace}\PY{p}{(}\PY{n}{cc4\PYZus{}min2}\PY{p}{,}\PY{n}{np}\PY{o}{.}\PY{n}{max}\PY{p}{(}\PY{n}{cc4}\PY{p}{)}\PY{p}{)}
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{3}\PY{p}{]}\PY{o}{.}\PY{n}{hist}\PY{p}{(}\PY{n}{cc4}\PY{p}{,}\PY{n}{bins}\PY{o}{=}\PY{n}{cc\PYZus{}bins4}\PY{p}{,} \PY{n}{density}\PY{o}{=}\PY{k+kc}{True}\PY{p}{,}\PY{n}{color} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{b}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{histtype}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{step}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{3}\PY{p}{]}\PY{o}{.}\PY{n}{loglog}\PY{p}{(}\PY{p}{)}
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{3}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{p = 0.9}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{3}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}xlabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Clustering Coefficient}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{c+c1}{\PYZsh{}ax[3].set\PYZus{}ylabel(\PYZdq{}Probability\PYZdq{})}
+\PY{n}{ax}\PY{p}{[}\PY{l+m+mi}{3}\PY{p}{]}\PY{o}{.}\PY{n}{grid}\PY{p}{(}\PY{k+kc}{True}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{assignment02_files/assignment02_18_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    Interpretation: The network-growth model produced degree distributions
+that follow a power law curve (i.e., a linear shape on a log-log plot).
+This means it produced networks structures where hubs emerged and tended
+to be the places where new nodes made connections to. The
+randomWalkGenerator on the other hand allowed us to generate various
+levels of clustering coefficient distributions by picking different p
+values. A preferentialGenerator may be a better suited null model
+therefore when we want to simulate or model a network where we know
+there are strong hubs that dominate the network. Take the internet for
+example, it's a well-known fact that the most popular websites dominate
+most searches and webpage requests online, and as such many new websites
+may promote their own website through ads on this site (i.e., seek out a
+connection to it) through for example, running ads on Google to garner
+more attention, or, posting an opinion piece on a well known newpaper
+website to bring attention to your own, etc. Conversely, a
+randomWalkGenerator may be more helpful when you are looking at perhaps
+a relatively smaller but known to be tighter knit network. Say, a circle
+of friends, people, researchers, etc. Here one can leverage the
+randomWalkGenerator by tuning the p-value to the level of clustering
+observed in the groups of interest, to observe this level of clustering
+amongst a network of these tight-knit circles
+\begin{problemstmt}
+    \textbf{Problem 4 (20 points)}
+
+We are training you to conduct original research, and a crucial
+component of that is a literature review. We can conduct literature
+reviews for several reasons, including familiarizing ourselves with a
+topic of study, a set of related methods, or the conventional wisdom of
+a field. When beginning a research project we typically want to know
+whether our research question has been asked before (and if so, using
+what tools and with what data), what related questions have been asked,
+and what gaps in understanding remain that we can try to answer. Today
+we will start small. Search Google Scholar for five papers on different
+community detection algorithms. Don't use the ones we've discussed
+extensively in class (label propagation, Louvain, Girvan- Newman). For
+each algorithm, answer the following:
+
+\begin{enumerate}
+\def\labelenumi{(\alph{enumi})}
+\item
+  What measure is being optimized (how do we know a given partition is
+  optimal or good? Are they use modularity maximization, or something
+  else?)
+\item
+  Algorithmically (a high level explanation in a few sentences is fine),
+  how are partitions selected / sampled?
+\item
+  When did this technique come out? Does the journal or conference
+  suggest what field this al- gorithm is used in? Is it terribly
+  obscure? (We can use citation count as a proxy for obscurity here)
+\item
+  Is the algorithm particularly well-suited to certain kinds of graphs?
+  (Does it assume sparse graphs? A core-periphery structure? Does it
+  scale well / poorly? Add a little context about where you might /
+  should not use this algorithm)
+\end{enumerate}
+
+I encourage you to read selectively; you want to understand how these
+algorithms work and where and how they could be used, but you don't need
+to understand every check for division by zero or the full literature
+review of how this approach has been used in MRI analysis and how
+detected neuronal communities differ from established medical
+literature. Read papers for what you need from them.
+\end{problemstmt}
+
+
+ 5 Papers on Community Detection:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  ``Detection of Overlapping Communities in Dynamical Social Networks
+  \textbar{} IEEE Conference Publication \textbar{} IEEE Xplore.''
+  Accessed October 30, 2026.
+  https://ieeexplore.ieee.org/abstract/document/5591234.
+\end{enumerate}
+
+\begin{enumerate}
+\def\labelenumi{(\alph{enumi})}
+\tightlist
+\item
+  There are 2 values that are used to characterize communities (i.e.,
+  optimized for), the mean number of second neighbors, which reflects
+  the mean number of neighbors that the community is at least a path
+  length or 2 or less from, and the mean number of robust second
+  neighbors, which reflects the mean number of neighbors that the
+  community has at least 2 paths of length or 2 or less from. (i.e.,
+  that there is more than 1 path that places it on the former list).
+\end{enumerate}
+
+This is meant to capture: 
+* Ability to access easily (in two steps) to
+most of the community (at least as much as the others nodes of the
+community) 
+* Robust access to other nodes of the community (at least as
+much as the others nodes of the community).
+
+These values are optimized for adpatively to ensure the same community
+can be detected whether the original whole graph is relatively sparse or
+conversely relatively dense. The authors argue other algorithms tend to
+produce differing results because the density of the whole graph is
+often used to create what they call a ``relative'' definition of
+community.
+
+\begin{enumerate}
+\def\labelenumi{(\alph{enumi})}
+\setcounter{enumi}{1}
+\item
+  For every time-stamped set of edges, and each edge within said set,
+  attempt to integrate (i.e., compare against the 2 index values) any
+  nodes outside the community (i.e., taken from the edge) into the
+  community. Once complete, update previously made communities. Then, If
+  neither node (off the edge) is a part of a community create a new
+  community. Lastly, merge similar communities. (i.e., check the
+  percentage of nodes that overlap, between a pair of communities,
+  against a definiable threshold)
+\item
+  This algorithm came out in 2010 in an IEEE conference. It is intended
+  specifically to address the problem of being able to capture
+  overlapping communities which can happen in multiple fields, but here
+  they key-in on social networks in particular. It has 218 citations so
+  it's not terribly obscure.
+\item
+  This algorithm is particularly well-suited to ensure results that are
+  agnostic of the graph density. It allows you to define a minimial
+  community as a kind of pre-defined pattern. In other-words defining
+  the smallest community you'd like to detect!
+\end{enumerate}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{1}
+\tightlist
+\item
+  Aghaalizadeh, Saeid, Saeid Taghavi Afshord, Asgarali Bouyer, and Babak
+  Anari. ``A Three-Stage Algorithm for Local Community Detection Based
+  on the High Node Importance Ranking in Social Networks.'' Physica A:
+  Statistical Mechanics and Its Applications 563 (February 2021):
+  125420. https://doi.org/10.1016/j.physa.2020.125420.
+\end{enumerate}
+
+\begin{enumerate}
+\def\labelenumi{(\alph{enumi})}
+\tightlist
+\item
+  The main measure used in LCDR, is local community detection via high
+  importance nodes ranking (RDC). The RDC index for the node α indicates
+  its local importance based on the degree of the neighboring nodes.
+  This is calculated from thinking about important nodes as those that
+  are producers of information, that can be measured via Kirchoff's law
+  (i.e., analagous to currents through resistors in a circuit).
+\item
+\end{enumerate}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  ``Select a number of nodes as the important nodes based on the
+  proposed ranking and initial community formation.''
+\item
+  ``Expand the initial communities by allocating the unselected nodes
+  based on the proposed proximity ranking with important nodes.''
+\item
+  ``Merge initial communities based on the proposed relation and extract
+  the final communities.''
+\end{enumerate}
+
+\begin{enumerate}
+\def\labelenumi{(\alph{enumi})}
+\setcounter{enumi}{2}
+\tightlist
+\item
+  This algorithm came out in 2020 through a Physica journal. It is
+  intended to produce better stability, accuracy and performance and
+  scalability than other local/fast algorthms. (i.e., O(n) time). It's
+  somewhat obcure at 55 citations, though it is more recent then the
+  previous paper
+\item
+  The algorithm is intended for use in graphs when there is no prior
+  knowledge beforehand and speed is desired. It can significantly
+  improve accuracy relative to other local, and fast algorithms; when
+  compared on simulated and real-world networks.
+\end{enumerate}
+
+3.ACM Other Conferences. ``Efficient Community Detection in Large
+Networks Using Content and Links \textbar{} Proceedings of the 22nd
+International Conference on World Wide Web.'' Accessed October 30, 2026.
+https://dl.acm.org/doi/10.1145/2488388.2488483.
+
+\begin{enumerate}
+\def\labelenumi{(\alph{enumi})}
+\tightlist
+\item
+  This algorithm intended to address the problem that many networks can
+  actually contain noise presented as link structure, and that by
+  synthesizing link structure with content, a stronger community signal
+  can be better produced. In this sense they use both an estimate on
+  whether a given link is at high probability to reside in a given
+  community, and that it's content is similar to other nodes in the
+  community as determined via cosine similarity or Jaccard coefficient.
+\item
+  The idea is to: ''
+\end{enumerate}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Create content edges.
+\item
+  Sample the union of content edges and topological edges with bias,
+  retaining only edges that are relevant in local neighborhoods.
+\item
+  Partition the simpliﬁed graph into clusters.'' Where content edges are
+  edges that can be draw based on content similiarity where as
+  topological edges are those drawn more conventionally (e.g., whether
+  the two nodes had contact)
+\end{enumerate}
+
+\begin{enumerate}
+\def\labelenumi{(\alph{enumi})}
+\setcounter{enumi}{2}
+\tightlist
+\item
+  This technique came out in 2013 as a part of a proceeding for the
+  international conference on the world wide web. It has 248 citationsso
+  it's not terribly obscure, and is intended specifically to address
+  noise: i.e., false positives and negatives that are common in online
+  social networks and information networks.
+\item
+  It's particularly well-suited to real-world networks where the nodes
+  reflect social media or webpages that hold inherent content or
+  hyperlinks that can be used to compare one another for similarity.
+\end{enumerate}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{3}
+\tightlist
+\item
+  Airoldi, Edoardo M., David M. Blei, Stephen E. Fienberg, and Eric P.
+  Xing. ``Mixed Membership Stochastic Blockmodels.'' arXiv:0705.4485.
+  Preprint, arXiv, May 30, 2007.
+  https://doi.org/10.48550/arXiv.0705.4485.
+\end{enumerate}
+
+\begin{enumerate}
+\def\labelenumi{(\alph{enumi})}
+\tightlist
+\item
+  This algorithm was made to address the inherent interdependent nature
+  of relational data in real-world networks that runs counter to
+  standard assumptions of, for example, communities being purely
+  independent. It optimizes for a kind of membership probability vector,
+  where each state of the vector represents a probability that said node
+  may be part of each given community.
+\item
+  The high-level overview is: for each node, first draw a mixed
+  membership vector. Then for each pair of nodes, and for each outgoing
+  edge draw a probability of membership for the holder of said outgoing
+  edge (i.e., the initiator), and for each incoming edge draw a
+  probability of membership for the holder of the incoming edge (i.e.,
+  the receiver). From these two values sample their interaction, as
+  collapsed via Bernoulli's to determine if they share membership or
+  not.
+\item
+  This technique came out in 2007 in a NeurIPS Proceeding Advances in
+  NIPS. It has 2959 citations making it quite popular!
+\item
+  It's particularly well-suited for networks where membership in
+  communities is known interdependent (i.e., interelated) and
+  establishing multiple-communities per node is desired.
+\end{enumerate}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{4}
+\tightlist
+\item
+  Zong, Xulin, Xiangqian Ding, and Zhen Zhou. ``Health Level
+  Classification by Fusing Medical Evaluation from Multiple Social
+  Networks.'' Future Generation Computer Systems 114 (January 2021):
+  574--80. https://doi.org/10.1016/j.future.2020.08.008.
+\end{enumerate}
+
+\begin{enumerate}
+\def\labelenumi{(\alph{enumi})}
+\tightlist
+\item
+  This algorithm is intended to optimize for accurate prediction of the
+  health level of a user. It works by characterizing a user across
+  multiple soureces to assign a vector of associated attributes to the
+  user. The attributes are assigned by extracting known kinds of medical
+  features from a user's content (e.g., analyzing image content or
+  leveraging NLP). Partitions are known to be good by synthesizing data
+  across multiple similar network representations of which the user is a
+  part of. E.g., multiple websites.
+\item
+  Communities and partitions are assigned by constructing a multiple
+  affinity graph to describe a vast set of potential users. Users
+  determined to be similar across the various attributes to other users
+  are classified as a part of a kind of ``medically-aware'' cluster that
+  is intended to represent a kind of set of similar health-statuses.
+\item
+  This technique came out in 2021 as a part of a journal in Future
+  Generation Computer Systems. It has only 5 citations making it pretty
+  obscure!
+\item
+  It's best when there are multiple different related datasets that
+  contain medical data which the algorithm can leverage to
+  cross-reference against one another, and analyse to determined health
+  status via online content of individuals.
+\end{enumerate}
+
+\begin{problemstmt}
+    \textbf{Problem 5 OPTIONAL (5 bonus points)}
+
+For every problem set this semester, there will be an opportunity to
+earn extra credit. Since this is a new(-ish) course, we are eager to
+receive genuine feedback on the material, pace, instruction style, etc.
+of the course so far. Please provide any feedback about the lectures in
+recent weeks and/or this assignment
+\end{problemstmt}
+
+    I'm still really enjoying the course! I think the coding exercises here
+have been good for me to develop better software development practices
+especially, I've been getting in the habit now of writing out expected
+behavior of the code I write as a means to do better and more robust
+testing. I think as we've entered more advanced content relative to the
+beginning of the semester I've also been reading through the textbook
+more carefully and taking more time to understand the mathematical
+theory. As an engineering background the formulations aren't always my
+forte so I really appreciate the time we take to explain them and really
+understanding what's going on in each concept and command we tackle.
+
+I also really appreciated the open-ended lecture we had recently to just
+provide a forum to give status updates on projects and get feedback! I
+think in future iterations of the class having another periodic update
+or two like that throughout the semester could be really beneficial!
+Especially early-on in the semester and perhaps before the end
+deliverable.
+
+I think as far constructive feedback, I don't have too much to add
+relative to last assignment. Something I think might be nice, could be
+to call-out textbook chapters alongside the lecture-topics in the
+syllabus, as I think that could help me in being more prepared for
+content ahead of each lecture! Personally I like the structure of
+knowing, topic X is all contained in ChX, so that's something I've been
+doing more lately (i.e., looking up the associated chapter in the
+textbook) that I think has been really helpful for the assignments!
+
+Overall, as I said before I'm really enjoying the course, I feel like
+I'm learning a ton, and I think just wish I had more hours in the day to
+experiment with it all hahaha
+
+Hope this feedback is of help, and looking forward to the rest of the
+course!
+    % Add a bibliography block to the postdoc
+    
+    
+    
+\end{document}
