@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999997 (TeX Live 2025/Debian) (preloaded format=xelatex 2026.10.30)  30 OCT 2026 21:52
+This is XeTeX, Version 3.141592653-2.6-0.999997 (TeX Live 2025/Debian) (preloaded format=xelatex 2026.10.30)  30 OCT 2026 22:00
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1461,60 +1461,60 @@ LaTeX Font Info:    Font shape `TU/lmtt/bx/n' in size <10.95> not available
 (Font)              Font shape `TU/lmtt/b/n' tried instead on input line 500.
 [1
 
-] [2] [3] [4] [5] [6] [7]
+] [2] [3] [4] [5] [6]
 File: assignment02_files/assignment02_1_1.png Graphic file (type bmp)
 <assignment02_files/assignment02_1_1.png>
-
-Underfull \hbox (badness 10000) in paragraph at lines 773--774
+ [7]
+Underfull \hbox (badness 10000) in paragraph at lines 754--755
 
  []
 
 File: assignment02_files/assignment02_1_2.png Graphic file (type bmp)
 <assignment02_files/assignment02_1_2.png>
-[8]
-Underfull \hbox (badness 10000) in paragraph at lines 778--779
+
+Underfull \hbox (badness 10000) in paragraph at lines 759--760
 
  []
 
 File: assignment02_files/assignment02_1_3.png Graphic file (type bmp)
 <assignment02_files/assignment02_1_3.png>
-
-Underfull \hbox (badness 10000) in paragraph at lines 783--784
+[8]
+Underfull \hbox (badness 10000) in paragraph at lines 764--765
 
  []
 
 File: assignment02_files/assignment02_1_4.png Graphic file (type bmp)
 <assignment02_files/assignment02_1_4.png>
-[9]
-Underfull \hbox (badness 10000) in paragraph at lines 788--789
+
+Underfull \hbox (badness 10000) in paragraph at lines 769--770
 
  []
 
-[10] [11] [12] [13] [14] [15]
+[9] [10] [11]
 File: assignment02_files/assignment02_6_1.png Graphic file (type bmp)
 <assignment02_files/assignment02_6_1.png>
 
-Underfull \hbox (badness 10000) in paragraph at lines 1107--1108
+Underfull \hbox (badness 10000) in paragraph at lines 946--947
 
  []
 
-[16]
+[12]
 File: assignment02_files/assignment02_7_1.png Graphic file (type bmp)
 <assignment02_files/assignment02_7_1.png>
 
-Underfull \hbox (badness 10000) in paragraph at lines 1148--1149
+Underfull \hbox (badness 10000) in paragraph at lines 987--988
 
  []
 
-[17]
+[13]
 File: assignment02_files/assignment02_8_0.png Graphic file (type bmp)
 <assignment02_files/assignment02_8_0.png>
 
-Underfull \hbox (badness 10000) in paragraph at lines 1185--1186
+Underfull \hbox (badness 10000) in paragraph at lines 1024--1025
 
  []
 
-[18]
+[14]
 Missing character: There is no α (U+03B1) in font [lmroman10-regular]:mapping=t
 ex-text;!
 Missing character: There is no ∑ (U+2211) in font [lmroman10-regular]:mapping=t
@@ -1533,54 +1533,54 @@ Missing character: There is no α (U+03B1) in font [lmroman10-regular]:mapping=t
 ex-text;!
 Missing character: There is no α (U+03B1) in font [lmroman10-regular]:mapping=t
 ex-text;!
-[19] [20] [21]
+[15] [16] [17]
 File: assignment02_files/assignment02_12_1.png Graphic file (type bmp)
 <assignment02_files/assignment02_12_1.png>
 
-Underfull \hbox (badness 10000) in paragraph at lines 1410--1411
+Underfull \hbox (badness 10000) in paragraph at lines 1249--1250
 
  []
 
-[22]
+[18]
 File: assignment02_files/assignment02_14_0.png Graphic file (type bmp)
 <assignment02_files/assignment02_14_0.png>
- [23]
-Underfull \hbox (badness 10000) in paragraph at lines 1463--1464
+ [19]
+Underfull \hbox (badness 10000) in paragraph at lines 1302--1303
 
  []
 
-[24] [25]
+[20] [21]
 File: assignment02_files/assignment02_16_1.png Graphic file (type bmp)
 <assignment02_files/assignment02_16_1.png>
 
-Underfull \hbox (badness 10000) in paragraph at lines 1561--1562
+Underfull \hbox (badness 10000) in paragraph at lines 1400--1401
 
  []
 
-[26] [27]
+[22] [23]
 File: assignment02_files/assignment02_18_0.png Graphic file (type bmp)
 <assignment02_files/assignment02_18_0.png>
 
-Underfull \hbox (badness 10000) in paragraph at lines 1639--1640
+Underfull \hbox (badness 10000) in paragraph at lines 1478--1479
 
  []
 
-[28]
-Underfull \hbox (badness 10000) in paragraph at lines 1713--1717
+[24]
+Underfull \hbox (badness 10000) in paragraph at lines 1552--1556
 []\TU/lmr/m/n/10.95 “Detection of Overlapping Communities in Dynamical Social N
 etworks |
  []
 
 
-Underfull \hbox (badness 7558) in paragraph at lines 1713--1717
+Underfull \hbox (badness 7558) in paragraph at lines 1552--1556
 \TU/lmr/m/n/10.95 IEEE Conference Publication | IEEE Xplore.” Accessed October 
 30, 2026.
  []
 
-[29]
+[25]
 Missing character: There is no α (U+03B1) in font [lmroman10-regular]:mapping=t
 ex-text;!
-[30] [31] [32] (./assignment02.aux)
+[26] [27] [28] (./assignment02.aux)
  ***********
 LaTeX2e <2025-11-01>
 L3 programming layer <2026-01-19>
@@ -1589,12 +1589,12 @@ Package rerunfilecheck Info: File `assignment02.out' has not changed.
 (rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
  ) 
 Here is how much of TeX's memory you used:
- 33278 strings out of 470216
- 664429 string characters out of 5479758
- 1398547 words of memory out of 5000000
- 61336 multiletter control sequences out of 15000+600000
+ 33275 strings out of 470216
+ 664384 string characters out of 5479758
+ 1380547 words of memory out of 5000000
+ 61333 multiletter control sequences out of 15000+600000
  632566 words of font info for 80 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 116i,12n,121p,568b,754s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 116i,12n,121p,568b,753s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-Output written on assignment02.pdf (32 pages).
+Output written on assignment02.pdf (28 pages).

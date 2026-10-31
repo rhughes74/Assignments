@@ -608,30 +608,11 @@ degree-controlled random graph null models.
 \PY{l+s+sd}{    Returns}
 \PY{l+s+sd}{    \PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}}
 \PY{l+s+sd}{    G : networkx.Graph}
-\PY{l+s+sd}{        A multigraph generated from the given degree sequence. The graph may }
-\PY{l+s+sd}{        contain self\PYZhy{}loops and parallel edges, which are allowed in the }
-\PY{l+s+sd}{        configuration model.}
-
-\PY{l+s+sd}{    Notes}
-\PY{l+s+sd}{    \PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}}
-\PY{l+s+sd}{    \PYZhy{} This method works by assigning \PYZdq{}stubs\PYZdq{} or \PYZdq{}half\PYZhy{}edges\PYZdq{} to nodes based on }
-\PY{l+s+sd}{      their degree and then randomly pairing them to form edges. The resulting }
-\PY{l+s+sd}{      graph can have self\PYZhy{}loops and parallel edges.}
-\PY{l+s+sd}{    \PYZhy{} Self\PYZhy{}loops and parallel edges can be removed post\PYZhy{}generation if a simple }
-\PY{l+s+sd}{      graph is required using NetworkX\PYZsq{}s `nx.Graph(G)`.}
-\PY{l+s+sd}{    \PYZhy{} The degree sequence must have an even sum for a valid graph construction. }
-\PY{l+s+sd}{      If the sum of the degrees is odd, no graph can be constructed.}
-
+\PY{l+s+sd}{        A graph generated from the given degree sequence. }
+\PY{l+s+sd}{        }
 \PY{l+s+sd}{    Time Complexity}
 \PY{l+s+sd}{    \PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}}
 \PY{l+s+sd}{    The time complexity is O(M+N), where M is the number of edges in the graph and N the number of nodes}
-
-\PY{l+s+sd}{    Example}
-\PY{l+s+sd}{    \PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}}
-\PY{l+s+sd}{    \PYZgt{}\PYZgt{}\PYZgt{} degree\PYZus{}sequence = [3, 3, 2, 2, 1, 1]}
-\PY{l+s+sd}{    \PYZgt{}\PYZgt{}\PYZgt{} G = configuration\PYZus{}model\PYZus{}from\PYZus{}degree\PYZus{}sequence(degree\PYZus{}sequence)}
-\PY{l+s+sd}{    \PYZgt{}\PYZgt{}\PYZgt{} nx.is\PYZus{}graphical(degree\PYZus{}sequence)}
-\PY{l+s+sd}{    True}
 \PY{l+s+sd}{    \PYZdq{}\PYZdq{}\PYZdq{}}
     \PY{c+c1}{\PYZsh{}Instatiate G:}
     \PY{n}{G} \PY{o}{=} \PY{n}{nx}\PY{o}{.}\PY{n}{Graph}\PY{p}{(}\PY{p}{)}
@@ -791,7 +772,7 @@ occur:
 general adjacency matrix value for each pair of nodes. Notably we see
 the Chung Lu model guaranteed no self-loops, while the Configuration
 Model had some. The general trend of the higher degree nodes (i.e., in
-this case node 0,1,2,etc., as I enforced and provided a sorted list from
+this case node 0,1,2, etc., as I enforced and provided a sorted list from
 highest degree to lowest as input) remained the region with the highest
 overall adjacency matrix average values amongst the 1000 iterations.
 This indicates they had a high probability to be connected amongst one
@@ -917,148 +898,6 @@ https://docs.scipy.org/doc/scipy/reference/sparse.migration\_to\_sparray.html
 
     \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
 \prompt{In}{incolor}{11}{\boxspacing}
-\begin{Verbatim}[commandchars=\\\{\}]
-\PY{k}{def}\PY{+w}{ }\PY{n+nf}{calculate\PYZus{}modularity}\PY{p}{(}\PY{n}{G}\PY{p}{,} \PY{n}{partition}\PY{p}{)}\PY{p}{:}
-\PY{+w}{    }\PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}}
-\PY{l+s+sd}{    Calculates the modularity score for a given partition of the graph, whether the graph is weighted or unweighted.}
-\PY{l+s+sd}{    }
-\PY{l+s+sd}{    Modularity is a measure of the strength of division of a network into communities. It compares the actual }
-\PY{l+s+sd}{    density of edges within communities to the expected density if edges were distributed randomly. For weighted }
-\PY{l+s+sd}{    graphs, the weight of the edges is taken into account.}
-
-\PY{l+s+sd}{    The modularity Q is calculated as:}
-\PY{l+s+sd}{    }
-\PY{l+s+sd}{    Q = (1 / 2m) * sum((A\PYZus{}ij \PYZhy{} (k\PYZus{}i * k\PYZus{}j) / (2m)) * delta(c\PYZus{}i, c\PYZus{}j))}
-
-\PY{l+s+sd}{    where:}
-\PY{l+s+sd}{    \PYZhy{} A\PYZus{}ij is the weight of the edge between nodes i and j (1 if unweighted).}
-\PY{l+s+sd}{    \PYZhy{} k\PYZus{}i is the degree of node i (or the weighted degree for weighted graphs).}
-\PY{l+s+sd}{    \PYZhy{} m is the total number of edges in the graph, or the total weight of the edges if the graph is weighted.}
-\PY{l+s+sd}{    \PYZhy{} delta(c\PYZus{}i, c\PYZus{}j) is 1 if nodes i and j belong to the same community, and 0 otherwise.}
-
-\PY{l+s+sd}{    Parameters:}
-\PY{l+s+sd}{    \PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}}
-\PY{l+s+sd}{    G : networkx.Graph}
-\PY{l+s+sd}{        The input graph, which can be undirected and either weighted or unweighted. The graph\PYZsq{}s nodes represent the }
-\PY{l+s+sd}{        entities, and its edges represent connections between them.}
-\PY{l+s+sd}{    }
-\PY{l+s+sd}{    partition : list of sets}
-\PY{l+s+sd}{        A list of sets where each set represents a community. Each set contains the nodes belonging to that community. }
-\PY{l+s+sd}{        For example, [\PYZob{}0, 1, 2\PYZcb{}, \PYZob{}3, 4\PYZcb{}] represents two communities, one with nodes 0, 1, and 2, and another with nodes }
-\PY{l+s+sd}{        3 and 4.}
-\PY{l+s+sd}{    }
-\PY{l+s+sd}{    Returns:}
-\PY{l+s+sd}{    \PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}}
-\PY{l+s+sd}{    modularity\PYZus{}score : float}
-\PY{l+s+sd}{        The modularity score for the given partition of the graph. A higher score indicates stronger community structure, }
-\PY{l+s+sd}{        and a lower (or negative) score suggests weak or no community structure.}
-
-\PY{l+s+sd}{    Notes:}
-\PY{l+s+sd}{    \PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}}
-\PY{l+s+sd}{    \PYZhy{} If the graph has weights, they will be used in the modularity calculation. If no weights are present, the function }
-\PY{l+s+sd}{      assumes each edge has a weight of 1 (i.e., unweighted).}
-\PY{l+s+sd}{    }
-\PY{l+s+sd}{    \PYZhy{} The function assumes that all nodes in the graph are assigned to exactly one community. If any node is missing }
-\PY{l+s+sd}{      from the community list, it is treated as not belonging to any community, and the results may not be accurate.}
-\PY{l+s+sd}{    }
-\PY{l+s+sd}{    \PYZhy{} If the graph has no edges, the modularity is undefined, and this function will return 0 because the total number }
-\PY{l+s+sd}{      of edges (2m) would be zero.}
-\PY{l+s+sd}{    }
-\PY{l+s+sd}{    Example:}
-\PY{l+s+sd}{    \PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}}
-\PY{l+s+sd}{    \PYZgt{}\PYZgt{}\PYZgt{} import networkx as nx}
-\PY{l+s+sd}{    \PYZgt{}\PYZgt{}\PYZgt{} G = nx.karate\PYZus{}club\PYZus{}graph()}
-\PY{l+s+sd}{    \PYZgt{}\PYZgt{}\PYZgt{} communities = [\PYZob{}0, 1, 2, 3, 4\PYZcb{}, \PYZob{}5, 6, 7, 8, 9, 10\PYZcb{}]}
-\PY{l+s+sd}{    \PYZgt{}\PYZgt{}\PYZgt{} modularity\PYZus{}score = calculate\PYZus{}modularity(G, communities)}
-\PY{l+s+sd}{    \PYZgt{}\PYZgt{}\PYZgt{} print(\PYZdq{}Modularity:\PYZdq{}, modularity\PYZus{}score)}
-\PY{l+s+sd}{    }
-\PY{l+s+sd}{    References:}
-\PY{l+s+sd}{    \PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}}
-\PY{l+s+sd}{    Newman, M. E. J., \PYZam{} Girvan, M. (2004). Finding and evaluating community structure }
-\PY{l+s+sd}{    in networks. Physical Review E, 69(2), 026113.}
-\PY{l+s+sd}{    \PYZdq{}\PYZdq{}\PYZdq{}}
-  
-    \PY{k}{def}\PY{+w}{ }\PY{n+nf}{remap\PYZus{}partition}\PY{p}{(}\PY{n}{partition}\PY{p}{)}\PY{p}{:}
-\PY{+w}{        }\PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}}
-\PY{l+s+sd}{        Converts and remaps a partition to a list\PYZhy{}of\PYZhy{}lists structure suitable for modularity calculations.}
-
-\PY{l+s+sd}{        This function remaps the input partition (whether it\PYZsq{}s in dictionary form or a flat list of community labels) }
-\PY{l+s+sd}{        to a list\PYZhy{}of\PYZhy{}lists format, where each list represents a community and contains the nodes in that community. }
-\PY{l+s+sd}{        The function also ensures that community labels are contiguous integers starting from 0, which is typically }
-\PY{l+s+sd}{        required for modularity\PYZhy{}based algorithms.}
-\PY{l+s+sd}{        \PYZdq{}\PYZdq{}\PYZdq{}}
-
-        \PY{c+c1}{\PYZsh{} if partition is a dictionary where the keys are nodes and values communities}
-        \PY{k}{if} \PY{n+nb}{type}\PY{p}{(}\PY{n}{partition}\PY{p}{)}\PY{o}{==}\PY{n+nb}{dict}\PY{p}{:}
-            \PY{n}{unique\PYZus{}comms} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{unique}\PY{p}{(}\PY{n+nb}{list}\PY{p}{(}\PY{n}{partition}\PY{o}{.}\PY{n}{values}\PY{p}{(}\PY{p}{)}\PY{p}{)}\PY{p}{)}
-            \PY{n}{comm\PYZus{}mapping} \PY{o}{=} \PY{p}{\PYZob{}}\PY{n}{i}\PY{p}{:}\PY{n}{ix} \PY{k}{for} \PY{n}{ix}\PY{p}{,}\PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{enumerate}\PY{p}{(}\PY{n}{unique\PYZus{}comms}\PY{p}{)}\PY{p}{\PYZcb{}}
-            \PY{k}{for} \PY{n}{i}\PY{p}{,}\PY{n}{j} \PY{o+ow}{in} \PY{n}{partition}\PY{o}{.}\PY{n}{items}\PY{p}{(}\PY{p}{)}\PY{p}{:}
-                \PY{n}{partition}\PY{p}{[}\PY{n}{i}\PY{p}{]} \PY{o}{=} \PY{n}{comm\PYZus{}mapping}\PY{p}{[}\PY{n}{j}\PY{p}{]}
-
-            \PY{n}{unique\PYZus{}comms} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{unique}\PY{p}{(}\PY{n+nb}{list}\PY{p}{(}\PY{n}{partition}\PY{o}{.}\PY{n}{values}\PY{p}{(}\PY{p}{)}\PY{p}{)}\PY{p}{)}
-            \PY{n}{communities} \PY{o}{=} \PY{p}{[}\PY{p}{[}\PY{p}{]} \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n}{unique\PYZus{}comms}\PY{p}{]}
-            \PY{k}{for} \PY{n}{i}\PY{p}{,}\PY{n}{j} \PY{o+ow}{in} \PY{n}{partition}\PY{o}{.}\PY{n}{items}\PY{p}{(}\PY{p}{)}\PY{p}{:}
-                \PY{n}{communities}\PY{p}{[}\PY{n}{j}\PY{p}{]}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{i}\PY{p}{)}
-                
-            \PY{k}{return} \PY{n}{communities}
-
-        \PY{c+c1}{\PYZsh{} if partition is a list of community assignments}
-        \PY{k}{elif} \PY{n+nb}{type}\PY{p}{(}\PY{n}{partition}\PY{p}{)}\PY{o}{==}\PY{n+nb}{list} \PY{o+ow}{and}\PYZbs{}
-                \PY{o+ow}{not} \PY{n+nb}{any}\PY{p}{(}\PY{n+nb}{isinstance}\PY{p}{(}\PY{n}{el}\PY{p}{,} \PY{n+nb}{list}\PY{p}{)} \PY{k}{for} \PY{n}{el} \PY{o+ow}{in} \PY{n}{partition}\PY{p}{)}\PY{p}{:}
-            \PY{n}{unique\PYZus{}comms} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{unique}\PY{p}{(}\PY{n}{partition}\PY{p}{)}
-            \PY{n}{comm\PYZus{}mapping} \PY{o}{=} \PY{p}{\PYZob{}}\PY{n}{i}\PY{p}{:}\PY{n}{ix} \PY{k}{for} \PY{n}{ix}\PY{p}{,}\PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{enumerate}\PY{p}{(}\PY{n}{unique\PYZus{}comms}\PY{p}{)}\PY{p}{\PYZcb{}}
-            \PY{k}{for} \PY{n}{i}\PY{p}{,}\PY{n}{j} \PY{o+ow}{in} \PY{n+nb}{enumerate}\PY{p}{(}\PY{n}{partition}\PY{p}{)}\PY{p}{:}
-                \PY{n}{partition}\PY{p}{[}\PY{n}{i}\PY{p}{]} \PY{o}{=} \PY{n}{comm\PYZus{}mapping}\PY{p}{[}\PY{n}{j}\PY{p}{]}
-
-            \PY{n}{unique\PYZus{}comms} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{unique}\PY{p}{(}\PY{n}{partition}\PY{p}{)}
-            \PY{n}{communities} \PY{o}{=} \PY{p}{[}\PY{p}{[}\PY{p}{]} \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n}{np}\PY{o}{.}\PY{n}{unique}\PY{p}{(}\PY{n}{partition}\PY{p}{)}\PY{p}{]}
-            \PY{k}{for} \PY{n}{i}\PY{p}{,}\PY{n}{j} \PY{o+ow}{in} \PY{n+nb}{enumerate}\PY{p}{(}\PY{n}{partition}\PY{p}{)}\PY{p}{:}
-                \PY{n}{communities}\PY{p}{[}\PY{n}{j}\PY{p}{]}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{i}\PY{p}{)}
-
-            \PY{k}{return} \PY{n}{communities}
-
-        \PY{c+c1}{\PYZsh{} otherwise assume input is a properly\PYZhy{}formatted list of lists}
-        \PY{k}{else}\PY{p}{:}
-            \PY{n}{communities} \PY{o}{=} \PY{n}{partition}\PY{o}{.}\PY{n}{copy}\PY{p}{(}\PY{p}{)}
-            \PY{k}{return} \PY{n}{communities}
-
-
-    \PY{c+c1}{\PYZsh{} We now should have a list\PYZhy{}of\PYZhy{}lists structure for communities}
-    \PY{n}{communities} \PY{o}{=} \PY{n}{remap\PYZus{}partition}\PY{p}{(}\PY{n}{partition}\PY{p}{)}
-    
-    \PY{c+c1}{\PYZsh{} Total weight of edges in the graph (or number of edges if unweighted)}
-    \PY{k}{if} \PY{n}{nx}\PY{o}{.}\PY{n}{is\PYZus{}weighted}\PY{p}{(}\PY{n}{G}\PY{p}{)}\PY{p}{:}
-        \PY{n}{m} \PY{o}{=} \PY{n}{G}\PY{o}{.}\PY{n}{size}\PY{p}{(}\PY{n}{weight}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{weight}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
-        \PY{n}{degree} \PY{o}{=} \PY{n+nb}{dict}\PY{p}{(}\PY{n}{G}\PY{o}{.}\PY{n}{degree}\PY{p}{(}\PY{n}{weight}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{weight}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{)}  \PY{c+c1}{\PYZsh{} Weighted degree for each node}
-    \PY{k}{else}\PY{p}{:}
-        \PY{n}{m} \PY{o}{=} \PY{n}{G}\PY{o}{.}\PY{n}{number\PYZus{}of\PYZus{}edges}\PY{p}{(}\PY{p}{)}  \PY{c+c1}{\PYZsh{} Number of edges in the graph}
-        \PY{n}{degree} \PY{o}{=} \PY{n+nb}{dict}\PY{p}{(}\PY{n}{G}\PY{o}{.}\PY{n}{degree}\PY{p}{(}\PY{p}{)}\PY{p}{)}  \PY{c+c1}{\PYZsh{} Degree for each node (unweighted)}
-
-    \PY{c+c1}{\PYZsh{} Modularity score}
-    \PY{n}{modularity\PYZus{}score} \PY{o}{=} \PY{l+m+mf}{0.0}
-    
-    \PY{c+c1}{\PYZsh{} Loop over all pairs of nodes i, j within the same community}
-    \PY{k}{for} \PY{n}{community} \PY{o+ow}{in} \PY{n}{communities}\PY{p}{:}
-        \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n}{community}\PY{p}{:}
-            \PY{k}{for} \PY{n}{j} \PY{o+ow}{in} \PY{n}{community}\PY{p}{:}
-                \PY{c+c1}{\PYZsh{} Get the weight of the edge between i and j, or assume weight 1 if unweighted}
-                \PY{k}{if} \PY{n}{G}\PY{o}{.}\PY{n}{has\PYZus{}edge}\PY{p}{(}\PY{n}{i}\PY{p}{,} \PY{n}{j}\PY{p}{)}\PY{p}{:}
-                    \PY{n}{A\PYZus{}ij} \PY{o}{=} \PY{n}{G}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{p}{[}\PY{n}{j}\PY{p}{]}\PY{o}{.}\PY{n}{get}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{weight}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{)}  \PY{c+c1}{\PYZsh{} Use weight if available, otherwise assume 1}
-                \PY{k}{else}\PY{p}{:}
-                    \PY{n}{A\PYZus{}ij} \PY{o}{=} \PY{l+m+mi}{0}  \PY{c+c1}{\PYZsh{} No edge between i and j}
-
-                \PY{c+c1}{\PYZsh{} Expected number of edges (or weighted edges) between i and j in a random graph}
-                \PY{n}{expected\PYZus{}edges} \PY{o}{=} \PY{p}{(}\PY{n}{degree}\PY{p}{[}\PY{n}{i}\PY{p}{]} \PY{o}{*} \PY{n}{degree}\PY{p}{[}\PY{n}{j}\PY{p}{]}\PY{p}{)} \PY{o}{/} \PY{p}{(}\PY{l+m+mi}{2} \PY{o}{*} \PY{n}{m}\PY{p}{)}
-
-                \PY{c+c1}{\PYZsh{} Contribution to modularity}
-                \PY{n}{modularity\PYZus{}score} \PY{o}{+}\PY{o}{=} \PY{p}{(}\PY{n}{A\PYZus{}ij} \PY{o}{\PYZhy{}} \PY{n}{expected\PYZus{}edges}\PY{p}{)}
-
-    \PY{c+c1}{\PYZsh{} Normalize by the total number of edges (or total edge weight) 2m}
-    \PY{n}{modularity\PYZus{}score} \PY{o}{/}\PY{o}{=} \PY{p}{(}\PY{l+m+mi}{2} \PY{o}{*} \PY{n}{m}\PY{p}{)}
-
-
-    \PY{k}{return} \PY{n}{modularity\PYZus{}score}
-\end{Verbatim}
 \end{tcolorbox}
 
     \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
