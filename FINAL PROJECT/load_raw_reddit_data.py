@@ -66,7 +66,7 @@ if __name__ == "__main__":
 			#print(obj)
 			#NOTE name field is the comment's id number, should start with a t1_
 			#NOTE post field is the link_id. should start with a t3_
-			all_comments[obj['name']]=obj['link_id']#Saving each comment's data against its post
+			all_comments[obj['name']]={obj['author'] : obj['link_id']}#Saving each comment's data as it's author : against its post
 			#temp = obj[field] == value#Something to look out for is author '[deleted]' will show posts for technically multiple ppl
 		except (KeyError, json.JSONDecodeError) as err:
 			bad_lines += 1
