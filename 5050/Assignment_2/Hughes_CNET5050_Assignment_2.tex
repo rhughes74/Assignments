@@ -1,0 +1,1211 @@
+\documentclass[11pt]{article}
+
+    \usepackage[breakable]{tcolorbox}
+    \usepackage{parskip} % Stop auto-indenting (to mimic markdown behaviour)
+    
+
+    % Basic figure setup, for now with no caption control since it's done
+    % automatically by Pandoc (which extracts ![](path) syntax from Markdown).
+    \usepackage{graphicx}
+    % Keep aspect ratio if custom image width or height is specified
+    \setkeys{Gin}{keepaspectratio}
+    % Maintain compatibility with old templates. Remove in nbconvert 6.0
+    \let\Oldincludegraphics\includegraphics
+    % Ensure that by default, figures have no caption (until we provide a
+    % proper Figure object with a Caption API and a way to capture that
+    % in the conversion process - todo).
+    \usepackage{caption}
+    \DeclareCaptionFormat{nocaption}{}
+    \captionsetup{format=nocaption,aboveskip=0pt,belowskip=0pt}
+
+    \usepackage{float}
+    \floatplacement{figure}{H} % forces figures to be placed at the correct location
+    \usepackage{xcolor} % Allow colors to be defined
+    \usepackage{enumerate} % Needed for markdown enumerations to work
+    \usepackage{geometry} % Used to adjust the document margins
+    \usepackage{amsmath} % Equations
+    \usepackage{amssymb} % Equations
+    \usepackage{textcomp} % defines textquotesingle
+    % Hack from http://tex.stackexchange.com/a/47451/13684:
+    \AtBeginDocument{%
+        \def\PYZsq{\textquotesingle}% Upright quotes in Pygmentized code
+    }
+    \usepackage{upquote} % Upright quotes for verbatim code
+    \usepackage{eurosym} % defines \euro
+
+    \usepackage{iftex}
+    \ifPDFTeX
+        \usepackage[T1]{fontenc}
+        \IfFileExists{alphabeta.sty}{
+              \usepackage{alphabeta}
+          }{
+              \usepackage[mathletters]{ucs}
+              \usepackage[utf8x]{inputenc}
+          }
+    \else
+        \usepackage{fontspec}
+        \usepackage{unicode-math}
+    \fi
+
+    \usepackage{fancyvrb} % verbatim replacement that allows latex
+    \usepackage{grffile} % extends the file name processing of package graphics
+                         % to support a larger range
+    \makeatletter % fix for old versions of grffile with XeLaTeX
+    \@ifpackagelater{grffile}{2019/11/01}
+    {
+      % Do nothing on new versions
+    }
+    {
+      \def\Gread@@xetex#1{%
+        \IfFileExists{"\Gin@base".bb}%
+        {\Gread@eps{\Gin@base.bb}}%
+        {\Gread@@xetex@aux#1}%
+      }
+    }
+    \makeatother
+    \usepackage[Export]{adjustbox} % Used to constrain images to a maximum size
+    \adjustboxset{max size={0.9\linewidth}{0.9\paperheight}}
+
+    % The hyperref package gives us a pdf with properly built
+    % internal navigation ('pdf bookmarks' for the table of contents,
+    % internal cross-reference links, web links for URLs, etc.)
+    \usepackage{hyperref}
+    % The default LaTeX title has an obnoxious amount of whitespace. By default,
+    % titling removes some of it. It also provides customization options.
+    \usepackage{titling}
+    \usepackage{longtable} % longtable support required by pandoc >1.10
+    \usepackage{booktabs}  % table support for pandoc > 1.12.2
+    \usepackage{array}     % table support for pandoc >= 2.11.3
+    \usepackage{calc}      % table minipage width calculation for pandoc >= 2.11.1
+    \usepackage[inline]{enumitem} % IRkernel/repr support (it uses the enumerate* environment)
+    \usepackage[normalem]{ulem} % ulem is needed to support strikethroughs (\sout)
+                                % normalem makes italics be italics, not underlines
+    \usepackage{soul}      % strikethrough (\st) support for pandoc >= 3.0.0
+    \usepackage{mathrsfs}
+    
+
+    
+    % Colors for the hyperref package
+    \definecolor{urlcolor}{rgb}{0,.145,.698}
+    \definecolor{linkcolor}{rgb}{.71,0.21,0.01}
+    \definecolor{citecolor}{rgb}{.12,.54,.11}
+
+    % ANSI colors
+    \definecolor{ansi-black}{HTML}{3E424D}
+    \definecolor{ansi-black-intense}{HTML}{282C36}
+    \definecolor{ansi-red}{HTML}{E75C58}
+    \definecolor{ansi-red-intense}{HTML}{B22B31}
+    \definecolor{ansi-green}{HTML}{00A250}
+    \definecolor{ansi-green-intense}{HTML}{007427}
+    \definecolor{ansi-yellow}{HTML}{DDB62B}
+    \definecolor{ansi-yellow-intense}{HTML}{B27D12}
+    \definecolor{ansi-blue}{HTML}{208FFB}
+    \definecolor{ansi-blue-intense}{HTML}{0065CA}
+    \definecolor{ansi-magenta}{HTML}{D160C4}
+    \definecolor{ansi-magenta-intense}{HTML}{A03196}
+    \definecolor{ansi-cyan}{HTML}{60C6C8}
+    \definecolor{ansi-cyan-intense}{HTML}{258F8F}
+    \definecolor{ansi-white}{HTML}{C5C1B4}
+    \definecolor{ansi-white-intense}{HTML}{A1A6B2}
+    \definecolor{ansi-default-inverse-fg}{HTML}{FFFFFF}
+    \definecolor{ansi-default-inverse-bg}{HTML}{000000}
+
+    % common color for the border for error outputs.
+    \definecolor{outerrorbackground}{HTML}{FFDFDF}
+
+    % commands and environments needed by pandoc snippets
+    % extracted from the output of `pandoc -s`
+    \providecommand{\tightlist}{%
+      \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+    \DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+    % Add ',fontsize=\small' for more characters per line
+    \newenvironment{Shaded}{}{}
+    \newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.56,0.13,0.00}{{#1}}}
+    \newcommand{\DecValTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\FloatTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\CharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\StringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\CommentTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textit{{#1}}}}
+    \newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{{#1}}}
+    \newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.02,0.16,0.49}{{#1}}}
+    \newcommand{\RegionMarkerTok}[1]{{#1}}
+    \newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\NormalTok}[1]{{#1}}
+
+    % Additional commands for more recent versions of Pandoc
+    \newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.53,0.00,0.00}{{#1}}}
+    \newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.73,0.40,0.53}{{#1}}}
+    \newcommand{\ImportTok}[1]{{#1}}
+    \newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.73,0.13,0.13}{\textit{{#1}}}}
+    \newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{{#1}}}
+    \newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.40,0.40,0.40}{{#1}}}
+    \newcommand{\BuiltInTok}[1]{{#1}}
+    \newcommand{\ExtensionTok}[1]{{#1}}
+    \newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.74,0.48,0.00}{{#1}}}
+    \newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{{#1}}}
+    \newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \makeatletter
+    \newsavebox\pandoc@box
+    \newcommand*\pandocbounded[1]{%
+      \sbox\pandoc@box{#1}%
+      % scaling factors for width and height
+      \Gscale@div\@tempa\textheight{\dimexpr\ht\pandoc@box+\dp\pandoc@box\relax}%
+      \Gscale@div\@tempb\linewidth{\wd\pandoc@box}%
+      % select the smaller of both
+      \ifdim\@tempb\p@<\@tempa\p@
+        \let\@tempa\@tempb
+      \fi
+      % scaling accordingly (\@tempa < 1)
+      \ifdim\@tempa\p@<\p@
+        \scalebox{\@tempa}{\usebox\pandoc@box}%
+      % scaling not needed, use as it is
+      \else
+        \usebox{\pandoc@box}%
+      \fi
+    }
+    \makeatother
+
+    % Define a nice break command that doesn't care if a line doesn't already
+    % exist.
+    \def\br{\hspace*{\fill} \\* }
+    % Math Jax compatibility definitions
+    \def\gt{>}
+    \def\lt{<}
+    \let\Oldtex\TeX
+    \let\Oldlatex\LaTeX
+    \renewcommand{\TeX}{\textrm{\Oldtex}}
+    \renewcommand{\LaTeX}{\textrm{\Oldlatex}}
+    % Document parameters
+    % Document title
+    \title{Hughes\_CNET5050\_Assignment\_2}
+    
+    
+    
+    
+    
+    
+    
+% Pygments definitions
+\makeatletter
+\def\PY@reset{\let\PY@it=\relax \let\PY@bf=\relax%
+    \let\PY@ul=\relax \let\PY@tc=\relax%
+    \let\PY@bc=\relax \let\PY@ff=\relax}
+\def\PY@tok#1{\csname PY@tok@#1\endcsname}
+\def\PY@toks#1+{\ifx\relax#1\empty\else%
+    \PY@tok{#1}\expandafter\PY@toks\fi}
+\def\PY@do#1{\PY@bc{\PY@tc{\PY@ul{%
+    \PY@it{\PY@bf{\PY@ff{#1}}}}}}}
+\def\PY#1#2{\PY@reset\PY@toks#1+\relax+\PY@do{#2}}
+
+\@namedef{PY@tok@w}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.73,0.73}{##1}}}
+\@namedef{PY@tok@c}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@cp}{\def\PY@tc##1{\textcolor[rgb]{0.61,0.40,0.00}{##1}}}
+\@namedef{PY@tok@k}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kp}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kt}{\def\PY@tc##1{\textcolor[rgb]{0.69,0.00,0.25}{##1}}}
+\@namedef{PY@tok@o}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@ow}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\@namedef{PY@tok@nb}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@nf}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@nc}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@nn}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@ne}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.80,0.25,0.22}{##1}}}
+\@namedef{PY@tok@nv}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@no}{\def\PY@tc##1{\textcolor[rgb]{0.53,0.00,0.00}{##1}}}
+\@namedef{PY@tok@nl}{\def\PY@tc##1{\textcolor[rgb]{0.46,0.46,0.00}{##1}}}
+\@namedef{PY@tok@ni}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.44,0.44,0.44}{##1}}}
+\@namedef{PY@tok@na}{\def\PY@tc##1{\textcolor[rgb]{0.41,0.47,0.13}{##1}}}
+\@namedef{PY@tok@nt}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@nd}{\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\@namedef{PY@tok@s}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sd}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@si}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.64,0.35,0.47}{##1}}}
+\@namedef{PY@tok@se}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.36,0.12}{##1}}}
+\@namedef{PY@tok@sr}{\def\PY@tc##1{\textcolor[rgb]{0.64,0.35,0.47}{##1}}}
+\@namedef{PY@tok@ss}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@sx}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@m}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@gh}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\@namedef{PY@tok@gu}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.50,0.00,0.50}{##1}}}
+\@namedef{PY@tok@gd}{\def\PY@tc##1{\textcolor[rgb]{0.63,0.00,0.00}{##1}}}
+\@namedef{PY@tok@gi}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.52,0.00}{##1}}}
+\@namedef{PY@tok@gr}{\def\PY@tc##1{\textcolor[rgb]{0.89,0.00,0.00}{##1}}}
+\@namedef{PY@tok@ge}{\let\PY@it=\textit}
+\@namedef{PY@tok@gs}{\let\PY@bf=\textbf}
+\@namedef{PY@tok@ges}{\let\PY@bf=\textbf\let\PY@it=\textit}
+\@namedef{PY@tok@gp}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\@namedef{PY@tok@go}{\def\PY@tc##1{\textcolor[rgb]{0.44,0.44,0.44}{##1}}}
+\@namedef{PY@tok@gt}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.27,0.87}{##1}}}
+\@namedef{PY@tok@err}{\def\PY@bc##1{{\setlength{\fboxsep}{\string -\fboxrule}\fcolorbox[rgb]{1.00,0.00,0.00}{1,1,1}{\strut ##1}}}}
+\@namedef{PY@tok@kc}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kd}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kn}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kr}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@bp}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@fm}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@vc}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@vg}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@vi}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@vm}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@sa}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sb}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sc}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@dl}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@s2}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sh}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@s1}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@mb}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mf}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mh}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mi}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@il}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mo}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@ch}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@cm}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@cpf}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@c1}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@cs}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+
+\def\PYZbs{\char`\\}
+\def\PYZus{\char`\_}
+\def\PYZob{\char`\{}
+\def\PYZcb{\char`\}}
+\def\PYZca{\char`\^}
+\def\PYZam{\char`\&}
+\def\PYZlt{\char`\<}
+\def\PYZgt{\char`\>}
+\def\PYZsh{\char`\#}
+\def\PYZpc{\char`\%}
+\def\PYZdl{\char`\$}
+\def\PYZhy{\char`\-}
+\def\PYZsq{\char`\'}
+\def\PYZdq{\char`\"}
+\def\PYZti{\char`\~}
+% for compatibility with earlier versions
+\def\PYZat{@}
+\def\PYZlb{[}
+\def\PYZrb{]}
+\makeatother
+
+
+    % For linebreaks inside Verbatim environment from package fancyvrb.
+    \makeatletter
+        \newbox\Wrappedcontinuationbox
+        \newbox\Wrappedvisiblespacebox
+        \newcommand*\Wrappedvisiblespace {\textcolor{red}{\textvisiblespace}}
+        \newcommand*\Wrappedcontinuationsymbol {\textcolor{red}{\llap{\tiny$\m@th\hookrightarrow$}}}
+        \newcommand*\Wrappedcontinuationindent {3ex }
+        \newcommand*\Wrappedafterbreak {\kern\Wrappedcontinuationindent\copy\Wrappedcontinuationbox}
+        % Take advantage of the already applied Pygments mark-up to insert
+        % potential linebreaks for TeX processing.
+        %        {, <, #, %, $, ' and ": go to next line.
+        %        _, }, ^, &, >, - and ~: stay at end of broken line.
+        % Use of \textquotesingle for straight quote.
+        \newcommand*\Wrappedbreaksatspecials {%
+            \def\PYGZus{\discretionary{\char`\_}{\Wrappedafterbreak}{\char`\_}}%
+            \def\PYGZob{\discretionary{}{\Wrappedafterbreak\char`\{}{\char`\{}}%
+            \def\PYGZcb{\discretionary{\char`\}}{\Wrappedafterbreak}{\char`\}}}%
+            \def\PYGZca{\discretionary{\char`\^}{\Wrappedafterbreak}{\char`\^}}%
+            \def\PYGZam{\discretionary{\char`\&}{\Wrappedafterbreak}{\char`\&}}%
+            \def\PYGZlt{\discretionary{}{\Wrappedafterbreak\char`\<}{\char`\<}}%
+            \def\PYGZgt{\discretionary{\char`\>}{\Wrappedafterbreak}{\char`\>}}%
+            \def\PYGZsh{\discretionary{}{\Wrappedafterbreak\char`\#}{\char`\#}}%
+            \def\PYGZpc{\discretionary{}{\Wrappedafterbreak\char`\%}{\char`\%}}%
+            \def\PYGZdl{\discretionary{}{\Wrappedafterbreak\char`\$}{\char`\$}}%
+            \def\PYGZhy{\discretionary{\char`\-}{\Wrappedafterbreak}{\char`\-}}%
+            \def\PYGZsq{\discretionary{}{\Wrappedafterbreak\textquotesingle}{\textquotesingle}}%
+            \def\PYGZdq{\discretionary{}{\Wrappedafterbreak\char`\"}{\char`\"}}%
+            \def\PYGZti{\discretionary{\char`\~}{\Wrappedafterbreak}{\char`\~}}%
+        }
+        % Some characters . , ; ? ! / are not pygmentized.
+        % This macro makes them "active" and they will insert potential linebreaks
+        \newcommand*\Wrappedbreaksatpunct {%
+            \lccode`\~`\.\lowercase{\def~}{\discretionary{\hbox{\char`\.}}{\Wrappedafterbreak}{\hbox{\char`\.}}}%
+            \lccode`\~`\,\lowercase{\def~}{\discretionary{\hbox{\char`\,}}{\Wrappedafterbreak}{\hbox{\char`\,}}}%
+            \lccode`\~`\;\lowercase{\def~}{\discretionary{\hbox{\char`\;}}{\Wrappedafterbreak}{\hbox{\char`\;}}}%
+            \lccode`\~`\:\lowercase{\def~}{\discretionary{\hbox{\char`\:}}{\Wrappedafterbreak}{\hbox{\char`\:}}}%
+            \lccode`\~`\?\lowercase{\def~}{\discretionary{\hbox{\char`\?}}{\Wrappedafterbreak}{\hbox{\char`\?}}}%
+            \lccode`\~`\!\lowercase{\def~}{\discretionary{\hbox{\char`\!}}{\Wrappedafterbreak}{\hbox{\char`\!}}}%
+            \lccode`\~`\/\lowercase{\def~}{\discretionary{\hbox{\char`\/}}{\Wrappedafterbreak}{\hbox{\char`\/}}}%
+            \catcode`\.\active
+            \catcode`\,\active
+            \catcode`\;\active
+            \catcode`\:\active
+            \catcode`\?\active
+            \catcode`\!\active
+            \catcode`\/\active
+            \lccode`\~`\~
+        }
+    \makeatother
+
+    \let\OriginalVerbatim=\Verbatim
+    \makeatletter
+    \renewcommand{\Verbatim}[1][1]{%
+        %\parskip\z@skip
+        \sbox\Wrappedcontinuationbox {\Wrappedcontinuationsymbol}%
+        \sbox\Wrappedvisiblespacebox {\FV@SetupFont\Wrappedvisiblespace}%
+        \def\FancyVerbFormatLine ##1{\hsize\linewidth
+            \vtop{\raggedright\hyphenpenalty\z@\exhyphenpenalty\z@
+                \doublehyphendemerits\z@\finalhyphendemerits\z@
+                \strut ##1\strut}%
+        }%
+        % If the linebreak is at a space, the latter will be displayed as visible
+        % space at end of first line, and a continuation symbol starts next line.
+        % Stretch/shrink are however usually zero for typewriter font.
+        \def\FV@Space {%
+            \nobreak\hskip\z@ plus\fontdimen3\font minus\fontdimen4\font
+            \discretionary{\copy\Wrappedvisiblespacebox}{\Wrappedafterbreak}
+            {\kern\fontdimen2\font}%
+        }%
+
+        % Allow breaks at special characters using \PYG... macros.
+        \Wrappedbreaksatspecials
+        % Breaks at punctuation characters . , ; ? ! and / need catcode=\active
+        \OriginalVerbatim[#1,codes*=\Wrappedbreaksatpunct]%
+    }
+    \makeatother
+
+    % Exact colors from NB
+    \definecolor{incolor}{HTML}{303F9F}
+    \definecolor{outcolor}{HTML}{D84315}
+    \definecolor{cellborder}{HTML}{CFCFCF}
+    \definecolor{cellbackground}{HTML}{F7F7F7}
+
+    % prompt
+    \makeatletter
+    \newcommand{\boxspacing}{\kern\kvtcb@left@rule\kern\kvtcb@boxsep}
+    \makeatother
+    \newcommand{\prompt}[4]{
+        {\ttfamily\llap{{\color{#2}[#3]:\hspace{3pt}#4}}\vspace{-\baselineskip}}
+    }
+    
+
+    
+    % Prevent overflowing lines due to hard-to-break entities
+    \sloppy
+    % Setup hyperref package
+    \hypersetup{
+      breaklinks=true,  % so long urls are correctly broken across lines
+      colorlinks=true,
+      urlcolor=urlcolor,
+      linkcolor=linkcolor,
+      citecolor=citecolor,
+      }
+    % Slightly bigger margins than the latex defaults
+    
+    \geometry{verbose,tmargin=1in,bmargin=1in,lmargin=1in,rmargin=1in}
+    
+    
+
+\begin{document}
+    
+    \maketitle
+    
+    
+
+    
+    \subsection{Ryan Hughes Assignment 2 CNET 5050, Fall
+2026}\label{ryan-hughes-assignment-2-cnet-5050-fall-2026}
+
+\textbf{Overall Instructions:} In Part 1 of this assignment, you will
+study the BA Model, Link selection model and the configuration model.
+Submit your written solutions as a PDF prepared using LaTeX or Microsoft
+Word, along with the source code used for your analysis. Ensure that
+your code is readable and appropriately commented. If you use generative
+AI tools such as ChatGPT, identify the tasks for which they were used
+and include the relevant prompts and generated outputs. In Part 2, you
+will develop your ability to critically read and present network science
+research papers.
+
+\textbf{Part 1} In this question we will work with degree-controlled
+random graph null models.
+
+Before beginning Part 1, review Advanced Topic 3.A, ``Power Laws,'' and
+Advanced Topic 3.B, ``Plotting Power Laws,'' in the textbook:
+https://networksciencebook.com/chapter/4\#advanced-a. I.
+Barabasi--Albert Networks {[}20 points{]} Write a program that generates
+a Barabasi--Albert network with N = \(10^4\) nodes and attachment
+parameter m = 4.
+
+Begin with a fully connected network of four nodes. Then add nodes one
+at a time, connecting each new node to m distinct existing nodes
+selected preferentially in proportion to their degree. Implement the
+model yourself; do not use a built-in Barabasi--Albert network
+generator. Include your source code with your submission. Record
+snapshots of the growing network when it reaches N = \(10^2\), \(10^3\),
+and \(10^4\) nodes.
+
+\begin{enumerate}
+\def\labelenumi{(\alph{enumi})}
+\item
+  Visualize one realization of the BA network with N = \(10^3\) nodes
+  using a network visualization method of your choice.
+\item
+  Generate NG = 100 independent graph realizations. For each
+  realization, record the degree of every node at each snapshot size, N
+  = 102, 103, and 104. For each snapshot size N, pool the degree
+  observations across all realizations, giving NG ×N observations. Plot
+  the log-binned empirical degree distribution P(k) on logarithmic axes
+  for each network size and compare it with the theoretical asymptotic
+  degree distribution of the BA model derived in class,
+\end{enumerate}
+
+\[P(k) = \frac{2m(m + 1)}{k(k + 1)(k + 2)} ≈ 2m^2k^−3.\]
+
+This expression applies for k ≥ m = 4. Clearly label the axes and
+distinguish the three network sizes in the legend. Refer to the lecture
+slides or the textbook on how to present the plots. What is the nature
+of the degree distribution in the BA model?
+
+\begin{enumerate}
+\def\labelenumi{(\alph{enumi})}
+\setcounter{enumi}{2}
+\item
+  Plot the complementary cumulative degree distributions, P(K ≥k), for
+  the three network sizes together on the same axes. Clearly label the
+  axes and legend.
+\item
+  It is known that the average local clustering coefficient ⟨C⟩in the BA
+  model scales as \[⟨C⟩∼(ln N)^2/N\] (see Figure 5.19 and Advanced Topic
+  4.C). Generate NG = 100 independent graph realizations of size N =
+  \(10^4\). Measure the average clustering coefficient at several
+  snapshots as each network grows, average the measurements across the
+  NG graphs, and plot the result as a function of network size N.
+  Compare it with the theoretical scaling.
+\item
+  Following Figure 5.6a, track the degree over time of one node from the
+  initial four-node network and of nodes added at times t = 10, 100,
+  1000, and 5000. Define t as the number of node additions after the
+  initial network. Plot the degree of each tracked node, averaged over
+  NG = 100 graphs, as a function of t from its introduction through the
+  end of the simulation. Compare the results with the theoretical
+  scaling derived in class,
+\end{enumerate}
+
+\$ k\_i(t) = m\sqrt{\frac{t}{ti}} \$
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{1}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{networkx}\PY{+w}{ }\PY{k}{as}\PY{+w}{ }\PY{n+nn}{nx}
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{matplotlib}\PY{n+nn}{.}\PY{n+nn}{pyplot}\PY{+w}{ }\PY{k}{as}\PY{+w}{ }\PY{n+nn}{plt}
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{numpy}\PY{+w}{ }\PY{k}{as}\PY{+w}{ }\PY{n+nn}{np}
+\PY{k+kn}{from}\PY{+w}{ }\PY{n+nn}{collections}\PY{+w}{ }\PY{k+kn}{import} \PY{n}{Counter}
+\PY{k+kn}{from}\PY{+w}{ }\PY{n+nn}{itertools}\PY{+w}{ }\PY{k+kn}{import} \PY{n}{combinations}
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{logging}
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{networkx}\PY{+w}{ }\PY{k}{as}\PY{+w}{ }\PY{n+nn}{nx}
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{matplotlib}\PY{n+nn}{.}\PY{n+nn}{pyplot}\PY{+w}{ }\PY{k}{as}\PY{+w}{ }\PY{n+nn}{plt}
+\PY{k+kn}{from}\PY{+w}{ }\PY{n+nn}{scipy}\PY{n+nn}{.}\PY{n+nn}{stats}\PY{+w}{ }\PY{k+kn}{import} \PY{n}{binom}
+\PY{k+kn}{from}\PY{+w}{ }\PY{n+nn}{scipy}\PY{n+nn}{.}\PY{n+nn}{special}\PY{+w}{ }\PY{k+kn}{import} \PY{n}{comb}
+
+\PY{k}{def}\PY{+w}{ }\PY{n+nf}{network\PYZus{}growth\PYZus{}model}\PY{p}{(}\PY{n}{N}\PY{p}{,}\PY{n}{alpha}\PY{o}{=}\PY{l+m+mi}{4}\PY{p}{)}\PY{p}{:}
+\PY{+w}{    }\PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}}
+\PY{l+s+sd}{    Generates a Network Growth Model using preferential attachment.}
+
+\PY{l+s+sd}{    Parameters}
+\PY{l+s+sd}{    \PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}}
+\PY{l+s+sd}{    N : int}
+\PY{l+s+sd}{        The number of vertices of the graph to generate.}
+\PY{l+s+sd}{    }
+\PY{l+s+sd}{    alpha : float}
+\PY{l+s+sd}{        The average number of edges to make for each node added to the graph}
+
+\PY{l+s+sd}{    Returns}
+\PY{l+s+sd}{    \PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}}
+\PY{l+s+sd}{    G : networkx.Graph}
+\PY{l+s+sd}{        A graph generated from the given number of nodes and connections per node added (alpha). }
+
+\PY{l+s+sd}{    Snapshot\PYZus{}10 : networkx.Graph}
+\PY{l+s+sd}{        A snapshot of \PYZsq{}G\PYZsq{} when N=10}
+
+\PY{l+s+sd}{    Snapshot\PYZus{}10\PYZus{}2 : networkx.Graph}
+\PY{l+s+sd}{        A snapshot of \PYZsq{}G\PYZsq{} when N=10\PYZca{}2}
+
+\PY{l+s+sd}{    Snapshot\PYZus{}10\PYZus{}3 : networkx.Graph}
+\PY{l+s+sd}{        A snapshot of \PYZsq{}G\PYZsq{} when N=10\PYZca{}3}
+
+\PY{l+s+sd}{    Snapshot\PYZus{}10\PYZus{}4 : networkx.Graph}
+\PY{l+s+sd}{        A snapshot of \PYZsq{}G\PYZsq{} when N=10\PYZca{}4}
+\PY{l+s+sd}{       }
+
+\PY{l+s+sd}{    Time Complexity}
+\PY{l+s+sd}{    \PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}}
+\PY{l+s+sd}{    The time complexity is dominated by O(N**2), where N is the number of nodes we want to add to the graph,}
+\PY{l+s+sd}{    each with an \PYZsq{}alpha\PYZsq{} number of connections. Where alpha is bounded by N the number of new nodes we }
+\PY{l+s+sd}{    want to provide alpha connections for.}
+
+\PY{l+s+sd}{    Example}
+\PY{l+s+sd}{    \PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}}
+\PY{l+s+sd}{    \PYZgt{}\PYZgt{}\PYZgt{} N = 100}
+\PY{l+s+sd}{    \PYZgt{}\PYZgt{}\PYZgt{} alpha = 3}
+\PY{l+s+sd}{    \PYZgt{}\PYZgt{}\PYZgt{} G = network\PYZus{}growth\PYZus{}model(N,alpha)}
+\PY{l+s+sd}{    \PYZdq{}\PYZdq{}\PYZdq{}}
+    \PY{c+c1}{\PYZsh{}Instantiate G as a fully connected graph of 4 nodes}
+    \PY{n}{G} \PY{o}{=} \PY{n}{nx}\PY{o}{.}\PY{n}{complete\PYZus{}graph}\PY{p}{(}\PY{l+m+mi}{4}\PY{p}{)}
+
+    \PY{c+c1}{\PYZsh{}Initialize snapshots}
+    \PY{n}{Snapshot\PYZus{}10}\PY{o}{=}\PY{l+m+mi}{0}
+    \PY{n}{Snapshot\PYZus{}10\PYZus{}2}\PY{o}{=}\PY{l+m+mi}{0}
+    \PY{n}{Snapshot\PYZus{}10\PYZus{}3}\PY{o}{=}\PY{l+m+mi}{0}
+    \PY{n}{Snapshot\PYZus{}10\PYZus{}4}\PY{o}{=}\PY{l+m+mi}{0}
+    \PY{c+c1}{\PYZsh{}Concept:}
+    \PY{c+c1}{\PYZsh{}For every new node we want to add,}
+        \PY{c+c1}{\PYZsh{}First if there are no connections then just add connect to what we initialized with}
+    \PY{c+c1}{\PYZsh{}Find the probabilities of connecting to all the existing nodes currently}
+    \PY{c+c1}{\PYZsh{}Pick \PYZsq{}alpha\PYZsq{} nodes at random based on said probabilities}
+    \PY{c+c1}{\PYZsh{}Add a new node and connect it to each of the list of \PYZsq{}alpha\PYZsq{} nodes}
+    \PY{c+c1}{\PYZsh{}Repeat for all \PYZsq{}N\PYZsq{} new nodes}
+
+    \PY{k}{while} \PY{n}{N}\PY{o}{\PYZgt{}}\PY{l+m+mi}{0}\PY{p}{:}\PY{c+c1}{\PYZsh{}While we still have nodes to add...}
+        \PY{n}{nodes} \PY{o}{=} \PY{n+nb}{list}\PY{p}{(}\PY{n}{G}\PY{o}{.}\PY{n}{nodes}\PY{p}{(}\PY{p}{)}\PY{p}{)}\PY{c+c1}{\PYZsh{}Get the current list of nodes...}
+        \PY{n}{degs} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{p}{[}\PY{p}{(}\PY{n}{G}\PY{o}{.}\PY{n}{degree}\PY{p}{[}\PY{n}{n}\PY{p}{]}\PY{p}{)} \PY{k}{for} \PY{n}{n} \PY{o+ow}{in} \PY{n}{nodes}\PY{p}{]}\PY{p}{,} \PY{n}{dtype}\PY{o}{=}\PY{n+nb}{float}\PY{p}{)}\PY{c+c1}{\PYZsh{}And, get their probabilities.}
+        
+        \PY{c+c1}{\PYZsh{}Translating alpha into an N value so that on average \PYZsq{}alpha\PYZsq{} connections are made even if this is a float}
+        \PY{n}{m} \PY{o}{=} \PY{n+nb}{int}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{floor}\PY{p}{(}\PY{n}{alpha}\PY{p}{)}\PY{p}{)} \PY{o}{+} \PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{rand}\PY{p}{(}\PY{p}{)} \PY{o}{\PYZlt{}} \PY{n}{alpha} \PY{o}{\PYZhy{}} \PY{n}{np}\PY{o}{.}\PY{n}{floor}\PY{p}{(}\PY{n}{alpha}\PY{p}{)}\PY{p}{)}
+        
+        \PY{c+c1}{\PYZsh{}Edge Case: If this is the first run where we start with a Graph with no connections}
+        \PY{k}{if} \PY{n}{degs}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{p}{)} \PY{o}{==} \PY{l+m+mi}{0}\PY{p}{:}
+            \PY{n}{chosen} \PY{o}{=} \PY{n}{nodes} \PY{c+c1}{\PYZsh{}then just instantiate to the few nodes we initialized with                     }
+        \PY{k}{else}\PY{p}{:}
+            \PY{c+c1}{\PYZsh{}Otherwise, pick \PYZsq{}m\PYZsq{} connections to make **without replacement**,}
+            \PY{c+c1}{\PYZsh{}  by the probability calculated from their degree(s)}
+            \PY{n}{chosen} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{choice}\PY{p}{(}\PY{n}{nodes}\PY{p}{,} \PY{n}{size}\PY{o}{=}\PY{n}{m}\PY{p}{,} \PY{n}{replace}\PY{o}{=}\PY{k+kc}{False}\PY{p}{,} \PY{n}{p}\PY{o}{=}\PY{n}{degs} \PY{o}{/} \PY{n}{degs}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+        \PY{c+c1}{\PYZsh{}Add the new node as the next id number}
+        \PY{n}{new\PYZus{}id} \PY{o}{=} \PY{n+nb}{len}\PY{p}{(}\PY{n}{nodes}\PY{p}{)}
+        \PY{c+c1}{\PYZsh{}And connect it to \PYZsq{}alpha\PYZsq{} chosen nodes}
+        \PY{k}{for} \PY{n}{node\PYZus{}i} \PY{o+ow}{in} \PY{n}{chosen}\PY{p}{:}
+            \PY{n}{G}\PY{o}{.}\PY{n}{add\PYZus{}edge}\PY{p}{(}\PY{n+nb}{int}\PY{p}{(}\PY{n}{node\PYZus{}i}\PY{p}{)}\PY{p}{,} \PY{n}{new\PYZus{}id}\PY{p}{)}
+        \PY{c+c1}{\PYZsh{}Update N to reflect that we processed 1 new node!}
+        \PY{n}{N}\PY{o}{\PYZhy{}}\PY{o}{=}\PY{l+m+mi}{1}
+        \PY{c+c1}{\PYZsh{}Create a single snapshot per size once each threshold is reached:}
+        \PY{k}{if}\PY{p}{(}\PY{n}{G}\PY{o}{.}\PY{n}{number\PYZus{}of\PYZus{}nodes}\PY{p}{(}\PY{p}{)}\PY{o}{\PYZgt{}}\PY{o}{=}\PY{l+m+mi}{10} \PY{o+ow}{and} \PY{n}{Snapshot\PYZus{}10}\PY{o}{==}\PY{l+m+mi}{0}\PY{p}{)}\PY{p}{:}
+            \PY{n}{Snapshot\PYZus{}10} \PY{o}{=} \PY{n}{G}\PY{o}{.}\PY{n}{copy}\PY{p}{(}\PY{p}{)}
+        \PY{k}{if}\PY{p}{(}\PY{n}{G}\PY{o}{.}\PY{n}{number\PYZus{}of\PYZus{}nodes}\PY{p}{(}\PY{p}{)}\PY{o}{\PYZgt{}}\PY{o}{=}\PY{l+m+mi}{10}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2} \PY{o+ow}{and} \PY{n}{Snapshot\PYZus{}10\PYZus{}2}\PY{o}{==}\PY{l+m+mi}{0}\PY{p}{)}\PY{p}{:}
+            \PY{n}{Snapshot\PYZus{}10\PYZus{}2} \PY{o}{=} \PY{n}{G}\PY{o}{.}\PY{n}{copy}\PY{p}{(}\PY{p}{)}
+        \PY{k}{if}\PY{p}{(}\PY{n}{G}\PY{o}{.}\PY{n}{number\PYZus{}of\PYZus{}nodes}\PY{p}{(}\PY{p}{)}\PY{o}{\PYZgt{}}\PY{o}{=}\PY{l+m+mi}{10}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{3} \PY{o+ow}{and} \PY{n}{Snapshot\PYZus{}10\PYZus{}3}\PY{o}{==}\PY{l+m+mi}{0}\PY{p}{)}\PY{p}{:}
+            \PY{n}{Snapshot\PYZus{}10\PYZus{}3} \PY{o}{=} \PY{n}{G}\PY{o}{.}\PY{n}{copy}\PY{p}{(}\PY{p}{)}
+        \PY{k}{if}\PY{p}{(}\PY{n}{G}\PY{o}{.}\PY{n}{number\PYZus{}of\PYZus{}nodes}\PY{p}{(}\PY{p}{)}\PY{o}{\PYZgt{}}\PY{o}{=}\PY{l+m+mi}{10}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{4} \PY{o+ow}{and} \PY{n}{Snapshot\PYZus{}10\PYZus{}4}\PY{o}{==}\PY{l+m+mi}{0}\PY{p}{)}\PY{p}{:}
+            \PY{n}{Snapshot\PYZus{}10\PYZus{}4} \PY{o}{=} \PY{n}{G}\PY{o}{.}\PY{n}{copy}\PY{p}{(}\PY{p}{)}
+
+    \PY{k}{return} \PY{n}{G}\PY{p}{,}\PY{n}{Snapshot\PYZus{}10}\PY{p}{,}\PY{n}{Snapshot\PYZus{}10\PYZus{}2}\PY{p}{,}\PY{n}{Snapshot\PYZus{}10\PYZus{}3}\PY{p}{,}\PY{n}{Snapshot\PYZus{}10\PYZus{}4}
+
+\PY{n}{G}\PY{p}{,}\PY{n}{Snapshot\PYZus{}10}\PY{p}{,}\PY{n}{Snapshot\PYZus{}10\PYZus{}2}\PY{p}{,}\PY{n}{Snapshot\PYZus{}10\PYZus{}3}\PY{p}{,}\PY{n}{Snapshot\PYZus{}10\PYZus{}4} \PY{o}{=} \PY{n}{network\PYZus{}growth\PYZus{}model}\PY{p}{(}\PY{l+m+mi}{10}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{4}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{}(a)}
+\PY{n}{pos} \PY{o}{=} \PY{n}{nx}\PY{o}{.}\PY{n}{spring\PYZus{}layout}\PY{p}{(}\PY{n}{Snapshot\PYZus{}10\PYZus{}3}\PY{p}{)}
+
+\PY{n}{fig\PYZus{}a} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{p}{)}
+\PY{n}{nx}\PY{o}{.}\PY{n}{draw\PYZus{}networkx}\PY{p}{(}\PY{n}{Snapshot\PYZus{}10\PYZus{}3}\PY{p}{,} \PY{n}{pos}\PY{p}{,} \PY{n}{node\PYZus{}size}\PY{o}{=}\PY{l+m+mi}{150}\PY{p}{,} \PY{n}{edgecolors}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{.2}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{with\PYZus{}labels}\PY{o}{=}\PY{k+kc}{False}\PY{p}{,} \PY{n}{font\PYZus{}size}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{x\PYZhy{}small}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{edge\PYZus{}color}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{.6}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{Hughes_CNET5050_Assignment_2_files/Hughes_CNET5050_Assignment_2_1_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{3}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}(b) Getting the Degree Distributions per Snapshot}
+\PY{n}{degs\PYZus{}10\PYZus{}2}\PY{o}{=}\PY{p}{[}\PY{p}{]}
+\PY{n}{degs\PYZus{}10\PYZus{}3}\PY{o}{=}\PY{p}{[}\PY{p}{]}
+\PY{n}{degs\PYZus{}10\PYZus{}4}\PY{o}{=}\PY{p}{[}\PY{p}{]}
+\PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{101}\PY{p}{)}\PY{p}{:}
+    \PY{n}{G}\PY{p}{,}\PY{n}{Snapshot\PYZus{}10}\PY{p}{,}\PY{n}{Snapshot\PYZus{}10\PYZus{}2}\PY{p}{,}\PY{n}{Snapshot\PYZus{}10\PYZus{}3}\PY{p}{,}\PY{n}{Snapshot\PYZus{}10\PYZus{}4} \PY{o}{=} \PY{n}{network\PYZus{}growth\PYZus{}model}\PY{p}{(}\PY{l+m+mi}{10}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{4}\PY{p}{)}
+    \PY{n}{degs\PYZus{}10\PYZus{}2}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n+nb}{list}\PY{p}{(}\PY{n+nb}{dict}\PY{p}{(}\PY{n}{Snapshot\PYZus{}10\PYZus{}2}\PY{o}{.}\PY{n}{degree}\PY{p}{(}\PY{p}{)}\PY{p}{)}\PY{o}{.}\PY{n}{values}\PY{p}{(}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+    \PY{n}{degs\PYZus{}10\PYZus{}3}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n+nb}{list}\PY{p}{(}\PY{n+nb}{dict}\PY{p}{(}\PY{n}{Snapshot\PYZus{}10\PYZus{}3}\PY{o}{.}\PY{n}{degree}\PY{p}{(}\PY{p}{)}\PY{p}{)}\PY{o}{.}\PY{n}{values}\PY{p}{(}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+    \PY{n}{degs\PYZus{}10\PYZus{}4}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n+nb}{list}\PY{p}{(}\PY{n+nb}{dict}\PY{p}{(}\PY{n}{Snapshot\PYZus{}10\PYZus{}4}\PY{o}{.}\PY{n}{degree}\PY{p}{(}\PY{p}{)}\PY{p}{)}\PY{o}{.}\PY{n}{values}\PY{p}{(}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{4}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{m}\PY{o}{=}\PY{l+m+mi}{4}
+\PY{n}{k}\PY{o}{=}\PY{n+nb}{list}\PY{p}{(}\PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,}\PY{n}{np}\PY{o}{.}\PY{n}{max}\PY{p}{(}\PY{n+nb}{list}\PY{p}{(}\PY{n}{degs\PYZus{}10\PYZus{}4}\PY{p}{)}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{degs\PYZus{}10\PYZus{}2}\PY{p}{)}
+\PY{n}{theoretical} \PY{o}{=} \PY{p}{[}\PY{l+m+mi}{2}\PY{o}{*}\PY{p}{(}\PY{n}{m}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}\PY{p}{)}\PY{o}{*}\PY{p}{(}\PY{n}{k\PYZus{}i}\PY{o}{*}\PY{o}{*}\PY{o}{\PYZhy{}}\PY{l+m+mi}{3}\PY{p}{)} \PY{k}{for} \PY{n}{k\PYZus{}i} \PY{o+ow}{in} \PY{n}{k}\PY{p}{]}
+
+\PY{c+c1}{\PYZsh{}\PYZhy{}\PYZhy{}\PYZhy{}Plotting the Degree Distribution \PYZsq{}k\PYZsq{}}
+\PY{c+c1}{\PYZsh{}Starting the plotting process}
+\PY{n}{fig}\PY{p}{,} \PY{n}{ax} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{,}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{8}\PY{p}{,}\PY{l+m+mf}{3.5}\PY{p}{)}\PY{p}{,}\PY{n}{dpi}\PY{o}{=}\PY{l+m+mi}{300}\PY{p}{,}\PY{n}{sharey}\PY{o}{=}\PY{k+kc}{True}\PY{p}{,}\PY{n}{sharex}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}\PY{c+c1}{\PYZsh{}Note: fig is the plot container, while ax (i.e., the \PYZsq{}axes\PYZsq{}) is the plot itself}
+\PY{n}{bins} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{geomspace}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,}\PY{n}{np}\PY{o}{.}\PY{n}{max}\PY{p}{(}\PY{n+nb}{list}\PY{p}{(}\PY{n}{degs\PYZus{}10\PYZus{}2}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+
+\PY{n}{counts1}\PY{p}{,} \PY{n}{bin\PYZus{}edges} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{histogram}\PY{p}{(}\PY{n}{degs\PYZus{}10\PYZus{}2}\PY{p}{,} \PY{n}{bins}\PY{o}{=}\PY{n}{bins}\PY{p}{,} \PY{n}{density}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+\PY{c+c1}{\PYZsh{}NOTE: list[:\PYZhy{}1] is every item in the list up to the last (not including last)}
+\PY{c+c1}{\PYZsh{}and bin\PYZus{}edges[1:] is every item starting from 1 (i.e., not the 0th or first index)}
+\PY{c+c1}{\PYZsh{}sqrt() is the center of a log\PYZhy{}bin. As oppossed to the standard mean()}
+\PY{n}{bin\PYZus{}centers\PYZus{}10\PYZus{}2} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{sqrt}\PY{p}{(}\PY{n}{bin\PYZus{}edges}\PY{p}{[}\PY{p}{:}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{]} \PY{o}{*} \PY{n}{bin\PYZus{}edges}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{:}\PY{p}{]}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{loglog}\PY{p}{(}\PY{n}{bin\PYZus{}centers\PYZus{}10\PYZus{}2}\PY{p}{,} \PY{n}{counts1}\PY{p}{,} \PY{n}{marker}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{o}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{ms} \PY{o}{=} \PY{l+m+mi}{8}\PY{p}{,} \PY{n}{label}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{N=\PYZdl{}10\PYZca{}2\PYZdl{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+
+\PY{n}{bins} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{geomspace}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,}\PY{n}{np}\PY{o}{.}\PY{n}{max}\PY{p}{(}\PY{n+nb}{list}\PY{p}{(}\PY{n}{degs\PYZus{}10\PYZus{}3}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+\PY{n}{counts2}\PY{p}{,} \PY{n}{bin\PYZus{}edges} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{histogram}\PY{p}{(}\PY{n}{degs\PYZus{}10\PYZus{}3}\PY{p}{,} \PY{n}{bins}\PY{o}{=}\PY{n}{bins}\PY{p}{,} \PY{n}{density}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+\PY{n}{bin\PYZus{}centers\PYZus{}10\PYZus{}3} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{sqrt}\PY{p}{(}\PY{n}{bin\PYZus{}edges}\PY{p}{[}\PY{p}{:}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{]} \PY{o}{*} \PY{n}{bin\PYZus{}edges}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{:}\PY{p}{]}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{loglog}\PY{p}{(}\PY{n}{bin\PYZus{}centers\PYZus{}10\PYZus{}3}\PY{p}{,} \PY{n}{counts2}\PY{p}{,} \PY{n}{marker}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{o}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{ms} \PY{o}{=} \PY{l+m+mi}{6}\PY{p}{,}\PY{n}{label}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{N=\PYZdl{}10\PYZca{}3\PYZdl{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+
+\PY{n}{bins} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{geomspace}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,}\PY{n}{np}\PY{o}{.}\PY{n}{max}\PY{p}{(}\PY{n+nb}{list}\PY{p}{(}\PY{n}{degs\PYZus{}10\PYZus{}4}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+\PY{n}{counts3}\PY{p}{,} \PY{n}{bin\PYZus{}edges} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{histogram}\PY{p}{(}\PY{n}{degs\PYZus{}10\PYZus{}4}\PY{p}{,} \PY{n}{bins}\PY{o}{=}\PY{n}{bins}\PY{p}{,} \PY{n}{density}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+\PY{n}{bin\PYZus{}centers\PYZus{}10\PYZus{}4} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{sqrt}\PY{p}{(}\PY{n}{bin\PYZus{}edges}\PY{p}{[}\PY{p}{:}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{]} \PY{o}{*} \PY{n}{bin\PYZus{}edges}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{:}\PY{p}{]}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{loglog}\PY{p}{(}\PY{n}{bin\PYZus{}centers\PYZus{}10\PYZus{}4}\PY{p}{,} \PY{n}{counts3}\PY{p}{,} \PY{n}{marker}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{o}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{ms} \PY{o}{=} \PY{l+m+mi}{4}\PY{p}{,}\PY{n}{label}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{N=\PYZdl{}10\PYZca{}4\PYZdl{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+
+
+\PY{n}{ax}\PY{o}{.}\PY{n}{loglog}\PY{p}{(}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{k}\PY{p}{,}\PY{n}{theoretical}\PY{p}{,} \PY{n}{color} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{r}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{ms} \PY{o}{=} \PY{l+m+mi}{2}\PY{p}{,}\PY{n}{label}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Theoretical Distribution}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)} \PY{c+c1}{\PYZsh{}Plotting the Theoretical}
+
+\PY{c+c1}{\PYZsh{}Specifying figure details below:}
+\PY{n}{handles}\PY{p}{,} \PY{n}{labels} \PY{o}{=} \PY{n}{ax}\PY{o}{.}\PY{n}{get\PYZus{}legend\PYZus{}handles\PYZus{}labels}\PY{p}{(}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{legend}\PY{p}{(}\PY{n}{handles}\PY{o}{=}\PY{n}{handles}\PY{p}{,} \PY{n}{labels}\PY{o}{=}\PY{n}{labels}\PY{p}{,}\PY{n}{loc}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{upper right}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{fontsize}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{small}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Degree Distribution Empirical vs. Theoretical}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}xlabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{k}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}ylabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Probability \PYZdl{}P\PYZus{}k\PYZdl{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{grid}\PY{p}{(}\PY{k+kc}{True}\PY{p}{)}
+
+\PY{n}{plt}\PY{o}{.}\PY{n}{tight\PYZus{}layout}\PY{p}{(}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+[[20, 29, 14, 28, 33, 30, 28, 11, 14, 16, 15, 18, 17, 7, 19, 9, 15, 13, 10, 11]
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{Hughes_CNET5050_Assignment_2_files/Hughes_CNET5050_Assignment_2_3_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{5}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}(c)}
+
+\PY{c+c1}{\PYZsh{}\PYZhy{}\PYZhy{}\PYZhy{}Plotting the Complementary Cumulative Degree Distribution \PYZsq{}k\PYZsq{}}
+\PY{c+c1}{\PYZsh{}Starting the plotting process}
+\PY{n}{fig}\PY{p}{,} \PY{n}{ax} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{,}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{8}\PY{p}{,}\PY{l+m+mf}{3.5}\PY{p}{)}\PY{p}{,}\PY{n}{dpi}\PY{o}{=}\PY{l+m+mi}{300}\PY{p}{,}\PY{n}{sharey}\PY{o}{=}\PY{k+kc}{True}\PY{p}{,}\PY{n}{sharex}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}\PY{c+c1}{\PYZsh{}Note: fig is the plot container, while ax (i.e., the \PYZsq{}axes\PYZsq{}) is the plot itself}
+\PY{n}{bins} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{geomspace}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,}\PY{n}{np}\PY{o}{.}\PY{n}{max}\PY{p}{(}\PY{n+nb}{list}\PY{p}{(}\PY{n}{degs\PYZus{}10\PYZus{}4}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+
+\PY{n}{counts}\PY{p}{,} \PY{n}{bin\PYZus{}edges} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{histogram}\PY{p}{(}\PY{n}{degs\PYZus{}10\PYZus{}2}\PY{p}{,} \PY{n}{bins}\PY{o}{=}\PY{n}{bins}\PY{p}{,} \PY{n}{density}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+\PY{n}{bin\PYZus{}centers\PYZus{}10\PYZus{}2} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{sqrt}\PY{p}{(}\PY{n}{bin\PYZus{}edges}\PY{p}{[}\PY{p}{:}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{]} \PY{o}{*} \PY{n}{bin\PYZus{}edges}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{:}\PY{p}{]}\PY{p}{)}
+\PY{n}{dx} \PY{o}{=} \PY{n}{bin\PYZus{}edges}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]} \PY{o}{\PYZhy{}} \PY{n}{bin\PYZus{}edges}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}
+\PY{n}{ccdd} \PY{o}{=} \PY{l+m+mi}{1}\PY{o}{\PYZhy{}}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{cumsum}\PY{p}{(}\PY{n}{counts}\PY{p}{)}\PY{o}{*}\PY{n}{dx}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{loglog}\PY{p}{(}\PY{n}{bin\PYZus{}centers\PYZus{}10\PYZus{}2}\PY{p}{,} \PY{n}{ccdd}\PY{p}{,} \PY{n}{marker}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{o}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{ms} \PY{o}{=} \PY{l+m+mi}{8}\PY{p}{,}\PY{n}{label}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{N=\PYZdl{}10\PYZca{}2\PYZdl{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+
+\PY{n}{counts}\PY{p}{,} \PY{n}{bin\PYZus{}edges} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{histogram}\PY{p}{(}\PY{n}{degs\PYZus{}10\PYZus{}3}\PY{p}{,} \PY{n}{bins}\PY{o}{=}\PY{n}{bins}\PY{p}{,} \PY{n}{density}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+\PY{n}{bin\PYZus{}centers\PYZus{}10\PYZus{}3} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{sqrt}\PY{p}{(}\PY{n}{bin\PYZus{}edges}\PY{p}{[}\PY{p}{:}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{]} \PY{o}{*} \PY{n}{bin\PYZus{}edges}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{:}\PY{p}{]}\PY{p}{)}
+\PY{n}{dx} \PY{o}{=} \PY{n}{bin\PYZus{}edges}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]} \PY{o}{\PYZhy{}} \PY{n}{bin\PYZus{}edges}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}
+\PY{n}{ccdd} \PY{o}{=} \PY{l+m+mi}{1}\PY{o}{\PYZhy{}}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{cumsum}\PY{p}{(}\PY{n}{counts}\PY{p}{)}\PY{o}{*}\PY{n}{dx}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{loglog}\PY{p}{(}\PY{n}{bin\PYZus{}centers\PYZus{}10\PYZus{}3}\PY{p}{,} \PY{n}{ccdd}\PY{p}{,} \PY{n}{marker}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{o}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{ms} \PY{o}{=} \PY{l+m+mi}{6}\PY{p}{,}\PY{n}{label}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{N=\PYZdl{}10\PYZca{}3\PYZdl{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+
+\PY{n}{counts}\PY{p}{,} \PY{n}{bin\PYZus{}edges} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{histogram}\PY{p}{(}\PY{n}{degs\PYZus{}10\PYZus{}4}\PY{p}{,} \PY{n}{bins}\PY{o}{=}\PY{n}{bins}\PY{p}{,} \PY{n}{density}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+\PY{n}{bin\PYZus{}centers\PYZus{}10\PYZus{}4} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{sqrt}\PY{p}{(}\PY{n}{bin\PYZus{}edges}\PY{p}{[}\PY{p}{:}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{]} \PY{o}{*} \PY{n}{bin\PYZus{}edges}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{:}\PY{p}{]}\PY{p}{)}
+\PY{n}{dx} \PY{o}{=} \PY{n}{bin\PYZus{}edges}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]} \PY{o}{\PYZhy{}} \PY{n}{bin\PYZus{}edges}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}
+\PY{n}{ccdd} \PY{o}{=} \PY{l+m+mi}{1}\PY{o}{\PYZhy{}}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{cumsum}\PY{p}{(}\PY{n}{counts}\PY{p}{)}\PY{o}{*}\PY{n}{dx}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{loglog}\PY{p}{(}\PY{n}{bin\PYZus{}centers\PYZus{}10\PYZus{}4}\PY{p}{,} \PY{n}{ccdd}\PY{p}{,} \PY{n}{marker}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{o}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{ms} \PY{o}{=} \PY{l+m+mi}{4}\PY{p}{,}\PY{n}{label}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{N=\PYZdl{}10\PYZca{}4\PYZdl{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+
+\PY{n}{ax}\PY{o}{.}\PY{n}{loglog}\PY{p}{(}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{}Specifying figure details below:}
+\PY{n}{handles}\PY{p}{,} \PY{n}{labels} \PY{o}{=} \PY{n}{ax}\PY{o}{.}\PY{n}{get\PYZus{}legend\PYZus{}handles\PYZus{}labels}\PY{p}{(}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{legend}\PY{p}{(}\PY{n}{handles}\PY{o}{=}\PY{n}{handles}\PY{p}{,} \PY{n}{labels}\PY{o}{=}\PY{n}{labels}\PY{p}{,}\PY{n}{loc}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{upper right}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{fontsize}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{small}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Complementary Cumulative Degree Distribution Empirical vs. Theoretical}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}xlabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{k}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}ylabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Probability \PYZdl{}P\PYZus{}k\PYZdl{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{grid}\PY{p}{(}\PY{k+kc}{True}\PY{p}{)}
+
+\PY{n}{plt}\PY{o}{.}\PY{n}{tight\PYZus{}layout}\PY{p}{(}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{Hughes_CNET5050_Assignment_2_files/Hughes_CNET5050_Assignment_2_4_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{7}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}Getting the Clustering per Snapshot}
+\PY{n}{cc\PYZus{}10\PYZus{}2}\PY{o}{=}\PY{p}{[}\PY{p}{]}
+\PY{n}{cc\PYZus{}10\PYZus{}3}\PY{o}{=}\PY{p}{[}\PY{p}{]}
+\PY{n}{cc\PYZus{}10\PYZus{}4}\PY{o}{=}\PY{p}{[}\PY{p}{]}
+\PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{101}\PY{p}{)}\PY{p}{:}
+    \PY{n}{G}\PY{p}{,}\PY{n}{Snapshot\PYZus{}10}\PY{p}{,}\PY{n}{Snapshot\PYZus{}10\PYZus{}2}\PY{p}{,}\PY{n}{Snapshot\PYZus{}10\PYZus{}3}\PY{p}{,}\PY{n}{Snapshot\PYZus{}10\PYZus{}4} \PY{o}{=} \PY{n}{network\PYZus{}growth\PYZus{}model}\PY{p}{(}\PY{l+m+mi}{10}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{4}\PY{p}{)}
+    \PY{n}{cc\PYZus{}10\PYZus{}2}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{nx}\PY{o}{.}\PY{n}{average\PYZus{}clustering}\PY{p}{(}\PY{n}{Snapshot\PYZus{}10\PYZus{}2}\PY{p}{)}\PY{p}{)}
+    \PY{n}{cc\PYZus{}10\PYZus{}3}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{nx}\PY{o}{.}\PY{n}{average\PYZus{}clustering}\PY{p}{(}\PY{n}{Snapshot\PYZus{}10\PYZus{}3}\PY{p}{)}\PY{p}{)}
+    \PY{n}{cc\PYZus{}10\PYZus{}4}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{nx}\PY{o}{.}\PY{n}{average\PYZus{}clustering}\PY{p}{(}\PY{n}{Snapshot\PYZus{}10\PYZus{}4}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{13}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}(d)}
+
+\PY{c+c1}{\PYZsh{}\PYZhy{}\PYZhy{}\PYZhy{}Plotting the Local Clustering Coefficient Distribution \PYZsq{}CC\PYZsq{}}
+\PY{n}{fig}\PY{p}{,} \PY{n}{ax} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{,}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{8}\PY{p}{,}\PY{l+m+mf}{3.5}\PY{p}{)}\PY{p}{,}\PY{n}{dpi}\PY{o}{=}\PY{l+m+mi}{200}\PY{p}{,}\PY{n}{sharex}\PY{o}{=}\PY{k+kc}{True}\PY{p}{,}\PY{n}{sharey}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{}Since there are cases where the minimum CC can be 0, }
+\PY{c+c1}{\PYZsh{} I\PYZsq{}m starting the plot with the second\PYZhy{}most minimum}
+
+\PY{c+c1}{\PYZsh{}Gathering 2nd most mins}
+\PY{n}{cc\PYZus{}10\PYZus{}2}\PY{o}{=}\PY{n}{np}\PY{o}{.}\PY{n}{asarray}\PY{p}{(}\PY{n}{cc\PYZus{}10\PYZus{}2}\PY{p}{)}
+\PY{n}{cc\PYZus{}10\PYZus{}2\PYZus{}min2}\PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{amin}\PY{p}{(}\PY{n}{cc\PYZus{}10\PYZus{}2}\PY{p}{[}\PY{n}{cc\PYZus{}10\PYZus{}2} \PY{o}{!=} \PY{n}{np}\PY{o}{.}\PY{n}{amin}\PY{p}{(}\PY{n}{cc\PYZus{}10\PYZus{}2}\PY{p}{)}\PY{p}{]}\PY{p}{)}
+\PY{n}{cc\PYZus{}10\PYZus{}3}\PY{o}{=}\PY{n}{np}\PY{o}{.}\PY{n}{asarray}\PY{p}{(}\PY{n}{cc\PYZus{}10\PYZus{}3}\PY{p}{)}
+\PY{n}{cc\PYZus{}10\PYZus{}3\PYZus{}min2}\PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{amin}\PY{p}{(}\PY{n}{cc\PYZus{}10\PYZus{}3}\PY{p}{[}\PY{n}{cc\PYZus{}10\PYZus{}3} \PY{o}{!=} \PY{n}{np}\PY{o}{.}\PY{n}{amin}\PY{p}{(}\PY{n}{cc\PYZus{}10\PYZus{}3}\PY{p}{)}\PY{p}{]}\PY{p}{)}
+\PY{n}{cc\PYZus{}10\PYZus{}4}\PY{o}{=}\PY{n}{np}\PY{o}{.}\PY{n}{asarray}\PY{p}{(}\PY{n}{cc\PYZus{}10\PYZus{}4}\PY{p}{)}
+\PY{n}{cc\PYZus{}10\PYZus{}4\PYZus{}min2}\PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{amin}\PY{p}{(}\PY{n}{cc\PYZus{}10\PYZus{}4}\PY{p}{[}\PY{n}{cc\PYZus{}10\PYZus{}4} \PY{o}{!=} \PY{n}{np}\PY{o}{.}\PY{n}{amin}\PY{p}{(}\PY{n}{cc\PYZus{}10\PYZus{}4}\PY{p}{)}\PY{p}{]}\PY{p}{)}
+
+\PY{n}{N} \PY{o}{=} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,}\PY{p}{(}\PY{l+m+mi}{10}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{4}\PY{p}{)} \PY{o}{+}\PY{l+m+mi}{1}\PY{p}{)}
+\PY{n}{cc\PYZus{}t}\PY{o}{=} \PY{p}{[}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{log}\PY{p}{(}\PY{n}{N\PYZus{}i}\PY{p}{)}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}\PY{p}{)}\PY{o}{/}\PY{p}{(}\PY{n}{N\PYZus{}i}\PY{p}{)} \PY{k}{for} \PY{n}{N\PYZus{}i} \PY{o+ow}{in} \PY{n}{N}\PY{p}{]}
+\PY{n}{cc\PYZus{}t}\PY{o}{=}\PY{n}{np}\PY{o}{.}\PY{n}{asarray}\PY{p}{(}\PY{n}{cc\PYZus{}t}\PY{p}{)}
+\PY{n}{cc\PYZus{}t\PYZus{}min2}\PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{amin}\PY{p}{(}\PY{n}{cc\PYZus{}t}\PY{p}{[}\PY{n}{cc\PYZus{}t} \PY{o}{!=} \PY{n}{np}\PY{o}{.}\PY{n}{amin}\PY{p}{(}\PY{n}{cc\PYZus{}t}\PY{p}{)}\PY{p}{]}\PY{p}{)}
+
+\PY{n}{cc\PYZus{}bins2} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{geomspace}\PY{p}{(}\PY{n}{cc\PYZus{}10\PYZus{}2\PYZus{}min2}\PY{p}{,}\PY{n}{np}\PY{o}{.}\PY{n}{max}\PY{p}{(}\PY{n}{cc\PYZus{}10\PYZus{}2}\PY{p}{)}\PY{p}{)}
+\PY{n}{cc\PYZus{}bins3} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{geomspace}\PY{p}{(}\PY{n}{cc\PYZus{}10\PYZus{}3\PYZus{}min2}\PY{p}{,}\PY{n}{np}\PY{o}{.}\PY{n}{max}\PY{p}{(}\PY{n}{cc\PYZus{}10\PYZus{}3}\PY{p}{)}\PY{p}{)}
+\PY{n}{cc\PYZus{}bins4} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{geomspace}\PY{p}{(}\PY{n}{cc\PYZus{}10\PYZus{}4\PYZus{}min2}\PY{p}{,}\PY{n}{np}\PY{o}{.}\PY{n}{max}\PY{p}{(}\PY{n}{cc\PYZus{}10\PYZus{}4}\PY{p}{)}\PY{p}{)}
+\PY{n}{cc\PYZus{}bins5} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{geomspace}\PY{p}{(}\PY{n}{cc\PYZus{}t\PYZus{}min2}\PY{p}{,}\PY{n}{np}\PY{o}{.}\PY{n}{max}\PY{p}{(}\PY{n}{cc\PYZus{}t}\PY{p}{)}\PY{p}{)}
+
+\PY{n}{counts}\PY{p}{,} \PY{n}{bin\PYZus{}edges} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{histogram}\PY{p}{(}\PY{n}{cc\PYZus{}10\PYZus{}2}\PY{p}{,} \PY{n}{bins}\PY{o}{=}\PY{n}{cc\PYZus{}bins2}\PY{p}{,} \PY{n}{density}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+
+\PY{n}{bin\PYZus{}centers\PYZus{}10\PYZus{}2} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{sqrt}\PY{p}{(}\PY{n}{bin\PYZus{}edges}\PY{p}{[}\PY{p}{:}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{]} \PY{o}{*} \PY{n}{bin\PYZus{}edges}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{:}\PY{p}{]}\PY{p}{)}
+\PY{c+c1}{\PYZsh{}ax.loglog(bin\PYZus{}centers\PYZus{}10\PYZus{}2, counts, marker=\PYZsq{}o\PYZsq{}, ms=8, label=\PYZdq{}\PYZdl{}N=10\PYZca{}2\PYZdl{}\PYZdq{})}
+\PY{n}{ax}\PY{o}{.}\PY{n}{loglog}\PY{p}{(}\PY{l+m+mi}{10}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}\PY{p}{,} \PY{n}{np}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{n}{cc\PYZus{}10\PYZus{}2}\PY{p}{)}\PY{p}{,} \PY{n}{marker}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{o}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{ms}\PY{o}{=}\PY{l+m+mi}{8}\PY{p}{,} \PY{n}{label}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZdl{}N=10\PYZca{}2\PYZdl{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+
+\PY{n}{counts}\PY{p}{,} \PY{n}{bin\PYZus{}edges} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{histogram}\PY{p}{(}\PY{n}{cc\PYZus{}10\PYZus{}3}\PY{p}{,} \PY{n}{bins}\PY{o}{=}\PY{n}{cc\PYZus{}bins3}\PY{p}{,} \PY{n}{density}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+\PY{n}{bin\PYZus{}centers\PYZus{}10\PYZus{}3} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{sqrt}\PY{p}{(}\PY{n}{bin\PYZus{}edges}\PY{p}{[}\PY{p}{:}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{]} \PY{o}{*} \PY{n}{bin\PYZus{}edges}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{:}\PY{p}{]}\PY{p}{)}
+\PY{c+c1}{\PYZsh{}ax.loglog(bin\PYZus{}centers\PYZus{}10\PYZus{}3, counts, marker=\PYZsq{}o\PYZsq{},ms=6,label=\PYZdq{}\PYZdl{}N=10\PYZca{}3\PYZdl{}\PYZdq{})}
+\PY{n}{ax}\PY{o}{.}\PY{n}{loglog}\PY{p}{(}\PY{l+m+mi}{10}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{3}\PY{p}{,} \PY{n}{np}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{n}{cc\PYZus{}10\PYZus{}3}\PY{p}{)}\PY{p}{,} \PY{n}{marker}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{o}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{ms}\PY{o}{=}\PY{l+m+mi}{8}\PY{p}{,} \PY{n}{label}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZdl{}N=10\PYZca{}3\PYZdl{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+
+\PY{n}{counts}\PY{p}{,} \PY{n}{bin\PYZus{}edges} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{histogram}\PY{p}{(}\PY{n}{cc\PYZus{}10\PYZus{}4}\PY{p}{,} \PY{n}{bins}\PY{o}{=}\PY{n}{cc\PYZus{}bins4}\PY{p}{,} \PY{n}{density}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+\PY{n}{bin\PYZus{}centers\PYZus{}10\PYZus{}4} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{sqrt}\PY{p}{(}\PY{n}{bin\PYZus{}edges}\PY{p}{[}\PY{p}{:}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{]} \PY{o}{*} \PY{n}{bin\PYZus{}edges}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{:}\PY{p}{]}\PY{p}{)}
+\PY{c+c1}{\PYZsh{}ax.loglog(bin\PYZus{}centers\PYZus{}10\PYZus{}4, counts, marker=\PYZsq{}o\PYZsq{},ms=4,label=\PYZdq{}\PYZdl{}N=10\PYZca{}4\PYZdl{}\PYZdq{})}
+\PY{n}{ax}\PY{o}{.}\PY{n}{loglog}\PY{p}{(}\PY{l+m+mi}{10}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{4}\PY{p}{,} \PY{n}{np}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{n}{cc\PYZus{}10\PYZus{}4}\PY{p}{)}\PY{p}{,} \PY{n}{marker}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{o}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{ms}\PY{o}{=}\PY{l+m+mi}{8}\PY{p}{,} \PY{n}{label}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZdl{}N=10\PYZca{}4\PYZdl{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+
+\PY{n}{counts}\PY{p}{,} \PY{n}{bin\PYZus{}edges} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{histogram}\PY{p}{(}\PY{n}{cc\PYZus{}t}\PY{p}{,} \PY{n}{bins}\PY{o}{=}\PY{n}{cc\PYZus{}bins5}\PY{p}{,} \PY{n}{density}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+\PY{n}{bin\PYZus{}centers\PYZus{}t} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{sqrt}\PY{p}{(}\PY{n}{bin\PYZus{}edges}\PY{p}{[}\PY{p}{:}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{]} \PY{o}{*} \PY{n}{bin\PYZus{}edges}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{:}\PY{p}{]}\PY{p}{)}
+\PY{c+c1}{\PYZsh{}ax.loglog(bin\PYZus{}centers\PYZus{}t, counts, marker=\PYZsq{}o\PYZsq{},ms=2,label=\PYZdq{}Theoretical Average\PYZdq{})}
+\PY{n}{ax}\PY{o}{.}\PY{n}{loglog}\PY{p}{(}\PY{n}{N}\PY{p}{,} \PY{n}{cc\PYZus{}t}\PY{p}{,} \PY{n}{marker}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{o}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{ms}\PY{o}{=}\PY{l+m+mi}{2}\PY{p}{,} \PY{n}{label}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZdl{}Theoretical\PYZdl{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{}ax.plot(N,cc\PYZus{}t,color = \PYZsq{}b\PYZsq{},label=\PYZdq{}Theoretical Average\PYZdq{})}
+
+\PY{n}{ax}\PY{o}{.}\PY{n}{loglog}\PY{p}{(}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{}Specifying figure details below:}
+\PY{n}{handles}\PY{p}{,} \PY{n}{labels} \PY{o}{=} \PY{n}{ax}\PY{o}{.}\PY{n}{get\PYZus{}legend\PYZus{}handles\PYZus{}labels}\PY{p}{(}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{legend}\PY{p}{(}\PY{n}{handles}\PY{o}{=}\PY{n}{handles}\PY{p}{,} \PY{n}{labels}\PY{o}{=}\PY{n}{labels}\PY{p}{,}\PY{n}{loc}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{upper right}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{fontsize}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{small}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Clustering Coefficient Empirical vs. Theoretical}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}xlabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Number of Nodes (N)}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}ylabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Clustering Coefficient}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{c+c1}{\PYZsh{}ax.set\PYZus{}ylabel(\PYZdq{}Probability \PYZdl{}P\PYZus{}\PYZob{}CC\PYZcb{}\PYZdl{}\PYZdq{})}
+\PY{n}{ax}\PY{o}{.}\PY{n}{grid}\PY{p}{(}\PY{k+kc}{True}\PY{p}{)}
+
+\PY{n}{plt}\PY{o}{.}\PY{n}{tight\PYZus{}layout}\PY{p}{(}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{Hughes_CNET5050_Assignment_2_files/Hughes_CNET5050_Assignment_2_6_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{15}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}(e)}
+\PY{n}{tracked\PYZus{}10}\PY{o}{=}\PY{p}{[}\PY{p}{]}
+\PY{n}{tracked\PYZus{}10\PYZus{}2}\PY{o}{=}\PY{p}{[}\PY{p}{]}
+\PY{n}{tracked\PYZus{}10\PYZus{}3}\PY{o}{=}\PY{p}{[}\PY{p}{]}
+\PY{n}{tracked\PYZus{}G}\PY{o}{=}\PY{p}{[}\PY{p}{]}
+\PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{101}\PY{p}{)}\PY{p}{:}\PY{c+c1}{\PYZsh{}Tracking the first node}
+    \PY{n}{G}\PY{p}{,}\PY{n}{Snapshot\PYZus{}10}\PY{p}{,}\PY{n}{Snapshot\PYZus{}10\PYZus{}2}\PY{p}{,}\PY{n}{Snapshot\PYZus{}10\PYZus{}3}\PY{p}{,}\PY{n}{Snapshot\PYZus{}10\PYZus{}4} \PY{o}{=} \PY{n}{network\PYZus{}growth\PYZus{}model}\PY{p}{(}\PY{l+m+mi}{5000}\PY{p}{)}
+    \PY{n}{tracked\PYZus{}10}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n+nb}{list}\PY{p}{(}\PY{n+nb}{dict}\PY{p}{(}\PY{n}{Snapshot\PYZus{}10}\PY{o}{.}\PY{n}{degree}\PY{p}{(}\PY{p}{)}\PY{p}{)}\PY{o}{.}\PY{n}{values}\PY{p}{(}\PY{p}{)}\PY{p}{)}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{)}
+    \PY{n}{tracked\PYZus{}10\PYZus{}2}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n+nb}{list}\PY{p}{(}\PY{n+nb}{dict}\PY{p}{(}\PY{n}{Snapshot\PYZus{}10\PYZus{}2}\PY{o}{.}\PY{n}{degree}\PY{p}{(}\PY{p}{)}\PY{p}{)}\PY{o}{.}\PY{n}{values}\PY{p}{(}\PY{p}{)}\PY{p}{)}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{)}
+    \PY{n}{tracked\PYZus{}10\PYZus{}3}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n+nb}{list}\PY{p}{(}\PY{n+nb}{dict}\PY{p}{(}\PY{n}{Snapshot\PYZus{}10\PYZus{}3}\PY{o}{.}\PY{n}{degree}\PY{p}{(}\PY{p}{)}\PY{p}{)}\PY{o}{.}\PY{n}{values}\PY{p}{(}\PY{p}{)}\PY{p}{)}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{)}
+    \PY{n}{tracked\PYZus{}G}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n+nb}{list}\PY{p}{(}\PY{n+nb}{dict}\PY{p}{(}\PY{n}{G}\PY{o}{.}\PY{n}{degree}\PY{p}{(}\PY{p}{)}\PY{p}{)}\PY{o}{.}\PY{n}{values}\PY{p}{(}\PY{p}{)}\PY{p}{)}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{23}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{m}\PY{o}{=}\PY{l+m+mi}{4}
+\PY{n}{t}\PY{o}{=}\PY{p}{[}\PY{l+m+mi}{10}\PY{p}{,}\PY{l+m+mi}{100}\PY{p}{,}\PY{l+m+mi}{1000}\PY{p}{,}\PY{l+m+mi}{5000}\PY{p}{]}
+\PY{n}{t\PYZus{}init} \PY{o}{=} \PY{l+m+mi}{3} \PY{c+c1}{\PYZsh{}For a N=4 complete graph, t\PYZus{}i=3}
+\PY{n}{theoretical} \PY{o}{=} \PY{p}{[}\PY{n}{m}\PY{o}{*}\PY{n}{np}\PY{o}{.}\PY{n}{sqrt}\PY{p}{(}\PY{n}{t\PYZus{}i}\PY{o}{/}\PY{n}{t\PYZus{}init}\PY{p}{)} \PY{k}{for} \PY{n}{t\PYZus{}i} \PY{o+ow}{in} \PY{n}{t}\PY{p}{]}
+
+\PY{c+c1}{\PYZsh{}\PYZhy{}\PYZhy{}\PYZhy{}Plotting the Degree Distribution \PYZsq{}k\PYZsq{}}
+\PY{c+c1}{\PYZsh{}Starting the plotting process}
+\PY{n}{fig}\PY{p}{,} \PY{n}{ax} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{,}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{8}\PY{p}{,}\PY{l+m+mf}{3.5}\PY{p}{)}\PY{p}{,}\PY{n}{dpi}\PY{o}{=}\PY{l+m+mi}{300}\PY{p}{,}\PY{n}{sharey}\PY{o}{=}\PY{k+kc}{True}\PY{p}{,}\PY{n}{sharex}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}\PY{c+c1}{\PYZsh{}Note: fig is the plot container, while ax (i.e., the \PYZsq{}axes\PYZsq{}) is the plot itself}
+\PY{n}{bins} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{geomspace}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,}\PY{n}{np}\PY{o}{.}\PY{n}{max}\PY{p}{(}\PY{p}{(}\PY{n}{tracked\PYZus{}10}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+
+\PY{n}{counts}\PY{p}{,} \PY{n}{bin\PYZus{}edges} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{histogram}\PY{p}{(}\PY{n}{tracked\PYZus{}10}\PY{p}{,} \PY{n}{bins}\PY{o}{=}\PY{n}{bins}\PY{p}{,} \PY{n}{density}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+\PY{n}{bin\PYZus{}centers\PYZus{}10} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{sqrt}\PY{p}{(}\PY{n}{bin\PYZus{}edges}\PY{p}{[}\PY{p}{:}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{]} \PY{o}{*} \PY{n}{bin\PYZus{}edges}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{:}\PY{p}{]}\PY{p}{)}
+\PY{c+c1}{\PYZsh{}ax.loglog(bin\PYZus{}centers\PYZus{}10, counts, marker=\PYZsq{}o\PYZsq{}, ms=8, label=\PYZdq{}N=10\PYZdq{})}
+\PY{n}{ax}\PY{o}{.}\PY{n}{loglog}\PY{p}{(}\PY{l+m+mi}{10}\PY{p}{,} \PY{n}{np}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{n}{tracked\PYZus{}10}\PY{p}{)}\PY{p}{,} \PY{n}{marker}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{o}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{ms}\PY{o}{=}\PY{l+m+mi}{8}\PY{p}{,} \PY{n}{label}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{N=10}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+
+\PY{n}{bins} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{geomspace}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,}\PY{n}{np}\PY{o}{.}\PY{n}{max}\PY{p}{(}\PY{p}{(}\PY{n}{tracked\PYZus{}10\PYZus{}2}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+\PY{n}{counts}\PY{p}{,} \PY{n}{bin\PYZus{}edges} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{histogram}\PY{p}{(}\PY{n}{tracked\PYZus{}10\PYZus{}2}\PY{p}{,} \PY{n}{bins}\PY{o}{=}\PY{n}{bins}\PY{p}{,} \PY{n}{density}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+\PY{n}{bin\PYZus{}centers\PYZus{}10\PYZus{}2} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{sqrt}\PY{p}{(}\PY{n}{bin\PYZus{}edges}\PY{p}{[}\PY{p}{:}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{]} \PY{o}{*} \PY{n}{bin\PYZus{}edges}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{:}\PY{p}{]}\PY{p}{)}
+\PY{c+c1}{\PYZsh{}ax.loglog(bin\PYZus{}centers\PYZus{}10\PYZus{}2, counts, marker=\PYZsq{}o\PYZsq{},ms=6,label=\PYZdq{}N=100\PYZdq{})}
+\PY{n}{ax}\PY{o}{.}\PY{n}{loglog}\PY{p}{(}\PY{l+m+mi}{10}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}\PY{p}{,} \PY{n}{np}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{n}{tracked\PYZus{}10\PYZus{}2}\PY{p}{)}\PY{p}{,} \PY{n}{marker}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{o}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{ms}\PY{o}{=}\PY{l+m+mi}{8}\PY{p}{,} \PY{n}{label}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{N=100}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+
+\PY{n}{bins} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{geomspace}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,}\PY{n}{np}\PY{o}{.}\PY{n}{max}\PY{p}{(}\PY{p}{(}\PY{n}{tracked\PYZus{}10\PYZus{}3}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+\PY{n}{counts}\PY{p}{,} \PY{n}{bin\PYZus{}edges} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{histogram}\PY{p}{(}\PY{n}{tracked\PYZus{}10\PYZus{}3}\PY{p}{,} \PY{n}{bins}\PY{o}{=}\PY{n}{bins}\PY{p}{,} \PY{n}{density}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+\PY{n}{bin\PYZus{}centers\PYZus{}10\PYZus{}3} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{sqrt}\PY{p}{(}\PY{n}{bin\PYZus{}edges}\PY{p}{[}\PY{p}{:}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{]} \PY{o}{*} \PY{n}{bin\PYZus{}edges}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{:}\PY{p}{]}\PY{p}{)}
+\PY{c+c1}{\PYZsh{}ax.loglog(bin\PYZus{}centers\PYZus{}10\PYZus{}3, counts, marker=\PYZsq{}o\PYZsq{},ms=4,label=\PYZdq{}N=1000\PYZdq{})}
+\PY{n}{ax}\PY{o}{.}\PY{n}{loglog}\PY{p}{(}\PY{l+m+mi}{10}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{3}\PY{p}{,} \PY{n}{np}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{n}{tracked\PYZus{}10\PYZus{}3}\PY{p}{)}\PY{p}{,} \PY{n}{marker}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{o}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{ms}\PY{o}{=}\PY{l+m+mi}{8}\PY{p}{,} \PY{n}{label}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{N=1000}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+
+\PY{n}{bins} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{geomspace}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,}\PY{n}{np}\PY{o}{.}\PY{n}{max}\PY{p}{(}\PY{p}{(}\PY{n}{tracked\PYZus{}G}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+\PY{n}{counts}\PY{p}{,} \PY{n}{bin\PYZus{}edges} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{histogram}\PY{p}{(}\PY{n}{tracked\PYZus{}G}\PY{p}{,} \PY{n}{bins}\PY{o}{=}\PY{n}{bins}\PY{p}{,} \PY{n}{density}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+\PY{n}{bin\PYZus{}centers\PYZus{}G} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{sqrt}\PY{p}{(}\PY{n}{bin\PYZus{}edges}\PY{p}{[}\PY{p}{:}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{]} \PY{o}{*} \PY{n}{bin\PYZus{}edges}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{:}\PY{p}{]}\PY{p}{)}
+\PY{c+c1}{\PYZsh{}ax.loglog(bin\PYZus{}centers\PYZus{}G, counts, marker=\PYZsq{}o\PYZsq{},ms=2,label=\PYZdq{}N=5000\PYZdq{})}
+\PY{n}{ax}\PY{o}{.}\PY{n}{loglog}\PY{p}{(}\PY{l+m+mf}{5e3}\PY{p}{,} \PY{n}{np}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{n}{tracked\PYZus{}G}\PY{p}{)}\PY{p}{,} \PY{n}{marker}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{o}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{ms}\PY{o}{=}\PY{l+m+mi}{8}\PY{p}{,} \PY{n}{label}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{N=5000}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+
+
+\PY{c+c1}{\PYZsh{}ax.hist(tracked\PYZus{}10,bins=bins,label=\PYZdq{}N=10\PYZdq{},density=True)\PYZsh{}Plotting the configuration model graph empirical data}
+\PY{c+c1}{\PYZsh{}ax.hist(tracked\PYZus{}10\PYZus{}2,bins=bins,label=\PYZdq{}N=10\PYZca{}2\PYZdq{},density=True)\PYZsh{}Plotting the Chung Lu model graph empirical data}
+\PY{c+c1}{\PYZsh{}ax.hist(tracked\PYZus{}10\PYZus{}3,bins=bins,label=\PYZdq{}N=10\PYZca{}3\PYZdq{},density=True)\PYZsh{}Plotting the Chung Lu model graph empirical data}
+\PY{c+c1}{\PYZsh{}ax.hist(tracked\PYZus{}G,bins=bins,label=\PYZdq{}N=5e3\PYZdq{},density=True)\PYZsh{}Plotting the Chung Lu model graph empirical data}
+\PY{n}{ax}\PY{o}{.}\PY{n}{loglog}\PY{p}{(}\PY{n}{t}\PY{p}{,}\PY{n}{theoretical}\PY{p}{,} \PY{n}{color} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{r}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{label}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Theoretical Distribution}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)} \PY{c+c1}{\PYZsh{}Plotting the Theoretical}
+
+\PY{c+c1}{\PYZsh{}Specifying figure details below:}
+\PY{n}{handles}\PY{p}{,} \PY{n}{labels} \PY{o}{=} \PY{n}{ax}\PY{o}{.}\PY{n}{get\PYZus{}legend\PYZus{}handles\PYZus{}labels}\PY{p}{(}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{legend}\PY{p}{(}\PY{n}{handles}\PY{o}{=}\PY{n}{handles}\PY{p}{,} \PY{n}{labels}\PY{o}{=}\PY{n}{labels}\PY{p}{,}\PY{n}{loc}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{lower right}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{fontsize}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{small}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Degree Growth Empirical vs. Theoretical}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}ylabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{k}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}xlabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Number of Nodes (N)}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{c+c1}{\PYZsh{}ax.set\PYZus{}ylabel(\PYZdq{}Probability P\PYZus{}k\PYZdq{})}
+\PY{n}{ax}\PY{o}{.}\PY{n}{grid}\PY{p}{(}\PY{k+kc}{True}\PY{p}{)}
+
+\PY{n}{plt}\PY{o}{.}\PY{n}{tight\PYZus{}layout}\PY{p}{(}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{Hughes_CNET5050_Assignment_2_files/Hughes_CNET5050_Assignment_2_8_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{enumerate}
+\def\labelenumi{\Roman{enumi}.}
+\setcounter{enumi}{1}
+\tightlist
+\item
+  The Friendship Paradox {[}30 points{]} The link selection model (see
+  Chapter 5) is a simple local mechanism that generates a scale-free
+  network without an explicit preferential-attachment rule. The model is
+  defined as follows:
+\end{enumerate}
+
+\begin{itemize}
+\tightlist
+\item
+  Growth: At each time step, add a new node to the network.
+\item
+  Link selection: Select a link uniformly at random, then connect the
+  new node to one of its endpoints, chosen uniformly at random.
+\end{itemize}
+
+\begin{enumerate}
+\def\labelenumi{(\alph{enumi})}
+\item
+  Write a program that generates a network from the link selection model
+  described above. Initialize the network with two nodes connected by an
+  edge.
+\item
+  Generate NG = 100 independent graph realizations of size N = 104. Pool
+  the degreeobservations across all realizations, giving NG×N
+  observations. Plot the log-binned empirical degree distribution P(k)
+  on logarithmic axes for this network size. Compare the empirical
+  distribution with Eq. (1) using m = 1. Explain how the link selection
+  model creates an effective preferential-attachment mechanism by giving
+  the form of \$ \Pi\emph{i = \Pi}\{ki\}\$, the probability that the
+  incoming node connects to an existing node i of degree ki.
+\item
+  The configuration model is a paradigmatic ``equilibrium'' random
+  network model and is often used as a null model to randomize
+  connections while preserving a specified degree sequence and isolate
+  the effects of degree heterogeneity. Let P(k) denote the degree
+  distribution, where k is an integer. Show that the probability that a
+  node at the end of a uniformly selected edge has degree k is Q(k) =
+  kP(k)/⟨k⟩, where ⟨k⟩= ∑ k kP(k) is the average degree.
+\item
+  Using the form of Q(k), derive the expected degree ⟨kneigh⟩of a
+  neighbor in the configuration model in terms of the first and second
+  moments of P(k).
+\item
+  Let P(k) = Ck−γ for integer degrees kmin ≤k ≤kmax. Determine the
+  normalization constant C and the first and second moments of this
+  distribution in terms of γ, kmin, and kmax.
+\item
+  For a network with N = 104, γ = 2.3, kmin = 1, and kmax = 1000,
+  calculate the mean degree of a neighbor ⟨kneigh⟩and the network's mean
+  degree ⟨k⟩. Use the discrete truncated power-law distribution
+  specified above, and compare the two values.
+\item
+  Explain the friendship paradox in light of your result: why do the
+  friends of a randomly selected node have a higher mean degree than the
+  nodes themselves?
+\end{enumerate}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{74}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{networkx}\PY{+w}{ }\PY{k}{as}\PY{+w}{ }\PY{n+nn}{nx}
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{matplotlib}\PY{n+nn}{.}\PY{n+nn}{pyplot}\PY{+w}{ }\PY{k}{as}\PY{+w}{ }\PY{n+nn}{plt}
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{numpy}\PY{+w}{ }\PY{k}{as}\PY{+w}{ }\PY{n+nn}{np}
+\PY{k+kn}{from}\PY{+w}{ }\PY{n+nn}{collections}\PY{+w}{ }\PY{k+kn}{import} \PY{n}{Counter}
+\PY{k+kn}{from}\PY{+w}{ }\PY{n+nn}{itertools}\PY{+w}{ }\PY{k+kn}{import} \PY{n}{combinations}
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{logging}
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{networkx}\PY{+w}{ }\PY{k}{as}\PY{+w}{ }\PY{n+nn}{nx}
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{matplotlib}\PY{n+nn}{.}\PY{n+nn}{pyplot}\PY{+w}{ }\PY{k}{as}\PY{+w}{ }\PY{n+nn}{plt}
+\PY{k+kn}{from}\PY{+w}{ }\PY{n+nn}{scipy}\PY{n+nn}{.}\PY{n+nn}{stats}\PY{+w}{ }\PY{k+kn}{import} \PY{n}{binom}
+\PY{k+kn}{from}\PY{+w}{ }\PY{n+nn}{scipy}\PY{n+nn}{.}\PY{n+nn}{special}\PY{+w}{ }\PY{k+kn}{import} \PY{n}{comb}
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{random}
+
+\PY{k}{def}\PY{+w}{ }\PY{n+nf}{link\PYZus{}selection\PYZus{}model}\PY{p}{(}\PY{n}{N}\PY{p}{)}\PY{p}{:}
+\PY{+w}{    }\PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}}
+\PY{l+s+sd}{    Generates a link selection model without using preferential attachment.}
+
+\PY{l+s+sd}{    Parameters}
+\PY{l+s+sd}{    \PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}}
+\PY{l+s+sd}{    N : int}
+\PY{l+s+sd}{        The number of vertices of the graph to generate.}
+\PY{l+s+sd}{    }
+\PY{l+s+sd}{    Returns}
+\PY{l+s+sd}{    \PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}}
+\PY{l+s+sd}{    G : networkx.Graph}
+\PY{l+s+sd}{        A graph generated from the given number of nodes and connections per node added (alpha). }
+\PY{l+s+sd}{       }
+
+\PY{l+s+sd}{    Time Complexity}
+\PY{l+s+sd}{    \PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}}
+\PY{l+s+sd}{    The time complexity is  O(N), where N is the number of nodes we want to add to the graph,}
+\PY{l+s+sd}{    each with an 1 connection. }
+
+\PY{l+s+sd}{    Example}
+\PY{l+s+sd}{    \PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}}
+\PY{l+s+sd}{    \PYZgt{}\PYZgt{}\PYZgt{} N = 10**4}
+\PY{l+s+sd}{    \PYZgt{}\PYZgt{}\PYZgt{} G = link\PYZus{}selection\PYZus{}model(N)}
+\PY{l+s+sd}{    \PYZdq{}\PYZdq{}\PYZdq{}}
+    \PY{c+c1}{\PYZsh{}Instantiate G as a fully connected graph of 2 nodes}
+    \PY{n}{G} \PY{o}{=} \PY{n}{nx}\PY{o}{.}\PY{n}{complete\PYZus{}graph}\PY{p}{(}\PY{l+m+mi}{2}\PY{p}{)}
+
+    \PY{c+c1}{\PYZsh{}Concept:}
+    \PY{c+c1}{\PYZsh{}At each time step, add a new node to the network.}
+    \PY{c+c1}{\PYZsh{}Link Selection: select an edge uniformly at random, and then connect the new node to one of this edge\PYZsq{}s endpoints, also chosen uniformly at random}
+
+    \PY{c+c1}{\PYZsh{}We expect edges are selected randomly from the set of all edges}
+    \PY{c+c1}{\PYZsh{}And the nodes to connect to at the ends of said edges are}
+    \PY{c+c1}{\PYZsh{}effectively, a coin\PYZhy{}flip connection}
+
+    \PY{c+c1}{\PYZsh{}Steps:}
+    \PY{c+c1}{\PYZsh{}First get the set of all edges, and sample 1 random edge}
+    \PY{c+c1}{\PYZsh{}Obtain this edge\PYZsq{}s nodes.}
+    \PY{c+c1}{\PYZsh{}Randomly sample between the two nodes (e.g., random.rand \PYZlt{}.50)}
+    \PY{c+c1}{\PYZsh{}Then add our new node to our selected node}
+    \PY{k}{while} \PY{n}{N}\PY{o}{\PYZgt{}}\PY{l+m+mi}{0}\PY{p}{:}\PY{c+c1}{\PYZsh{}While we still have nodes to add...}
+        \PY{n}{edges\PYZus{}set} \PY{o}{=} \PY{n+nb}{list}\PY{p}{(}\PY{n}{G}\PY{o}{.}\PY{n}{edges}\PY{p}{(}\PY{p}{)}\PY{p}{)}\PY{c+c1}{\PYZsh{}Get the current list of edges...}
+        \PY{c+c1}{\PYZsh{}Add the new node as the next id number}
+        \PY{n}{new\PYZus{}id} \PY{o}{=} \PY{n+nb}{len}\PY{p}{(}\PY{n}{G}\PY{o}{.}\PY{n}{nodes}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+        \PY{c+c1}{\PYZsh{}Sample for a random edge}
+        \PY{n}{node\PYZus{}i}\PY{p}{,}\PY{n}{node\PYZus{}j} \PY{o}{=} \PY{n}{random}\PY{o}{.}\PY{n}{sample}\PY{p}{(}\PY{p}{(}\PY{n}{edges\PYZus{}set}\PY{p}{)}\PY{p}{,}\PY{n}{k}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}
+        \PY{k}{if}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{rand}\PY{p}{(}\PY{p}{)}\PY{o}{\PYZlt{}}\PY{l+m+mf}{.50}\PY{p}{)}\PY{p}{:}\PY{c+c1}{\PYZsh{}Sample for a random node within said edge}
+            \PY{n}{G}\PY{o}{.}\PY{n}{add\PYZus{}edge}\PY{p}{(}\PY{n+nb}{int}\PY{p}{(}\PY{n}{new\PYZus{}id}\PY{p}{)}\PY{p}{,}\PY{n}{node\PYZus{}i}\PY{p}{)}
+        \PY{k}{else}\PY{p}{:}
+            \PY{n}{G}\PY{o}{.}\PY{n}{add\PYZus{}edge}\PY{p}{(}\PY{n+nb}{int}\PY{p}{(}\PY{n}{new\PYZus{}id}\PY{p}{)}\PY{p}{,}\PY{n}{node\PYZus{}j}\PY{p}{)}
+        
+        \PY{c+c1}{\PYZsh{}Update N to reflect that we processed 1 new node!}
+        \PY{n}{N}\PY{o}{\PYZhy{}}\PY{o}{=}\PY{l+m+mi}{1}
+
+    \PY{k}{return} \PY{n}{G}
+
+\PY{n}{G} \PY{o}{=} \PY{n}{link\PYZus{}selection\PYZus{}model}\PY{p}{(}\PY{l+m+mi}{10}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{4}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{75}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}(b) Getting the Degree Distributions per realization}
+\PY{n}{degs}\PY{o}{=}\PY{p}{[}\PY{p}{]}
+\PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{101}\PY{p}{)}\PY{p}{:}
+    \PY{n}{G} \PY{o}{=} \PY{n}{link\PYZus{}selection\PYZus{}model}\PY{p}{(}\PY{l+m+mi}{10}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{4}\PY{p}{)}
+    \PY{n}{degs}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n+nb}{list}\PY{p}{(}\PY{n+nb}{dict}\PY{p}{(}\PY{n}{G}\PY{o}{.}\PY{n}{degree}\PY{p}{(}\PY{p}{)}\PY{p}{)}\PY{o}{.}\PY{n}{values}\PY{p}{(}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{76}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{m}\PY{o}{=}\PY{l+m+mi}{1}
+\PY{n}{k}\PY{o}{=}\PY{n+nb}{list}\PY{p}{(}\PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,}\PY{n}{np}\PY{o}{.}\PY{n}{max}\PY{p}{(}\PY{n+nb}{list}\PY{p}{(}\PY{n}{degs\PYZus{}10\PYZus{}4}\PY{p}{)}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{degs}\PY{p}{)}
+\PY{n}{theoretical} \PY{o}{=} \PY{p}{[}\PY{l+m+mi}{2}\PY{o}{*}\PY{p}{(}\PY{n}{m}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}\PY{p}{)}\PY{o}{*}\PY{p}{(}\PY{n}{k\PYZus{}i}\PY{o}{*}\PY{o}{*}\PY{o}{\PYZhy{}}\PY{l+m+mi}{3}\PY{p}{)} \PY{k}{for} \PY{n}{k\PYZus{}i} \PY{o+ow}{in} \PY{n}{k}\PY{p}{]}
+
+\PY{c+c1}{\PYZsh{}\PYZhy{}\PYZhy{}\PYZhy{}Plotting the Degree Distribution \PYZsq{}k\PYZsq{}}
+\PY{c+c1}{\PYZsh{}Starting the plotting process}
+\PY{n}{fig}\PY{p}{,} \PY{n}{ax} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{,}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{8}\PY{p}{,}\PY{l+m+mf}{3.5}\PY{p}{)}\PY{p}{,}\PY{n}{dpi}\PY{o}{=}\PY{l+m+mi}{300}\PY{p}{,}\PY{n}{sharey}\PY{o}{=}\PY{k+kc}{True}\PY{p}{,}\PY{n}{sharex}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}\PY{c+c1}{\PYZsh{}Note: fig is the plot container, while ax (i.e., the \PYZsq{}axes\PYZsq{}) is the plot itself}
+\PY{n}{bins} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{geomspace}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,}\PY{n}{np}\PY{o}{.}\PY{n}{max}\PY{p}{(}\PY{n+nb}{list}\PY{p}{(}\PY{n}{degs\PYZus{}10\PYZus{}2}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+
+\PY{n}{counts1}\PY{p}{,} \PY{n}{bin\PYZus{}edges} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{histogram}\PY{p}{(}\PY{n}{degs}\PY{p}{,} \PY{n}{bins}\PY{o}{=}\PY{n}{bins}\PY{p}{,} \PY{n}{density}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+\PY{n}{bin\PYZus{}centers} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{sqrt}\PY{p}{(}\PY{n}{bin\PYZus{}edges}\PY{p}{[}\PY{p}{:}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{]} \PY{o}{*} \PY{n}{bin\PYZus{}edges}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{:}\PY{p}{]}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{loglog}\PY{p}{(}\PY{n}{bin\PYZus{}centers}\PY{p}{,} \PY{n}{counts1}\PY{p}{,} \PY{n}{marker}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{o}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{ms} \PY{o}{=} \PY{l+m+mi}{8}\PY{p}{,} \PY{n}{label}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{N=\PYZdl{}10\PYZca{}4\PYZdl{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+
+\PY{n}{ax}\PY{o}{.}\PY{n}{loglog}\PY{p}{(}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{k}\PY{p}{,}\PY{n}{theoretical}\PY{p}{,} \PY{n}{color} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{r}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{ms} \PY{o}{=} \PY{l+m+mi}{2}\PY{p}{,}\PY{n}{label}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Theoretical Distribution}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)} \PY{c+c1}{\PYZsh{}Plotting the Theoretical}
+
+\PY{c+c1}{\PYZsh{}Specifying figure details below:}
+\PY{n}{handles}\PY{p}{,} \PY{n}{labels} \PY{o}{=} \PY{n}{ax}\PY{o}{.}\PY{n}{get\PYZus{}legend\PYZus{}handles\PYZus{}labels}\PY{p}{(}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{legend}\PY{p}{(}\PY{n}{handles}\PY{o}{=}\PY{n}{handles}\PY{p}{,} \PY{n}{labels}\PY{o}{=}\PY{n}{labels}\PY{p}{,}\PY{n}{loc}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{upper right}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{fontsize}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{small}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Degree Distribution Empirical vs. Theoretical}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}xlabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{k}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}ylabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Probability \PYZdl{}P\PYZus{}k\PYZdl{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{grid}\PY{p}{(}\PY{k+kc}{True}\PY{p}{)}
+
+\PY{n}{plt}\PY{o}{.}\PY{n}{tight\PYZus{}layout}\PY{p}{(}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+[[49, 170, 22, 73, 177, 6, 31, 32, 77, 73, 17, 18, 2, 3, 96, 6, 35, 7, 15, 12]]
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{Hughes_CNET5050_Assignment_2_files/Hughes_CNET5050_Assignment_2_12_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{87}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}(c)}
+\PY{n}{m}\PY{o}{=}\PY{l+m+mi}{1}
+\PY{n}{k}\PY{o}{=}\PY{n+nb}{list}\PY{p}{(}\PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,}\PY{n}{np}\PY{o}{.}\PY{n}{max}\PY{p}{(}\PY{n+nb}{list}\PY{p}{(}\PY{n}{degs\PYZus{}10\PYZus{}4}\PY{p}{)}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{degs\PYZus{}10\PYZus{}2}\PY{p}{)}
+\PY{n}{theoretical} \PY{o}{=} \PY{p}{[}\PY{l+m+mi}{2}\PY{o}{*}\PY{p}{(}\PY{n}{m}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}\PY{p}{)}\PY{o}{*}\PY{p}{(}\PY{n}{k\PYZus{}i}\PY{o}{*}\PY{o}{*}\PY{o}{\PYZhy{}}\PY{l+m+mi}{3}\PY{p}{)} \PY{k}{for} \PY{n}{k\PYZus{}i} \PY{o+ow}{in} \PY{n}{k}\PY{p}{]}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{theoretical}\PY{p}{)}
+\PY{n}{Q\PYZus{}k\PYZus{}top}\PY{o}{=} \PY{p}{[}\PY{n}{theoretical}\PY{p}{[}\PY{n}{k\PYZus{}i}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{*}\PY{n}{k\PYZus{}i} \PY{k}{for} \PY{n}{k\PYZus{}i} \PY{o+ow}{in} \PY{n}{k}\PY{p}{]}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{Q\PYZus{}k\PYZus{}top}\PY{p}{)}
+\PY{n}{Q\PYZus{}k} \PY{o}{=} \PY{p}{[}\PY{n}{Q\PYZus{}k}\PY{o}{/}\PY{n+nb}{sum}\PY{p}{(}\PY{n}{Q\PYZus{}k\PYZus{}top}\PY{p}{)} \PY{k}{for} \PY{n}{Q\PYZus{}k} \PY{o+ow}{in} \PY{n}{Q\PYZus{}k\PYZus{}top}\PY{p}{]}
+
+\PY{c+c1}{\PYZsh{}\PYZhy{}\PYZhy{}\PYZhy{}Plotting the Degree Distribution \PYZsq{}k\PYZsq{}}
+\PY{c+c1}{\PYZsh{}Starting the plotting process}
+\PY{n}{fig}\PY{p}{,} \PY{n}{ax} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{,}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{8}\PY{p}{,}\PY{l+m+mf}{3.5}\PY{p}{)}\PY{p}{,}\PY{n}{dpi}\PY{o}{=}\PY{l+m+mi}{300}\PY{p}{,}\PY{n}{sharey}\PY{o}{=}\PY{k+kc}{True}\PY{p}{,}\PY{n}{sharex}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}\PY{c+c1}{\PYZsh{}Note: fig is the plot container, while ax (i.e., the \PYZsq{}axes\PYZsq{}) is the plot itself}
+\PY{n}{bins} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{geomspace}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,}\PY{n}{np}\PY{o}{.}\PY{n}{max}\PY{p}{(}\PY{n+nb}{list}\PY{p}{(}\PY{n}{degs\PYZus{}10\PYZus{}2}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+
+\PY{n}{counts1}\PY{p}{,} \PY{n}{bin\PYZus{}edges} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{histogram}\PY{p}{(}\PY{n}{degs}\PY{p}{,} \PY{n}{bins}\PY{o}{=}\PY{n}{bins}\PY{p}{,} \PY{n}{density}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+\PY{n}{bin\PYZus{}centers} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{sqrt}\PY{p}{(}\PY{n}{bin\PYZus{}edges}\PY{p}{[}\PY{p}{:}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{]} \PY{o}{*} \PY{n}{bin\PYZus{}edges}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{:}\PY{p}{]}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{loglog}\PY{p}{(}\PY{n}{bin\PYZus{}centers}\PY{p}{,} \PY{n}{counts1}\PY{p}{,} \PY{n}{marker}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{o}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{ms} \PY{o}{=} \PY{l+m+mi}{8}\PY{p}{,} \PY{n}{label}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{N=\PYZdl{}10\PYZca{}4\PYZdl{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+
+\PY{n}{ax}\PY{o}{.}\PY{n}{loglog}\PY{p}{(}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{k}\PY{p}{,}\PY{n}{theoretical}\PY{p}{,} \PY{n}{color} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{r}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{ms} \PY{o}{=} \PY{l+m+mi}{2}\PY{p}{,}\PY{n}{label}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Theoretical Distribution}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)} \PY{c+c1}{\PYZsh{}Plotting the Theoretical}
+\PY{n}{ax}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{k}\PY{p}{,}\PY{n}{Q\PYZus{}k}\PY{p}{,} \PY{n}{color} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{g}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{ms} \PY{o}{=} \PY{l+m+mi}{2}\PY{p}{,}\PY{n}{label}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZdl{}Q\PYZus{}k\PYZdl{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)} 
+
+\PY{c+c1}{\PYZsh{}Specifying figure details below:}
+\PY{n}{handles}\PY{p}{,} \PY{n}{labels} \PY{o}{=} \PY{n}{ax}\PY{o}{.}\PY{n}{get\PYZus{}legend\PYZus{}handles\PYZus{}labels}\PY{p}{(}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{legend}\PY{p}{(}\PY{n}{handles}\PY{o}{=}\PY{n}{handles}\PY{p}{,} \PY{n}{labels}\PY{o}{=}\PY{n}{labels}\PY{p}{,}\PY{n}{loc}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{upper right}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{fontsize}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{small}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Degree Distribution Empirical vs. Theoretical vs \PYZdl{}Q\PYZus{}k\PYZdl{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}xlabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{k}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}ylabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Probability \PYZdl{}P\PYZus{}k\PYZdl{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{grid}\PY{p}{(}\PY{k+kc}{True}\PY{p}{)}
+
+\PY{n}{plt}\PY{o}{.}\PY{n}{tight\PYZus{}layout}\PY{p}{(}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+[[321, 160, 142, 217, 466, 173, 225, 139, 82, 247, 165, 218, 107, 94, 181, 52]]
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{Hughes_CNET5050_Assignment_2_files/Hughes_CNET5050_Assignment_2_13_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \#(d)
+
+If Q\_k is the expected probability of our edge attaching to any vertex
+with a degree k, then the average probability of our neighbor being is
+the degree distribution times this probability.
+
+\[\sum_{k}{k}*Q(k) = \sum_{k}{k} * \frac{kP(k)}{\langle k \rangle} \rightarrow\]
+\[= \sum_{k}{} * \frac{k^2P(k)}{\langle k \rangle}\]
+\[= \frac{\langle k^2 \rangle}{\langle k \rangle}\]
+
+    If \(\sum_k{k}P(k)=\langle k \rangle\),
+\(\sum_k{k^2}P(k)=\langle k^2 \rangle\), and \(P(k)=Ck^{-\gamma}\)
+
+Then:
+
+\[\langle k \rangle = \sum_{k=k_{min}}^{k_{max}}{k}Ck^{-\gamma}\] and,
+\[\langle k^2 \rangle = \sum_{k=k_{min}}^{k_{max}}{k^2}Ck^{-\gamma}\]
+
+which is equal to:
+
+\[\langle k \rangle = C \sum_{k=k_{min}}^{k_{max}}{k^{-\gamma + 1}}\]
+and,
+\[\langle k^2 \rangle = C \sum_{k=k_{min}}^{k_{max}}{k^{-\gamma + 2}}\]
+
+Since, \(P(k)\) must equal 1 to reflect our probability, we define C as
+\[C= \frac{1}{\sum_{k=k_{min}}^{k_{max}}k^{-\gamma}}\]
+
+That gives us:
+
+\[\langle k \rangle = \frac{\sum_{k=k_{min}}^{k_{max}}{k^{-\gamma + 1}}}{\sum_{k=k_{min}}^{k_{max}}k^{-\gamma}} \]
+and,
+\[\langle k^2 \rangle =  \frac{\sum_{k=k_{min}}^{k_{max}}{k^{-\gamma + 2}}}{\sum_{k=k_{min}}^{k_{max}}k^{-\gamma}} \]
+
+for, \[C= \frac{1}{\sum_{k=k_{min}}^{k_{max}}k^{-\gamma}}\]
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{42}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{N}\PY{o}{=}\PY{l+m+mi}{10}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{4}
+\PY{n}{gamma}\PY{o}{=}\PY{l+m+mf}{2.3}
+\PY{n}{k} \PY{o}{=} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{1001}\PY{p}{)}\PY{c+c1}{\PYZsh{}kmin=1,kmax=1000}
+
+\PY{n}{k\PYZus{}neigh}\PY{o}{=} \PY{n+nb}{sum}\PY{p}{(}\PY{p}{[}\PY{n}{k}\PY{o}{*}\PY{o}{*}\PY{p}{(}\PY{o}{\PYZhy{}}\PY{n}{gamma}\PY{o}{+}\PY{l+m+mi}{2}\PY{p}{)} \PY{k}{for} \PY{n}{k} \PY{o+ow}{in} \PY{n}{k}\PY{p}{]}\PY{p}{)}\PY{o}{/}\PY{n+nb}{sum}\PY{p}{(}\PY{p}{[}\PY{n}{k}\PY{o}{*}\PY{o}{*}\PY{p}{(}\PY{o}{\PYZhy{}}\PY{n}{gamma}\PY{p}{)} \PY{k}{for} \PY{n}{k} \PY{o+ow}{in} \PY{n}{k}\PY{p}{]}\PY{p}{)}
+\PY{n}{k\PYZus{}avg}\PY{o}{=} \PY{n+nb}{sum}\PY{p}{(}\PY{p}{[}\PY{n}{k}\PY{o}{*}\PY{o}{*}\PY{p}{(}\PY{o}{\PYZhy{}}\PY{n}{gamma}\PY{o}{+}\PY{l+m+mi}{1}\PY{p}{)} \PY{k}{for} \PY{n}{k} \PY{o+ow}{in} \PY{n}{k}\PY{p}{]}\PY{p}{)}\PY{o}{/}\PY{n+nb}{sum}\PY{p}{(}\PY{p}{[}\PY{n}{k}\PY{o}{*}\PY{o}{*}\PY{p}{(}\PY{o}{\PYZhy{}}\PY{n}{gamma}\PY{p}{)} \PY{k}{for} \PY{n}{k} \PY{o+ow}{in} \PY{n}{k}\PY{p}{]}\PY{p}{)}
+
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{k\PYZus{}neighbor: }\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{k\PYZus{}neigh}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{k\PYZus{}average: }\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{k\PYZus{}avg}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+k\_neighbor:  124.97538508342737
+k\_average:  2.452222851581461
+    \end{Verbatim}
+
+    The friends of a randomly selected node have a higher mean degree than
+the nodes themselves because, hubs which have the highest degrees
+definitionally connect to more nodes than a normatitive node. This
+means, that as a normatitive node we are more likely to connect to a
+hub, since k\_hub is simply greater than k\_normatitive. In other words,
+we tend to connect to hubs simply because they have more opportunities
+for connections writ-large, and therfore our neighbors tend to be higher
+degree than ourselves. The alternative is some kind of flat-degree
+distribution where either everyone is a hub or no one.
+
+
+    % Add a bibliography block to the postdoc
+    
+    
+    
+\end{document}
