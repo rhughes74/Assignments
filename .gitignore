@@ -9,3 +9,5 @@ FINAL PROJECT/Reddit/reddit/submissions/RS_2011-08.zst
 FINAL PROJECT/Reddit/reddit/submissions/RS_2011-09.zst.part
 FINAL PROJECT/processed/
 FINAL PROJECT/__pycache__/extract_sample_text.cpython-315.pyc
+all_authors_to_subreddits.pkl
+authors_per_sub.pkl
