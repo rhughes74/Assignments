@@ -1,7 +1,7 @@
 import networkx as nx
 import pickle
 import random
-from collections import defaultdict
+from collections import defaultdictS
 from tqdm import tqdm
 import numpy as np
 import pandas as pd
